@@ -5,13 +5,12 @@ public class Year {
 
     /** Return true iff YEAR is a leap year.  */
     static boolean isLeapYear(int year) {
-        if (year % 4 == 0){
+        if ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)) {
           return true;
         }
         else{
           return false;
         }
-
     }
 
     /** Print whether YEAR is a a leap year on System.out. */
