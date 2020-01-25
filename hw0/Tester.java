@@ -1,6 +1,5 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
-import hw0.Methods.*;
 import ucb.junit.textui;
 
 /** Tests for hw0. 
@@ -24,10 +23,10 @@ public class Tester {
     @Test
     public void maxTest() {
         // Change call to max to make this call yours.
-        assertEquals(14, max(new int[] { 0, -5, 2, 14, 10 }));
-        assertEquals(14, max(new int[]{0, 1, 2 ,3}));
-        assertEquals(14, max(new int[]{-6, 80, -7, -8}));
-        assertEquals(14, max(new int[]{-2,-1,-3,-4}));
+        assertEquals(14, Methods.max(new int[] { 0, -5, 2, 14, 10 }));
+        assertEquals(14, Methods.max(new int[]{0, 1, 2 ,3}));
+        assertEquals(14, Methods.max(new int[]{-6, 80, -7, -8}));
+        assertEquals(14, Methods.max(new int[]{-2,-1,-3,-4}));
     }
 
     @Test
