@@ -25,25 +25,32 @@ public class Tester {
     public void maxTest() {
         // Change call to max to make this call yours.
         assertEquals(14, max(new int[] { 0, -5, 2, 14, 10 }));
-        // REPLACE THIS WITH MORE TESTS.
+        assertEquals(14, max(new int[]{0, 1, 2 ,3}));
+        assertEquals(14, max(new int[]{-6, 80, -7, -8}));
+        assertEquals(14, max(new int[]{-2,-1,-3,-4}));
     }
 
     @Test
     public void threeSumTest() {
-        // Change call to threeSum to make this call yours.
         assertTrue(threeSum(new int[] { -6, 3, 10, 200 }));
-        // REPLACE THIS WITH MORE TESTS.
+        assertTrue(threeSum(new int[]{-6, 2, 4}));
+        assertFalse(threeSum(new int[]{-6, 2, 5}));
+        assertTrue(threeSum(new int[]{8, 2, -1, 15}));
+        assertTrue(threeSum(new int[]{8, 2, -1, -1, 15}));
+        assertTrue(threeSum(new int[]{5, 1, 0, 3, 6}));
     }
 
     @Test
     public void threeSumDistinctTest() {
-        // Change call to threeSumDistinct to make this call yours.
         assertFalse(threeSumDistinct(new int[] { -6, 3, 10, 200 }));
-        // REPLACE THIS WITH MORE TESTS.
+        assertTrue(threeSumDistinct(new int[]{-6, 2, 4}));
+        assertFalse(threeSumDistinct(new int[]{-6, 2, 5}));
+        assertFalse(threeSumDistinct(new int[]{8, 2, -1, 15}));
+        assertTrue(threeSumDistinct(new int[]{8, 2, -1, -1, 15}));
+        assertFalse(threeSumDistinct(new int[]{5, 1, 0, 3, 6}));
     }
 
     public static void main(String[] unused) {
         textui.runClasses(Tester.class);
     }
-
 }
