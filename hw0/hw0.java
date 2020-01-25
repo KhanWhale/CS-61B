@@ -2,7 +2,7 @@
  * @author Aniruddh Khanwale
  * Includes method that calculates the maximum value in an array, as well as 3SUM.
  */
-public class Methods{
+public class hw0{
     public static void main(String[] args) {
         int[] one = new int[]{0, 1, 2 ,3};
         int[] two = new int[]{-6, 80, -7, -8};
