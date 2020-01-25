@@ -24,9 +24,9 @@ public class Tester {
     public void maxTest() {
         // Change call to max to make this call yours.
         assertEquals(14, Methods.max(new int[] { 0, -5, 2, 14, 10 }));
-        assertEquals(14, Methods.max(new int[]{0, 1, 2 ,3}));
-        assertEquals(14, Methods.max(new int[]{-6, 80, -7, -8}));
-        assertEquals(14, Methods.max(new int[]{-2,-1,-3,-4}));
+        assertEquals(3, Methods.max(new int[]{0, 1, 2 ,3}));
+        assertEquals(80, Methods.max(new int[]{-6, 80, -7, -8}));
+        assertEquals(-4, Methods.max(new int[]{-2,-1,-3,-4}));
     }
 
     @Test
