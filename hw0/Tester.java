@@ -31,22 +31,22 @@ public class Tester {
 
     @Test
     public void threeSumTest() {
-        assertTrue(threeSum(new int[] { -6, 3, 10, 200 }));
-        assertTrue(threeSum(new int[]{-6, 2, 4}));
-        assertFalse(threeSum(new int[]{-6, 2, 5}));
-        assertTrue(threeSum(new int[]{8, 2, -1, 15}));
-        assertTrue(threeSum(new int[]{8, 2, -1, -1, 15}));
-        assertTrue(threeSum(new int[]{5, 1, 0, 3, 6}));
+        assertTrue(Methods.threeSum(new int[] { -6, 3, 10, 200 }));
+        assertTrue(Methods.threeSum(new int[]{-6, 2, 4}));
+        assertFalse(Methods.threeSum(new int[]{-6, 2, 5}));
+        assertTrue(Methods.threeSum(new int[]{8, 2, -1, 15}));
+        assertTrue(Methods.threeSum(new int[]{8, 2, -1, -1, 15}));
+        assertTrue(Methods.threeSum(new int[]{5, 1, 0, 3, 6}));
     }
 
     @Test
     public void threeSumDistinctTest() {
-        assertFalse(threeSumDistinct(new int[] { -6, 3, 10, 200 }));
-        assertTrue(threeSumDistinct(new int[]{-6, 2, 4}));
-        assertFalse(threeSumDistinct(new int[]{-6, 2, 5}));
-        assertFalse(threeSumDistinct(new int[]{8, 2, -1, 15}));
-        assertTrue(threeSumDistinct(new int[]{8, 2, -1, -1, 15}));
-        assertFalse(threeSumDistinct(new int[]{5, 1, 0, 3, 6}));
+        assertFalse(Methods.threeSumDistinct(new int[] { -6, 3, 10, 200 }));
+        assertTrue(Methods.threeSumDistinct(new int[]{-6, 2, 4}));
+        assertFalse(Methods.threeSumDistinct(new int[]{-6, 2, 5}));
+        assertFalse(Methods.threeSumDistinct(new int[]{8, 2, -1, 15}));
+        assertTrue(Methods.threeSumDistinct(new int[]{8, 2, -1, -1, 15}));
+        assertFalse(Methods.threeSumDistinct(new int[]{5, 1, 0, 3, 6}));
     }
 
     public static void main(String[] unused) {
