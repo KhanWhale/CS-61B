@@ -17,11 +17,17 @@ public class CompoundInterestTest {
     @Test
     public void testFutureValue() {
         double tolerance = 0.01;
+        assertEquals(12.544, CompoundInterest.futureValue(10, 12, 2021), tolerance);
+        assertEquals(7.744, CompoundInterest.futureValue(10, -12, 2021), tolerance);
+        assertEquals(57391.4, CompoundInterest.futureValue(53000, 1, 2027), tolerance);
     }
 
     @Test
     public void testFutureValueReal() {
         double tolerance = 0.01;
+        assertEquals(11.8026496, CompoundInterest.futureValueReal(10, 12, 2021, 3), tolerance);
+        assertEquals(6.98896, CompoundInterest.futureValueReal(10, -12, 2021, 5), tolerance);
+        assertEquals(114355.97035073, CompoundInterest.futureValueReal(53000, 1, 2027, -9), tolerance);
     }
 
 

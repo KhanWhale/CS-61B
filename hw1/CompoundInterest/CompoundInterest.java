@@ -1,3 +1,6 @@
+import net.sf.saxon.regex.RegexIterator;
+
+import java.lang.Math;
 /** Collection of compound-interest and related financial
  *  computations.
  *  @author Aniruddh Khanwale
@@ -22,10 +25,10 @@ public class CompoundInterest {
      *  then the futureValue will be 10*1.12*1.12 = 12.544. */
     static double futureValue(double presentValue, double rate,
                               int targetYear) {
-        return 0;
+        return presentValue*Math.pow(1+(rate/100), numYears(targetYear));
     }
 
-    /** Returns returns the value, in THIS_YEAR dollars, of an asset
+    /** Returns the value, in THIS_YEAR dollars, of an asset
      *  worth PRESENTVALUE that appreciates by RATE compounded
      *  annually in TARGETYEAR, assuming a simple model where inflation
      *  compounds annually at a constant rate of INFLATIONRATE.
@@ -36,7 +39,8 @@ public class CompoundInterest {
      *  2019 dollars, we get 12.544 * 0.97 * 0.97 = 11.8026496 dollars. */
     static double futureValueReal(double presentValue, double rate,
                                   int targetYear, double inflationRate) {
-        return 0;
+        double appreciated = futureValue(presentValue, rate, targetYear);
+        return futureValue(appreciated, -inflationRate, targetYear);
     }
 
     /** Suppose you invest PERYEAR dollars at the end of every year until
