@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 import ucb.junit.textui;
 
 /** Tests for hw0. 
- *  @author YOUR NAMES HERE
+ *  @author Aniruddh Khanwale 
  */
 public class Tester {
 
