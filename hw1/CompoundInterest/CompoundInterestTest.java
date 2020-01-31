@@ -34,11 +34,19 @@ public class CompoundInterestTest {
     @Test
     public void testTotalSavings() {
         double tolerance = 0.01;
+        assertEquals(16550, CompoundInterest.totalSavings(5000, 2021, 10), tolerance);
+        assertEquals(22067.5, CompoundInterest.totalSavings(7000, 2021, 5), tolerance);
+        assertEquals(19839.984343441, CompoundInterest.totalSavings(1257, 2029, 7), tolerance);
+
     }
 
     @Test
     public void testTotalSavingsReal() {
         double tolerance = 0.01;
+        assertEquals(16550, CompoundInterest.totalSavings(5000, 2021, 10), tolerance);
+        assertEquals(22067.5, CompoundInterest.totalSavings(7000, 2021, 5), tolerance);
+        assertEquals(19839.984343441, CompoundInterest.totalSavings(1257, 2029, 7), tolerance);
+
     }
 
 

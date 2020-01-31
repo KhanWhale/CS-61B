@@ -51,15 +51,22 @@ public class CompoundInterest {
      *  then the result will be 5000*1.1*1.1 + 5000*1.1 + 5000 =
      *  16550. */
     static double totalSavings(double perYear, int targetYear, double rate) {
-        return 0;
+        double savings = 0;
+        for(int i = 0; i <= numYears(targetYear); i+=1) {
+            savings += futureValue(perYear, rate, targetYear -i);
+        }
+        return savings;
     }
-
     /** Returns totalSavings(PERYEAR, TARGETYEAR, RATE) converted to
      *  current year dollars, assuming a uniform inflation rate of
      *  INFLATIONRATE. */
     static double totalSavingsReal(double perYear, int targetYear, double rate,
                                double inflationRate) {
-        return 0;
+        double savingsReal = 0;
+        for(int i = 0; i <= numYears(targetYear); i+=1) {
+            savingsReal += futureValueReal(perYear,rate,targetYear-i,inflationRate);
+        }
+        return savingsReal;
 
     }
 
@@ -69,8 +76,8 @@ public class CompoundInterest {
      *  INFLATIONRATE. */
     static void printDollarFV(int targetYear, double returnRate,
                               double inflationRate) {
-        double nominalDollarValue = 0; // replace 0 with your code
-        double realDollarValue = 0;    // replace 0 with your code
+        double nominalDollarValue = futureValue(1, returnRate, targetYear);
+        double realDollarValue = futureValueReal(1, returnRate, targetYear, inflationRate);
 
         // Do not change anything in this method below this line
         String dollarSummary =
