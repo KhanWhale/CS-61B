@@ -1,5 +1,5 @@
 /** A couple of arithmetic functions.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 public class Arithmetic {
 
@@ -10,6 +10,6 @@ public class Arithmetic {
 
     /** Returns the sum of A and B. */
     public static double sum(double a, double b) {
-        return a * b; // WRONG
+        return a + b;
     }
 }
