@@ -1,6 +1,5 @@
 import net.sf.saxon.regex.RegexIterator;
 
-import java.lang.Math;
 /** Collection of compound-interest and related financial
  *  computations.
  *  @author Aniruddh Khanwale
@@ -13,7 +12,7 @@ public class CompoundInterest {
      *  should be 1. Throughout the assignment it is OK to assume that
      *  TARGETYEAR is >= THIS_YEAR. */
     static int numYears(int targetYear) {
-        return targetYear-THIS_YEAR;
+        return targetYear - THIS_YEAR;
     }
 
     /** Suppose we have an asset worth PRESENTVALUE that appreciates
@@ -25,7 +24,7 @@ public class CompoundInterest {
      *  then the futureValue will be 10*1.12*1.12 = 12.544. */
     static double futureValue(double presentValue, double rate,
                               int targetYear) {
-        return presentValue*Math.pow(1+(rate/100), numYears(targetYear));
+        return presentValue * Math.pow(1 + (rate / 100), numYears(targetYear));
     }
 
     /** Returns the value, in THIS_YEAR dollars, of an asset
@@ -52,8 +51,8 @@ public class CompoundInterest {
      *  16550. */
     static double totalSavings(double perYear, int targetYear, double rate) {
         double savings = 0;
-        for(int i = 0; i <= numYears(targetYear); i+=1) {
-            savings += futureValue(perYear, rate, targetYear -i);
+        for (int i = 0; i <= numYears(targetYear); i += 1) {
+            savings += futureValue(perYear, rate, targetYear - i);
         }
         return savings;
     }
@@ -63,8 +62,8 @@ public class CompoundInterest {
     static double totalSavingsReal(double perYear, int targetYear, double rate,
                                double inflationRate) {
         double savingsReal = 0;
-        for(int i = 0; i <= numYears(targetYear); i+=1) {
-            savingsReal += futureValueReal(perYear,rate,targetYear-i,inflationRate);
+        for (int i = 0; i <= numYears(targetYear); i += 1) {
+            savingsReal += futureValueReal(perYear, rate, targetYear - i, inflationRate);
         }
         return savingsReal;
 
@@ -96,8 +95,8 @@ public class CompoundInterest {
     static void printSavingsFV(int targetYear, double returnRate,
                                double inflationRate, double perYear) {
 
-        double nominalSavings = totalSavings(perYear, targetYear, returnRate); // replace 0 with your code
-        double realSavings = totalSavingsReal(perYear, targetYear, returnRate, inflationRate);    // replace 0 with your code
+        double nominalSavings = totalSavings(perYear, targetYear, returnRate);
+        double realSavings = totalSavingsReal(perYear, targetYear, returnRate, inflationRate);
         // Do not change anything in this method below this line
 
         String savingsSummary =

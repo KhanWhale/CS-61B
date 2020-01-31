@@ -23,10 +23,10 @@ public class MultiArr {
     */
     public static int maxValue(int[][] arr) {
         int max = Integer.MIN_VALUE;
-        for(int row = 0; row < arr.length; row += 1){
-            for(int col = 0; col < arr[row].length; col +=1){
+        for (int row = 0; row < arr.length; row += 1) {
+            for (int col = 0; col < arr[row].length; col += 1) {
                 int val = arr[row][col];
-                if(val > max){
+                if (val > max) {
                     max = val;
                 }
             }
@@ -38,15 +38,13 @@ public class MultiArr {
     corresponding row of the 2d array*/
     public static int[] allRowSums(int[][] arr) {
         int[] sums = new int[arr.length];
-        for(int row = 0; row < arr.length; row += 1){
+        for (int row = 0; row < arr.length; row += 1) {
             int rowSum = 0;
-            for(int col = 0; col < arr[row].length; col +=1){
+            for (int col = 0; col < arr[row].length; col += 1) {
                 rowSum += arr[row][col];
             }
             sums[row] = rowSum;
         }
-        //System.out.println(sums);
         return sums;
-
     }
 }
