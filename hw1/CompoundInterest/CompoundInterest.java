@@ -96,8 +96,8 @@ public class CompoundInterest {
     static void printSavingsFV(int targetYear, double returnRate,
                                double inflationRate, double perYear) {
 
-        double nominalSavings = 0; // replace 0 with your code
-        double realSavings = 0;    // replace 0 with your code
+        double nominalSavings = totalSavings(perYear, targetYear, returnRate); // replace 0 with your code
+        double realSavings = totalSavingsReal(perYear, targetYear, returnRate, inflationRate);    // replace 0 with your code
         // Do not change anything in this method below this line
 
         String savingsSummary =
