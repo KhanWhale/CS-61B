@@ -60,12 +60,8 @@ public class CompoundInterest {
      *  current year dollars, assuming a uniform inflation rate of
      *  INFLATIONRATE. */
     static double totalSavingsReal(double perYear, int targetYear, double rate,
-                               double inflationRate) {
-        double savingsReal = 0;
-        for (int i = 0; i <= numYears(targetYear); i += 1) {
-            savingsReal += futureValueReal(perYear, rate, targetYear - i, inflationRate);
-        }
-        return savingsReal;
+                               double inflationRate){
+        return totalSavings(perYear, targetYear, rate)* Math.pow((1-inflationRate/100), numYears(targetYear));
 
     }
 
