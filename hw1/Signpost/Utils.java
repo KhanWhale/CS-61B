@@ -1,5 +1,4 @@
 import static org.junit.Assert.*;
-import static java.lang.System.arraycopy;
 import java.util.Collection;
 import java.util.HashSet;
 

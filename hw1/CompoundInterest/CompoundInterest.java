@@ -1,4 +1,3 @@
-import net.sf.saxon.regex.RegexIterator;
 
 /** Collection of compound-interest and related financial
  *  computations.
