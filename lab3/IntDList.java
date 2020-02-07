@@ -62,8 +62,24 @@ public class IntDList {
      * @return The integer value at index i
      */
     public int get(int i) {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        if(i < 0){
+          DNode pointer = _back;
+          i+= 1;
+          while(i != 0){
+            pointer = pointer._prev;
+          }
+          return pointer._val;
+        }else if(i == 0){
+          return _front._val;
+        }else{
+          DNode pointer = _front;
+          i -= 1;
+          while(i != 0){
+            pointer = pointer._next;
+            i -= 1;
+          }
+          return pointer._val;
+        }
     }
 
     /**
