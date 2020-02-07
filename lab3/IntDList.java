@@ -9,6 +9,7 @@ public class IntDList {
      * First and last nodes of list.
      */
     protected DNode _front, _back;
+    protected int size = 0;
 
     /**
      * An empty list.
@@ -47,8 +48,7 @@ public class IntDList {
      * @return The number of elements in this list.
      */
     public int size() {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        return size;
     }
 
     /**
@@ -67,13 +67,13 @@ public class IntDList {
           i+= 1;
           while(i != 0){
             pointer = pointer._prev;
+            i+= 1;
           }
           return pointer._val;
         }else if(i == 0){
           return _front._val;
         }else{
           DNode pointer = _front;
-          i -= 1;
           while(i != 0){
             pointer = pointer._next;
             i -= 1;
@@ -93,7 +93,16 @@ public class IntDList {
      * @param d value to be inserted in the back
      */
     public void insertBack(int d) {
-        // FIXME: Implement this method
+        if(size == 0){
+          _front = _back = new DNode(d);
+          size += 1;
+        }else{
+          DNode newBack = new DNode(d);
+          _back._next = newBack;
+          newBack._prev = _back;
+          _back = newBack;
+          size += 1;
+        }
     }
 
     /**
