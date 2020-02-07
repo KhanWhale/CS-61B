@@ -86,7 +86,16 @@ public class IntDList {
      * @param d value to be inserted in the front
      */
     public void insertFront(int d) {
-        // FIXME: Implement this method
+      if(size == 0){
+        _front = _back = new DNode(d);
+        size += 1;
+      }else{
+        DNode newFront = new DNode(d);
+        _front._prev = newFront;
+        newFront._next = _front;
+        _front = newFront;
+        size += 1;
+      }
     }
 
     /**
