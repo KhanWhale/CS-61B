@@ -1,3 +1,6 @@
+import javax.print.DocFlavor;
+import java.util.Collections;
+
 /**
  * Scheme-like pairs that can be used to form a list of integers.
  *
@@ -179,8 +182,23 @@ public class IntDList {
      * System.out.println(a); //prints ab
      */
     public String toString() {
-        // FIXME: Implement this method to return correct value
-        return null;
+       if(size == 0){
+           return "[]";
+       }else if(size == 1) {
+           return "[" + Integer.toString(_front._val) + "]";
+       }else{
+           String out = "[";
+           DNode pointer = _front;
+           out += Integer.toString(pointer._val);
+           pointer = pointer._next;
+           while(pointer != _back){
+               out += ", ";
+               out += Integer.toString(pointer._val);
+               pointer = pointer._next;
+           }
+           out += ", "+ Integer.toString(_back._val) + "]";
+           return out;
+       }
     }
 
     /**
