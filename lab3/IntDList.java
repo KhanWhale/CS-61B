@@ -136,7 +136,10 @@ public class IntDList {
      */
     public int deleteFront() {
         // FIXME: Implement this method and return correct value
-        return 0;
+        DNode deleted = _front;
+        _front = _front._next;
+        size -= 1;
+        return deleted._val;
     }
 
     /**
@@ -145,8 +148,10 @@ public class IntDList {
      * @return the item that was deleted
      */
     public int deleteBack() {
-        // FIXME: Implement this method and return correct value
-        return 0;
+        DNode deleted = _back;
+        _back = _back._prev;
+        size -= 1;
+        return deleted._val;
     }
 
     /**
