@@ -19,7 +19,7 @@ public class BuggyIntDListTest {
         l = new BuggyIntDList(1, 15, 23, 37, 90, 101, 105, 107, 120, 135, 140);
         m = new BuggyIntDList(3, 10, 27, 45, 83, 88, 94, 111, 115, 138);
         l.mergeIntDList(m);
-        assertEquals("Size after reversal should be 21", 21, l.size());
+        assertEquals("Size after combining should be 21", 21, l.size());
         assertEquals(".getFront() should be 1", 1, l.getFront());
         assertEquals(".getBack() should be 140", 140, l.getBack());
         assertEquals("First item should be 1", 1, l.get(0));
@@ -47,7 +47,7 @@ public class BuggyIntDListTest {
         l = new BuggyIntDList(1, 3, 5);
         m = new BuggyIntDList(1, 3, 5);
         l.mergeIntDList(m);
-        assertEquals("Size after reversal should be 13", 6, l.size());
+        assertEquals("Size after combining should be 13", 6, l.size());
         assertEquals(".getFront() should be 1", 1, l.getFront());
         assertEquals(".getBack() should be 5", 5, l.getBack());
         assertEquals("First item should be 1", 1, l.get(0));
@@ -60,7 +60,7 @@ public class BuggyIntDListTest {
         l = new BuggyIntDList(5);
         m = new BuggyIntDList();
         l.mergeIntDList(m);
-        assertEquals("Size after reversal should be 1", 1, l.size());
+        assertEquals("Size after combining should be 1", 1, l.size());
         assertEquals(".getFront() should be 1", 5, l.getFront());
         assertEquals(".getBack() should be 1", 5, l.getBack());
         assertEquals("First item should be 1", 5, l.get(0));
