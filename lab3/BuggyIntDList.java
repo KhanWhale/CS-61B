@@ -31,13 +31,12 @@ public class BuggyIntDList extends IntDList {
      * @return Nodes arranged in ascending sorted order
      */
     private DNode sortedMerge(DNode d1, DNode d2) {
-        if(d1 == null){
+        if (d1 == null) {
             size += 1;
             return d2;
-        }else if(d2 == null){
+        } else if (d2 == null) {
             return d1;
-        }
-        else if (d1._val <= d2._val) {
+        } else if (d1._val <= d2._val) {
             d1._next = sortedMerge(d1._next, d2);
             d1._next._prev = d1;
 

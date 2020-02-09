@@ -1,5 +1,4 @@
-import javax.print.DocFlavor;
-import java.util.Collections;
+
 
 /**
  * Scheme-like pairs that can be used to form a list of integers.
@@ -61,27 +60,27 @@ public class IntDList {
      *          i = -1 returns the last element,
      *          i = -2 returns the second to last element, and so on.
      *          You can assume i will always be a valid index, i.e 0 <= i < size for positive indices
-     *          and -size <= i <= -1 for negative indices.
+     *          and -size <= i <= -1 for negative indices
      * @return The integer value at index i
      */
     public int get(int i) {
-        if(i < 0){
-          DNode pointer = _back;
-          i+= 1;
-          while(i != 0){
-            pointer = pointer._prev;
-            i+= 1;
-          }
-          return pointer._val;
-        }else if(i == 0){
-          return _front._val;
-        }else{
-          DNode pointer = _front;
-          while(i != 0){
-            pointer = pointer._next;
-            i -= 1;
-          }
-          return pointer._val;
+        if (i < 0) {
+            DNode pointer = _back;
+            i += 1;
+            while (i != 0) {
+                pointer = pointer._prev;
+                i += 1;
+            }
+            return pointer._val;
+        } else if (i == 0) {
+            return _front._val;
+        } else {
+            DNode pointer = _front;
+            while (i != 0) {
+                pointer = pointer._next;
+                i -= 1;
+            }
+            return pointer._val;
         }
     }
 
@@ -89,31 +88,31 @@ public class IntDList {
      * @param d value to be inserted in the front
      */
     public void insertFront(int d) {
-      if(size == 0){
-        _front = _back = new DNode(d);
-        size += 1;
-      }else{
-        DNode newFront = new DNode(d);
-        _front._prev = newFront;
-        newFront._next = _front;
-        _front = newFront;
-        size += 1;
-      }
+        if (size == 0) {
+            _front = _back = new DNode(d);
+            size += 1;
+        } else {
+            DNode newFront = new DNode(d);
+            _front._prev = newFront;
+            newFront._next = _front;
+            _front = newFront;
+            size += 1;
+        }
     }
 
     /**
      * @param d value to be inserted in the back
      */
     public void insertBack(int d) {
-        if(size == 0){
-          _front = _back = new DNode(d);
-          size += 1;
-        }else{
-          DNode newBack = new DNode(d);
-          _back._next = newBack;
-          newBack._prev = _back;
-          _back = newBack;
-          size += 1;
+        if (size == 0) {
+            _front = _back = new DNode(d);
+            size += 1;
+        } else {
+            DNode newBack = new DNode(d);
+            _back._next = newBack;
+            newBack._prev = _back;
+            _back = newBack;
+            size += 1;
         }
     }
 
@@ -132,7 +131,7 @@ public class IntDList {
         if ((index == -1) || (index == size)) {
             insertBack(d);
             System.out.println(toString());
-        } else if ((index == 0) || (index == -(size+1))) {
+        } else if ((index == 0) || (index == -(size + 1))) {
             insertFront(d);
             System.out.println(toString());
         } else if (index < 0) {
@@ -214,23 +213,23 @@ public class IntDList {
      * System.out.println(a); //prints ab
      */
     public String toString() {
-       if(size == 0){
-           return "[]";
-       }else if(size == 1) {
-           return "[" + Integer.toString(_front._val) + "]";
-       }else{
-           String out = "[";
-           DNode pointer = _front;
-           out += Integer.toString(pointer._val);
-           pointer = pointer._next;
-           while(pointer != _back){
-               out += ", ";
-               out += Integer.toString(pointer._val);
-               pointer = pointer._next;
-           }
-           out += ", "+ Integer.toString(_back._val) + "]";
-           return out;
-       }
+        if (size == 0) {
+            return "[]";
+        } else if (size == 1) {
+            return "[" + Integer.toString(_front._val) + "]";
+        } else {
+            String out = "[";
+            DNode pointer = _front;
+            out += Integer.toString(pointer._val);
+            pointer = pointer._next;
+            while (pointer != _back) {
+                out += ", ";
+                out += Integer.toString(pointer._val);
+                pointer = pointer._next;
+            }
+            out += ", " + Integer.toString(_back._val) + "]";
+            return out;
+        }
     }
 
     /**
