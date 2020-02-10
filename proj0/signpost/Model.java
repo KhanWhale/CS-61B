@@ -292,13 +292,26 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        return false;
+        boolean changed = false;
+        for(int i = 1; i < size(); i += 1){
+            if((solnNumToSq(i).sequenceNum() == i) && (solnNumToSq(i + 1).sequenceNum() == i + 1)){
+                if(solnNumToSq(i).connect(solnNumToSq(i + 1))){
+                    changed = true;
+                }
+            }
+        }
+        return changed;
     }
 
     /** Sets the numbers in this board's squares to the solution from which
      *  this board was last initialized by the constructor. */
     void solve() {
-        // FIXME
+        for(int i = 0; i < width(); i += 1){
+            for(int j = 0; j < width(); j += 1){
+                _board[i][j]._sequenceNum = solution()[i][j];
+            }
+        }
+        this.autoconnect();
         _unconnected = 0;
     }
 
@@ -616,6 +629,7 @@ class Model implements Iterable<Model.Sq> {
             if (!connectable(s1)) {
                 return false;
             }else{
+                _unconnected -= 1;
                 _successor = s1;
                 s1._predecessor = this;
                 boolean this_was_numbered= this.sequenceNum() != 0;

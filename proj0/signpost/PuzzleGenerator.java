@@ -24,7 +24,7 @@ class PuzzleGenerator implements PuzzleSource {
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
         // FIXME: Remove the "//" on the following two lines.
         // makeSolutionUnique(model);
-        // model.autoconnect();
+        model.autoconnect();
         return model;
     }
 
@@ -134,7 +134,12 @@ class PuzzleGenerator implements PuzzleSource {
      *  numbered square in the proper direction from START (with the next
      *  number in sequence). */
     static Sq findUniqueSuccessor(Model model, Sq start) {
-        // FIXME: Fill in to satisfy the comment.
+//        Sq[] options = new Sq[model.size()];
+//        for(i = 0; i < model.width(); i += 1){
+//            for(j = 0; j < model.height(); j += 1){
+//
+//            }
+//        }
         return null;
     }
 
