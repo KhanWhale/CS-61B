@@ -613,6 +613,8 @@ class Model implements Iterable<Model.Sq> {
                     releaseGroup(this.group());
                     releaseGroup(next.group());
                     this._group = next._group = -1;
+                    this._head = this;
+                    next._head = next;
                 } else if (this.predecessor() == null) {
                     this._group = -1;
                 } else if (next.successor() == null) {
@@ -627,22 +629,27 @@ class Model implements Iterable<Model.Sq> {
                 //        for them if this has a current predecessor (other
                 //        set group to -1).
                 boolean fixed_in_group = false;
-                for (Sq sq = this; (sq.predecessor() != null); sq = sq.predecessor()) {
+                for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
                     if (sq.hasFixedNum()) {
                         fixed_in_group = true;
                         break;
                     }
                 }
                 if (!fixed_in_group) {
-                    int grp = newGroup();
-                    for (Sq sq = this; sq.predecessor() != null; sq = sq.predecessor()) {
+                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
                         sq._sequenceNum = 0;
-                        sq._group = grp;
+                    }
+                    if(this.predecessor() != null){
+                        int new_grp = newGroup();
+                        for (Sq sq = this; sq != null; sq = sq.predecessor()) {
+                            sq._group = new_grp;
+                        }
+                    } else {
+                        this._group = -1;
 
                     }
-                } else {
-                    this._group = -1;
                 }
+
                 // FIXME: If neither next nor any square in its group that
                 //        follows it has a fixed sequence number, set all
                 //        their sequence numbers to 0 and create a new
@@ -656,20 +663,24 @@ class Model implements Iterable<Model.Sq> {
                     }
                 }
                 if (!fixed_in_group) {
-                    int grp = newGroup();
                     for (Sq sq = next; sq != null; sq = sq.successor()) {
                         sq._sequenceNum = 0;
-                        sq._group = grp;
-                        sq._head = next;
-
                     }
-                } else {
-                    next._group = -1;
+                    if(next.successor() != null) {
+                        int grp = newGroup();
+                        for (Sq sq = next; sq != null; sq = sq.successor()) {
+                            sq._group = grp;
+                        }
+                    } else {
+                        next._group = -1;
+                    }
                 }
             }
             // FIXME: Set the _head of next and all squares in its group to
             //        next.
-
+            for (Sq sq = next; sq != null; sq = sq.successor()) {
+                sq._head = next;
+            }
         }
 
         @Override
