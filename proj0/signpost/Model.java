@@ -95,7 +95,7 @@ class Model implements Iterable<Model.Sq> {
         // puzzle-generation software is complete.
         // FIXME: Remove everything down to and including
         // "// END DUMMY SETUP".
-        _board = new Sq[][] {
+        /* _board = new Sq[][] {
             { new Sq(0, 0, 0, false, 2, -1), new Sq(0, 1, 0, false, 2, -1),
               new Sq(0, 2, 0, false, 4, -1), new Sq(0, 3, 1, true, 2, 0) },
             { new Sq(1, 0, 0, false, 2, -1), new Sq(1, 1, 0, false, 2, -1),
@@ -111,7 +111,7 @@ class Model implements Iterable<Model.Sq> {
             }
         }
         // END DUMMY SETUP
-
+        */
         // FIXME: Initialize _board so that _board[x][y] contains the Sq object
         //        representing the contents at cell (x, y), _allSquares
         //        contains the list of all Sq objects on the board, and
@@ -119,14 +119,45 @@ class Model implements Iterable<Model.Sq> {
         //        contains sequence number k.  Check that all numbers from
         //        1 - last appear; else throw IllegalArgumentException (see
         //        badArgs utility).
-
+        _board = new Sq [width()][height()];
+        _solnNumToPlace = new Place [size() + 1];
+        for(int i = 0; i < width(); i += 1){
+            for(int j = 0; j < height(); j += 1){
+                Place cell = pl(i, j);
+                _solnNumToPlace[_solution[i][j]] = cell;
+                if(_solution[i][j] == 1) {
+                    Sq first = new Sq(i, j, 1, true, arrowDirection(i, j), 0);
+                    _board[i][j] = first;
+                    _allSquares.add(first);
+                }else if(_solution[i][j] == size()) {
+                    Sq end = new Sq(i, j, size(), true, arrowDirection(i, j), 0);
+                    _board[i][j] = end;
+                    _allSquares.add(end);
+                } else {
+                    Sq intermediate = new Sq(i, j, 0, false, arrowDirection(i, j), -1);
+                    _board[i][j] = intermediate;
+                    _allSquares.add(intermediate);
+                }
+            }
+        }
+        for(int i = 1; i < _solnNumToPlace.length; i += 1){
+            if(_solnNumToPlace[i]  == null) {
+                throw badArgs("All numbers from 1 to size() must appear on the board.");
+            }
+        }
         // FIXME: For each Sq object on the board, set its _successors list
         //        to the list of locations of all cells that it might
         //        connect to (i.e., all cells that are a queen move away
         //        in the direction of its arrow).
         //        Likewise, set its _predecessors list to the list of
         //        all cells that might connect to it.
-
+        for(int i = 1; i < _solnNumToPlace.length; i += 1) {
+                Place this_pl = solnNumToPlace(i);
+                for (Place successor: _allSuccessors[this_pl.x][this_pl.y][arrowDirection(this_pl.x, this_pl.y)]) {
+                    get(this_pl).successors().add(successor);
+                    get(successor).predecessors().add(this_pl);
+            }
+        }
         _unconnected = last - 1;
     }
 
@@ -143,7 +174,13 @@ class Model implements Iterable<Model.Sq> {
         //        the Sq objects in MODEL other than their _successor,
         //        _predecessor, and _head fields (which can't necessarily be
         //        set until all the Sq objects are first created.)
-
+        _board = new Sq [width()][height()];
+        for(int i = 0; i < width(); i += 1){
+            for(int j = 0; j < height(); j += 1){
+                _board[i][j] = new Sq(model._board[i][j]);
+                _allSquares.add(_board[i][j]);
+            }
+        }
         // FIXME: Once all the new Sq objects are in place, fill in their
         //        _successor, _predecessor, and _head fields.  For example,
         //        if in MODEL, the _successor field of the Sq at
@@ -153,6 +190,13 @@ class Model implements Iterable<Model.Sq> {
         //        position (4, 1) in this copy.  Be careful NOT to have
         //        any of these fields in the copy pointing at the old Sqs in
         //        MODEL.
+        for(int i = 1; i < _solnNumToPlace.length; i += 1) {
+            Place this_pl = solnNumToPlace(i);
+            for (Place successor: _allSuccessors[this_pl.x][this_pl.y][arrowDirection(this_pl.x, this_pl.y)]) {
+                this.get(this_pl).successors().add(successor);
+                this.get(successor).predecessors().add(this_pl);
+            }
+        }
     }
 
     /** Returns the width (number of columns of cells) of the board. */
@@ -248,7 +292,7 @@ class Model implements Iterable<Model.Sq> {
      *  unconnected and are separated by a queen move.  Returns true iff
      *  any changes were made. */
     boolean autoconnect() {
-        return false; // FIXME
+        return false;
     }
 
     /** Sets the numbers in this board's squares to the solution from which
@@ -260,10 +304,21 @@ class Model implements Iterable<Model.Sq> {
 
     /** Return the direction from cell (X, Y) in the solution to its
      *  successor, or 0 if it has none. */
-    private int arrowDirection(int x, int y) {
-        int seq0 = _solution[x][y];
-        // FIXME
-        return 0;
+    public int arrowDirection(int x, int y) {
+        if(solution()[x][y] == size()){
+            return 0;
+        } else {
+            int[] successor = new int[2];
+            for (int i = 0; i < solution().length; i += 1) {
+                for (int j = 0; j < solution()[0].length; j += 1){
+                    if(solution()[i][j] == solution()[x][y] + 1) {
+                        successor[0] = i;
+                        successor[1] = j;
+                    }
+                }
+            }
+            return Place.dirOf(x, y, successor[0], successor[1]);
+        }
     }
 
     /** Return a new, currently unused group number > 0.  Selects the
@@ -738,9 +793,9 @@ class Model implements Iterable<Model.Sq> {
          *  currently no successor. */
         private Sq _successor;
         /** Locations of the possible predecessors of this square. */
-        private PlaceList _predecessors;
+        private PlaceList _predecessors = new PlaceList();
         /** Locations of the possible successors of this square. */
-        private PlaceList _successors;
+        private PlaceList _successors = new PlaceList();
     }
 
     /** ASCII denotations of arrows, indexed by direction. */
