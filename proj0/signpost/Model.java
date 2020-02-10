@@ -307,7 +307,7 @@ class Model implements Iterable<Model.Sq> {
      *  this board was last initialized by the constructor. */
     void solve() {
         for(int i = 0; i < width(); i += 1){
-            for(int j = 0; j < width(); j += 1){
+            for(int j = 0; j < height(); j += 1){
                 _board[i][j]._sequenceNum = solution()[i][j];
             }
         }
@@ -590,11 +590,11 @@ class Model implements Iterable<Model.Sq> {
         boolean connectable(Sq s1) {
             if (_dir != Place.dirOf(x, y, s1.x, s1.y)) {
                 return false;
-            } else if (s1.predecessor() != null) {
+            } else if (s1.predecessor() != null ) {
                 return false;
             } else if (this.successor() != null) {
                 return false;
-            } else if ((s1.hasFixedNum() && (s1.sequenceNum() == 0))) {
+            } else if ((s1.hasFixedNum() && (s1.sequenceNum() == 1))) {
                 return false;
             } else if (hasFixedNum() && sequenceNum() == size()) {
                 return false;

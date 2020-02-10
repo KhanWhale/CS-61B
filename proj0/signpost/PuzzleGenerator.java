@@ -23,7 +23,7 @@ class PuzzleGenerator implements PuzzleSource {
         Model model =
             new Model(makePuzzleSolution(width, height, allowFreeEnds));
         // FIXME: Remove the "//" on the following two lines.
-        // makeSolutionUnique(model);
+        makeSolutionUnique(model);
         model.autoconnect();
         return model;
     }
@@ -60,8 +60,8 @@ class PuzzleGenerator implements PuzzleSource {
             { 13, 11, 6, 3 },
             { 16, 12, 5, 4 }
         }; */
-        //boolean ok = findSolutionPathFrom(x0, y0);
-        //assert ok;
+        boolean ok = findSolutionPathFrom(x0, y0);
+        assert ok;
         return _vals;
     }
 
@@ -134,13 +134,30 @@ class PuzzleGenerator implements PuzzleSource {
      *  numbered square in the proper direction from START (with the next
      *  number in sequence). */
     static Sq findUniqueSuccessor(Model model, Sq start) {
-//        Sq[] options = new Sq[model.size()];
-//        for(i = 0; i < model.width(); i += 1){
-//            for(j = 0; j < model.height(); j += 1){
-//
-//            }
-//        }
-        return null;
+        Sq[] options = new Sq[model.size()];
+        int option_i = 0;
+        for(int i = 0; i < model.width(); i += 1){
+            for(int j = 0; j < model.height(); j += 1){
+                if((start.connectable(model.get(i, j)) == true)){
+                    options[option_i] = model.get(i, j);
+                    option_i += 1;
+                }
+            }
+        }
+        if(options[1] == null){
+            return options[0];
+        }else{
+            if(start.sequenceNum() != 0){
+                for(Place successor: model.allSuccessors(start.x, start.y, model.arrowDirection(start.x, start.y))){
+                    if(model.get(successor).sequenceNum() == start.sequenceNum() + 1){
+                        return model.get(successor);
+                    }
+                }
+                return null;
+            }else{
+                return null;
+            }
+        }
     }
 
     /** Make all unique backward connections in MODEL (those in which there is
@@ -169,7 +186,21 @@ class PuzzleGenerator implements PuzzleSource {
      *  already finds the other cases of numbered, unconnected cells. */
     static Sq findUniquePredecessor(Model model, Sq end) {
         // FIXME: Replace the following to satisfy the comment.
-        return null;
+        Sq[] options = new Sq[model.size()];
+        int option_i = 0;
+        for(int i = 0; i < model.width(); i += 1){
+            for(int j = 0; j < model.height(); j += 1){
+                if((model.get(i,j).connectable(end) == true)){
+                    options[option_i] = model.get(i, j);
+                    option_i += 1;
+                }
+            }
+        }
+        if(options[1] != null){
+            return null;
+        }else{
+         return options[0];
+        }
     }
 
     /** Remove all links in MODEL and unfix numbers (other than the first and
