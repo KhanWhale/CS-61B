@@ -642,27 +642,6 @@ class Model implements Iterable<Model.Sq> {
                 }
                 return true;
             }
-//                if (thisWasNumbered) {
-//                    if (!s1WasNumbered && s1.group() > 0) {
-//                        releaseGroup(s1.group());
-//                        s1WasNumbered = true;
-//                    }
-//                    for (Sq sq = this; sq._successor != null; sq = sq._successor) {
-//                        sq._successor._sequenceNum = sq._sequenceNum + 1;
-//                    }
-//                } else if (s1WasNumbered) {
-//                    if (!thisWasNumbered && this.group() > 0) {
-//                        releaseGroup(this.group());
-//                        thisWasNumbered = true;
-//                    }
-//                    for (Sq sq = s1; sq._predecessor != null; sq = sq._predecessor) {
-//                        sq._predecessor._sequenceNum = sq._sequenceNum - 1;
-//                    }
-//                } else {
-//                    this._head._group = joinGroups(this.group(), s1.group());
-//                }
-//                return true;
-//            }
         }
 
         /** Disconnect this square from its current successor, if any.
@@ -739,69 +718,6 @@ class Model implements Iterable<Model.Sq> {
             for (Sq sq = next; sq != null; sq = sq.successor()) {
                 sq._head = next;
             }
-            /**if (_sequenceNum == 0) {
-
-                if ((this.predecessor() == null) && (next.successor() == null)) {
-                    releaseGroup(this.group());
-                    releaseGroup(next.group());
-                    this._group = next._group = -1;
-                    this._head = this;
-                    next._head = next;
-                } else if (this.predecessor() == null) {
-                    this._group = -1;
-                } else if (next.successor() == null) {
-                    next._group = -1;
-                } else {
-                    next._group = newGroup();
-                }
-            } else {
-
-                boolean fixedInGroup = false;
-                for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
-                    if (sq.hasFixedNum()) {
-                        fixedInGroup = true;
-                        break;
-                    }
-                }
-                if (!fixedInGroup) {
-                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
-                        sq._sequenceNum = 0;
-                    }
-                    if (this.predecessor() != null) {
-                        int newGrp = newGroup();
-                        for (Sq sq = this; sq != null; sq = sq.predecessor()) {
-                            sq._group = newGrp;
-                        }
-                    } else {
-                        this._group = -1;
-
-                    }
-                }
-                fixedInGroup = false;
-                for (Sq sq = next; sq != null; sq = sq.successor()) {
-                    if (sq.hasFixedNum()) {
-                        fixedInGroup = true;
-                        break;
-                    }
-                }
-                if (!fixedInGroup) {
-                    for (Sq sq = next; sq != null; sq = sq.successor()) {
-                        sq._sequenceNum = 0;
-                    }
-                    if (next.successor() != null) {
-                        int grp = newGroup();
-                        for (Sq sq = next; sq != null; sq = sq.successor()) {
-                            sq._group = grp;
-                        }
-                    } else {
-                        next._group = -1;
-                    }
-                }
-            }
-
-            for (Sq sq = next; sq != null; sq = sq.successor()) {
-                sq._head = next;
-            }**/
         }
 
         @Override
