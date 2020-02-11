@@ -632,9 +632,9 @@ class Model implements Iterable<Model.Sq> {
                     sq._head = this._head;
                 }
                 if(thisChanged){
-                    releaseGroup(this.group());
+                    releaseGroup(this._group);
                 }else if(s1Changed){
-                    releaseGroup(s1.group());
+                    releaseGroup(s1._group);
                 }
                 if(this.sequenceNum() == 0 && s1.sequenceNum() == 0){
                     this.head()._group = joinGroups(this._group, s1._group);
