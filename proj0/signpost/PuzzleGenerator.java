@@ -135,26 +135,27 @@ class PuzzleGenerator implements PuzzleSource {
      *  number in sequence). */
     static Sq findUniqueSuccessor(Model model, Sq start) {
         Sq[] options = new Sq[model.size()];
-        int option_i = 0;
-        for(int i = 0; i < model.width(); i += 1){
-            for(int j = 0; j < model.height(); j += 1){
-                if((start.connectable(model.get(i, j)) == true)){
-                    options[option_i] = model.get(i, j);
-                    option_i += 1;
+        int optionIndex = 0;
+        for (int i = 0; i < model.width(); i += 1) {
+            for (int j = 0; j < model.height(); j += 1) {
+                if ((start.connectable(model.get(i, j)))) {
+                    options[optionIndex] = model.get(i, j);
+                    optionIndex += 1;
                 }
             }
         }
-        if(options[1] == null){
+        if (options[1] == null) {
             return options[0];
-        }else{
-            if(start.sequenceNum() != 0){
-                for(Place successor: model.allSuccessors(start.x, start.y, model.arrowDirection(start.x, start.y))){
-                    if(model.get(successor).sequenceNum() == start.sequenceNum() + 1){
+        } else {
+            if (start.sequenceNum() != 0) {
+                for (Place successor
+                        :model.allSuccessors(start.x, start.y, model.arrowDirection(start.x, start.y))) {
+                    if (model.get(successor).sequenceNum() == start.sequenceNum() + 1) {
                         return model.get(successor);
                     }
                 }
                 return null;
-            }else{
+            } else {
                 return null;
             }
         }
@@ -187,19 +188,19 @@ class PuzzleGenerator implements PuzzleSource {
     static Sq findUniquePredecessor(Model model, Sq end) {
         // FIXME: Replace the following to satisfy the comment.
         Sq[] options = new Sq[model.size()];
-        int option_i = 0;
-        for(int i = 0; i < model.width(); i += 1){
-            for(int j = 0; j < model.height(); j += 1){
-                if((model.get(i,j).connectable(end) == true)){
-                    options[option_i] = model.get(i, j);
-                    option_i += 1;
+        int optionIndex = 0;
+        for (int i = 0; i < model.width(); i += 1) {
+            for (int j = 0; j < model.height(); j += 1) {
+                if (model.get(i, j).connectable(end)) {
+                    options[optionIndex] = model.get(i, j);
+                    optionIndex += 1;
                 }
             }
         }
-        if(options[1] != null){
+        if (options[1] != null) {
             return null;
-        }else{
-         return options[0];
+        } else {
+            return options[0];
         }
     }
 

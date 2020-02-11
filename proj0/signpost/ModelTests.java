@@ -312,7 +312,7 @@ public class ModelTests {
         { 11, 6, 10, 16 }
     };
     @Test
-    public void arrowDirectionTest(){
+    public void arrowDirectionTest() {
         Model model = new Model(tr(SOLN1));
         assertEquals("Last element should have no successor", 0, model.arrowDirection(3, 0));
         assertEquals("10 to 11 should be direction 6", 6, model.arrowDirection(2, 0));

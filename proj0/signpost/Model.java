@@ -131,7 +131,8 @@ class Model implements Iterable<Model.Sq> {
         //        all cells that might connect to it.
         for (int i = 1; i < _solnNumToPlace.length; i += 1) {
             Place thisPl = solnNumToPlace(i);
-            for (Place successor: _allSuccessors[thisPl.x][thisPl.y][arrowDirection(thisPl.x, thisPl.y)]) {
+            for (Place successor
+                    :_allSuccessors[thisPl.x][thisPl.y][arrowDirection(thisPl.x, thisPl.y)]) {
                 get(thisPl).successors().add(successor);
                 get(successor).predecessors().add(thisPl);
             }
@@ -170,7 +171,8 @@ class Model implements Iterable<Model.Sq> {
         //        MODEL.
         for (int i = 1; i < _solnNumToPlace.length; i += 1) {
             Place thisPl = solnNumToPlace(i);
-            for (Place successor: _allSuccessors[thisPl.x][thisPl.y][arrowDirection(thisPl.x, thisPl.y)]) {
+            for (Place successor
+                    :_allSuccessors[thisPl.x][thisPl.y][arrowDirection(thisPl.x, thisPl.y)]) {
                 this.get(thisPl).successors().add(successor);
                 this.get(successor).predecessors().add(thisPl);
             }
@@ -272,7 +274,8 @@ class Model implements Iterable<Model.Sq> {
     boolean autoconnect() {
         boolean changed = false;
         for (int i = 1; i < size(); i += 1) {
-            if ((solnNumToSq(i).sequenceNum() == i) && (solnNumToSq(i + 1).sequenceNum() == i + 1)) {
+            if ((solnNumToSq(i).sequenceNum() == i)
+                    && (solnNumToSq(i + 1).sequenceNum() == i + 1)) {
                 if (solnNumToSq(i).connect(solnNumToSq(i + 1))) {
                     changed = true;
                 }

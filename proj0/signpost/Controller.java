@@ -54,42 +54,42 @@ public class Controller {
             }
             String[] parts = cmnd.split("\\s+");
             switch (parts[0]) {
-            case "QUIT": case "Q":
-                _solving = false;
-                return;
-            case "NEW":
-                return;
-            case "TYPE":
-                setType(toInt(parts[1]), toInt(parts[2]),
+                case "QUIT": case "Q":
+                    _solving = false;
+                    return;
+                case "NEW":
+                    return;
+                case "TYPE":
+                    setType(toInt(parts[1]), toInt(parts[2]),
                         parts.length > 3 && parts[3].equals("FREE"));
-                return;
-            case "SEED":
-                _puzzles.setSeed(toLong(parts[1]));
-                break;
-            case "CONN": case "C":
-                connect(toInt(parts[1]), toInt(parts[2]),
+                    return;
+                case "SEED":
+                    _puzzles.setSeed(toLong(parts[1]));
+                    break;
+                case "CONN": case "C":
+                    connect(toInt(parts[1]), toInt(parts[2]),
                         toInt(parts[3]), toInt(parts[4]));
-                break;
-            case "BRK": case "B":
-                disconnect(toInt(parts[1]), toInt(parts[2]));
-                break;
-            case "RESTART":
-                restart();
-                break;
-            case "UNDO": case "U":
-                undo();
-                break;
-            case "REDO": case "R":
-                redo();
-                break;
-            case "SOLVE":
-                solve();
-                break;
-            case "":
-                break;
-            default:
-                System.err.printf("Bad command: '%s'%n", cmnd);
-                break;
+                    break;
+                case "BRK": case "B":
+                    disconnect(toInt(parts[1]), toInt(parts[2]));
+                    break;
+                case "RESTART":
+                    restart();
+                    break;
+                case "UNDO": case "U":
+                    undo();
+                    break;
+                case "REDO": case "R":
+                    redo();
+                    break;
+                case "SOLVE":
+                    solve();
+                    break;
+                case "":
+                    break;
+                default:
+                    System.err.printf("Bad command: '%s'%n", cmnd);
+                    break;
             }
         }
     }
