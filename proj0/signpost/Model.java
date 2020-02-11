@@ -628,11 +628,11 @@ class Model implements Iterable<Model.Sq> {
                         sq._predecessor._sequenceNum = sq._sequenceNum - 1;
                     }
                 }
-                if(this.sequenceNum() == 0 && s1.sequenceNum() == 0){
-                    this.head()._group = joinGroups(this.group(), s1.group());
-                }
                 for (Sq sq = this; sq != null; sq = sq._successor) {
                     sq._head = this._head;
+                }
+                if(this.sequenceNum() == 0 && s1.sequenceNum() == 0){
+                    this.head()._group = joinGroups(this.group(), s1.group());
                 }
                 return true;
             }
@@ -680,13 +680,18 @@ class Model implements Iterable<Model.Sq> {
             if ((this.predecessor() == null) && (next.successor() == null)) {
                 releaseGroup(this.group());
                 releaseGroup(next.group());
-                this._group = next._group = -1;
                 this._head = this;
                 next._head = next;
-            } else if (this.predecessor() == null) {
-                this._group = -1;
+                if(this.sequenceNum() == 0){
+                    this._group = -1;
+                }
+                if(next.sequenceNum() == 0){
+                    next._group = -1;
+                }
+            } else if (this.predecessor() == null && sequenceNum() == 0) {
                 this._head = this;
-            } else if (next.successor() == null) {
+                this._group = -1;
+            } else if (next.successor() == null && sequenceNum() == 0) {
                 next._group = -1;
                 next._head = next;
             }
@@ -701,14 +706,18 @@ class Model implements Iterable<Model.Sq> {
                 for (Sq sq = this; sq != null; sq = sq.predecessor()) {
                     sq._sequenceNum = 0;
                 }
-                if (this.predecessor() != null) {
-                    int newGrp = newGroup();
-                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
-                        sq._group = newGrp;
-                    }
-                } else {
+                if(this.predecessor() == null){
+                    this._head = this;
                     this._group = -1;
                 }
+//                if (this.predecessor() != null) {
+//                    int newGrp = newGroup();
+//                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
+//                        sq._group = newGrp;
+//                    }
+//                } else {
+//                    this._group = -1;
+//                }
             }
             fixedInGroup = false;
             for (Sq sq = next; sq != null; sq = sq.successor()) {
@@ -727,6 +736,7 @@ class Model implements Iterable<Model.Sq> {
                         sq._group = grp;
                     }
                 } else {
+                    next._head = next;
                     next._group = -1;
                 }
             }
