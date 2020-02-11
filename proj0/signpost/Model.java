@@ -639,8 +639,7 @@ class Model implements Iterable<Model.Sq> {
         }
 
         /** Disconnect this square from its current successor, if any.
-         * If both this and next are now one-element groups,
-         * release their former group and set both group numbers to -1.
+         * If both this and next are now one-element groups, release their former group and set both group numbers to -1.
          * Otherwise, if either is now a one-element group, set its group number to -1 without releasing the group number.
          * Otherwise, the group has been split into two multi-element groups.  Create a new group for next.
          * If neither this nor any square in its group that precedes it has a fixed sequence number, set all
@@ -651,6 +650,7 @@ class Model implements Iterable<Model.Sq> {
          * Set the _head of next and all squares in its group to next. **/
         void disconnect() {
             Sq next = _successor;
+            int originalThisGrp = this.group();
             if (next == null) {
                 return;
             }
@@ -700,11 +700,16 @@ class Model implements Iterable<Model.Sq> {
                     sq._sequenceNum = 0;
                 }
                 if (next.successor() != null && changed) {
-                    int newGrp = newGroup();
+                    if(this.predecessor() == null){
+                        next._group = originalThisGrp;
+                    }else {
+                        int newGrp = newGroup();
+                        next._group = newGrp;
+                    }
                     for (Sq sq = next; sq != null; sq = sq.successor()) {
                         sq._head = next;
                     }
-                    next._group = newGrp;
+
                 } else if(next.successor() == null && changed){
                     next._group = -1;
                 }
