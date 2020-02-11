@@ -1,5 +1,5 @@
 package signpost;
-//YAY!!
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Formatter;
@@ -658,7 +658,6 @@ class Model implements Iterable<Model.Sq> {
             next._predecessor = _successor = null;
             if ((this.predecessor() == null) && (next.successor() == null)) {
                 releaseGroup(this.group());
-                releaseGroup(next.group());
                 this._group = next._group = -1;
                 this._head = this;
                 next._head = next;
