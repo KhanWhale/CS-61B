@@ -638,7 +638,7 @@ class Model implements Iterable<Model.Sq> {
                 }
                 if(this.sequenceNum() == 0 && s1.sequenceNum() == 0){
                     this.head()._group = joinGroups(this._group, s1._group);
-
+                    s1._group = s1._head._group;
                 }
                 return true;
             }
@@ -686,15 +686,15 @@ class Model implements Iterable<Model.Sq> {
             if ((this.predecessor() == null) && (next.successor() == null)) {
                 releaseGroup(this.group());
                 releaseGroup(next.group());
+                this._group = next._group = -1;
                 this._head = this;
                 next._head = next;
-                this.head()._group = next.head()._group = -1;
             } else if (this.predecessor() == null) {
+                this._group = -1;
                 this._head = this;
-                this.head()._group = -1;
             } else if (next.successor() == null) {
+                next._group = -1;
                 next._head = next;
-                next.head()._group = -1;
             }
             boolean fixedInGroup = false;
             for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
