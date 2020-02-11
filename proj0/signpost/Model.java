@@ -621,7 +621,7 @@ class Model implements Iterable<Model.Sq> {
                         sq._successor._sequenceNum = sq._sequenceNum + 1;
                     }
                 } else if (s1.sequenceNum() != 0) {
-                    if(s1.sequenceNum() == 0){
+                    if(this.sequenceNum() == 0){
                         releaseGroup(this.group());
                     }
                     for (Sq sq = s1; sq._predecessor != null; sq = sq._predecessor) {
