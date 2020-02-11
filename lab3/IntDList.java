@@ -130,10 +130,8 @@ public class IntDList {
     public void insertAtIndex(int d, int index) {
         if ((index == -1) || (index == size)) {
             insertBack(d);
-            System.out.println(toString());
         } else if ((index == 0) || (index == -(size + 1))) {
             insertFront(d);
-            System.out.println(toString());
         } else if (index < 0) {
             DNode pointer = _back;
             index += 1;
@@ -141,14 +139,12 @@ public class IntDList {
                 pointer = pointer._prev;
                 index += 1;
             }
-            System.out.println(pointer._val);
             DNode insert = new DNode(d);
             insert._next = pointer._next;
             insert._prev = pointer;
             pointer._next._prev = insert;
             pointer._next = insert;
             size += 1;
-            System.out.println(toString());
         } else {
             DNode pointer = _front;
             while (index != 0) {
@@ -161,7 +157,6 @@ public class IntDList {
             pointer._prev._next = insert;
             pointer._prev = insert;
             size += 1;
-            System.out.println(toString());
         }
     }
 
