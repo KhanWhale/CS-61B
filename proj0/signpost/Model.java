@@ -642,7 +642,17 @@ class Model implements Iterable<Model.Sq> {
             }
         }
 
-        /** Disconnect this square from its current successor, if any. */
+        /** Disconnect this square from its current successor, if any.
+         * If both this and next are now one-element groups,
+         * release their former group and set both group numbers to -1.
+         * Otherwise, if either is now a one-element group, set its group number to -1 without releasing the group number.
+         * Otherwise, the group has been split into two multi-element groups.  Create a new group for next.
+         * If neither this nor any square in its group that precedes it has a fixed sequence number, set all
+         * their sequence numbers to 0 and create a new group for them if this has a current predecessor (other set group to -1).
+         * If neither next nor any square in its group that follows it has a fixed sequence number, set all their
+         * sequence numbers to 0 and create a new group for them if next has a current successor
+         * (otherwise set next's group to -1.)
+         * Set the _head of next and all squares in its group to next. **/
         void disconnect() {
             Sq next = _successor;
             if (next == null) {
@@ -650,15 +660,64 @@ class Model implements Iterable<Model.Sq> {
             }
             _unconnected += 1;
             next._predecessor = _successor = null;
-            if (_sequenceNum == 0) {
-                // FIXME: If both this and next are now one-element groups,
-                //        release their former group and set both group
-                //        numbers to -1.
-                //        Otherwise, if either is now a one-element group, set
-                //        its group number to -1 without releasing the group
-                //        number.
-                //        Otherwise, the group has been split into two multi-
-                //        element groups.  Create a new group for next.
+            if ((this.predecessor() == null) && (next.successor() == null)) {
+                releaseGroup(this.group());
+                releaseGroup(next.group());
+                this._group = next._group = -1;
+                this._head = this;
+                next._head = next;
+            } else if (this.predecessor() == null) {
+                this._group = -1;
+                this._head = this;
+            } else if (next.successor() == null) {
+                next._group = -1;
+                next._head = next;
+            }
+            boolean fixedInGroup = false;
+            for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
+                if (sq.hasFixedNum()) {
+                    fixedInGroup = true;
+                    break;
+                }
+            }
+            if (!fixedInGroup) {
+                for (Sq sq = this; sq != null; sq = sq.predecessor()) {
+                    sq._sequenceNum = 0;
+                }
+                if (this.predecessor() != null) {
+                    int newGrp = newGroup();
+                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
+                        sq._group = newGrp;
+                    }
+                } else {
+                    this._group = -1;
+                }
+            }
+            fixedInGroup = false;
+            for (Sq sq = next; sq != null; sq = sq.successor()) {
+                if (sq.hasFixedNum()) {
+                    fixedInGroup = true;
+                    break;
+                }
+            }
+            if (!fixedInGroup) {
+                for (Sq sq = next; sq != null; sq = sq.successor()) {
+                    sq._sequenceNum = 0;
+                }
+                if (next.successor() != null) {
+                    int grp = newGroup();
+                    for (Sq sq = next; sq != null; sq = sq.successor()) {
+                        sq._group = grp;
+                    }
+                } else {
+                    next._group = -1;
+                }
+            }
+            for (Sq sq = next; sq != null; sq = sq.successor()) {
+                sq._head = next;
+            }
+            /**if (_sequenceNum == 0) {
+
                 if ((this.predecessor() == null) && (next.successor() == null)) {
                     releaseGroup(this.group());
                     releaseGroup(next.group());
@@ -673,11 +732,7 @@ class Model implements Iterable<Model.Sq> {
                     next._group = newGroup();
                 }
             } else {
-                // FIXME: If neither this nor any square in its group that
-                //        precedes it has a fixed sequence number, set all
-                //        their sequence numbers to 0 and create a new group
-                //        for them if this has a current predecessor (other
-                //        set group to -1).
+
                 boolean fixedInGroup = false;
                 for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
                     if (sq.hasFixedNum()) {
@@ -699,12 +754,6 @@ class Model implements Iterable<Model.Sq> {
 
                     }
                 }
-
-                // FIXME: If neither next nor any square in its group that
-                //        follows it has a fixed sequence number, set all
-                //        their sequence numbers to 0 and create a new
-                //        group for them if next has a current successor
-                //        (otherwise set next's group to -1.)
                 fixedInGroup = false;
                 for (Sq sq = next; sq != null; sq = sq.successor()) {
                     if (sq.hasFixedNum()) {
@@ -726,11 +775,10 @@ class Model implements Iterable<Model.Sq> {
                     }
                 }
             }
-            // FIXME: Set the _head of next and all squares in its group to
-            //        next.
+
             for (Sq sq = next; sq != null; sq = sq.successor()) {
                 sq._head = next;
-            }
+            }**/
         }
 
         @Override
