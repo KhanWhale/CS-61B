@@ -613,17 +613,17 @@ class Model implements Iterable<Model.Sq> {
                 _unconnected -= 1;
                 _successor = s1;
                 s1._predecessor = this;
+                boolean s1Changed = false;
+                boolean thisChanged = false;
                 if (this.sequenceNum() != 0) {
                     if(s1.sequenceNum() == 0){
-                        releaseGroup(s1.group());
+                        s1Changed = true;
                     }
                     for (Sq sq = this; sq._successor != null; sq = sq._successor) {
                         sq._successor._sequenceNum = sq._sequenceNum + 1;
                     }
                 } else if (s1.sequenceNum() != 0) {
-                    if(this.sequenceNum() != 0){
-                        releaseGroup(this.group());
-                    }
+                    thisChanged = true;
                     for (Sq sq = s1; sq._predecessor != null; sq = sq._predecessor) {
                         sq._predecessor._sequenceNum = sq._sequenceNum - 1;
                     }
@@ -631,8 +631,14 @@ class Model implements Iterable<Model.Sq> {
                 for (Sq sq = this; sq != null; sq = sq._successor) {
                     sq._head = this._head;
                 }
+                if(thisChanged){
+                    releaseGroup(this._group);
+                }else if(s1Changed){
+                    releaseGroup(s1._group);
+                }
                 if(this.sequenceNum() == 0 && s1.sequenceNum() == 0){
-                    this.head()._group = joinGroups(this.group(), s1.group());
+                    this.head()._group = joinGroups(this._group, s1._group);
+                    s1._group = s1._head._group;
                 }
                 return true;
             }
@@ -680,18 +686,13 @@ class Model implements Iterable<Model.Sq> {
             if ((this.predecessor() == null) && (next.successor() == null)) {
                 releaseGroup(this.group());
                 releaseGroup(next.group());
+                this._group = next._group = -1;
                 this._head = this;
                 next._head = next;
-                if(this.sequenceNum() == 0){
-                    this._group = -1;
-                }
-                if(next.sequenceNum() == 0){
-                    next._group = -1;
-                }
-            } else if (this.predecessor() == null && sequenceNum() == 0) {
-                this._head = this;
+            } else if (this.predecessor() == null) {
                 this._group = -1;
-            } else if (next.successor() == null && sequenceNum() == 0) {
+                this._head = this;
+            } else if (next.successor() == null) {
                 next._group = -1;
                 next._head = next;
             }
@@ -706,18 +707,14 @@ class Model implements Iterable<Model.Sq> {
                 for (Sq sq = this; sq != null; sq = sq.predecessor()) {
                     sq._sequenceNum = 0;
                 }
-                if(this.predecessor() == null){
-                    this._head = this;
+                if (this.predecessor() != null) {
+                    int newGrp = newGroup();
+                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
+                        sq._group = newGrp;
+                    }
+                } else {
                     this._group = -1;
                 }
-//                if (this.predecessor() != null) {
-//                    int newGrp = newGroup();
-//                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
-//                        sq._group = newGrp;
-//                    }
-//                } else {
-//                    this._group = -1;
-//                }
             }
             fixedInGroup = false;
             for (Sq sq = next; sq != null; sq = sq.successor()) {
@@ -736,7 +733,6 @@ class Model implements Iterable<Model.Sq> {
                         sq._group = grp;
                     }
                 } else {
-                    next._head = next;
                     next._group = -1;
                 }
             }
