@@ -658,9 +658,9 @@ class Model implements Iterable<Model.Sq> {
             next._predecessor = _successor = null;
             if ((this.predecessor() == null) && (next.successor() == null)) {
                 releaseGroup(this.group());
-                this._group = next._group = -1;
                 this._head = this;
                 next._head = next;
+                this._group = next._group = -1;
             } else if (this.predecessor() == null) {
                 this._group = -1;
                 this._head = this;
@@ -669,6 +669,7 @@ class Model implements Iterable<Model.Sq> {
                 next._head = next;
             }
             boolean fixedInGroup = false;
+            boolean changed = this.sequenceNum() != 0;
             for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
                 if (sq.hasFixedNum()) {
                     fixedInGroup = true;
@@ -679,16 +680,15 @@ class Model implements Iterable<Model.Sq> {
                 for (Sq sq = this; sq != null; sq = sq.predecessor()) {
                     sq._sequenceNum = 0;
                 }
-                if (this.predecessor() != null) {
+                if (this.predecessor() != null && changed) {
                     int newGrp = newGroup();
-                    for (Sq sq = this; sq != null; sq = sq.predecessor()) {
-                        sq._group = newGrp;
-                    }
-                } else {
+                    this.head()._group = newGrp;
+                } else if(this.predecessor() == null && changed){
                     this._group = -1;
                 }
             }
             fixedInGroup = false;
+            changed = next.sequenceNum() != 0;
             for (Sq sq = next; sq != null; sq = sq.successor()) {
                 if (sq.hasFixedNum()) {
                     fixedInGroup = true;
@@ -699,12 +699,13 @@ class Model implements Iterable<Model.Sq> {
                 for (Sq sq = next; sq != null; sq = sq.successor()) {
                     sq._sequenceNum = 0;
                 }
-                if (next.successor() != null) {
-                    int grp = newGroup();
+                if (next.successor() != null && changed) {
+                    int newGrp = newGroup();
                     for (Sq sq = next; sq != null; sq = sq.successor()) {
-                        sq._group = grp;
+                        sq._head = next;
                     }
-                } else {
+                    next._group = newGrp;
+                } else if(next.successor() == null && changed){
                     next._group = -1;
                 }
             }
