@@ -628,11 +628,11 @@ class Model implements Iterable<Model.Sq> {
                         sq._predecessor._sequenceNum = sq._sequenceNum - 1;
                     }
                 }
-                for (Sq sq = this; sq != null; sq = sq._successor) {
-                    sq._head = this._head;
-                }
                 if(this.sequenceNum() == 0 && s1.sequenceNum() == 0){
                     this.head()._group = joinGroups(this.group(), s1.group());
+                }
+                for (Sq sq = this; sq != null; sq = sq._successor) {
+                    sq._head = this._head;
                 }
                 return true;
             }
