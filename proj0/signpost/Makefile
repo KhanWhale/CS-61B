@@ -23,7 +23,6 @@ PACKAGE = signpost
 # while to Windows systems it looks like
 #     <garbage classpath (ignored)>;<valid classpath>
 CPATH = "..:$(CLASSPATH):;..;$(CLASSPATH)"
-e
 # Flags to pass to Java compilations (include debugging info and report
 # "unsafe" operations.)
 JFLAGS = -g -Xlint:unchecked -cp $(CPATH) -d .. -encoding utf8
