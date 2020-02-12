@@ -26,10 +26,12 @@ public class ModelTests {
      *  sequenced. */
     static void checkNumbers(int[][] solution, Model model,
                              Collection<Integer> fixed) {
-        assertEquals("Wrong model width", solution.length, model.width());
-        assertEquals("Wrong model height", solution[0].length, model.height());
-        assertEquals("Wrong model size", solution.length * solution[0].length,
-                     model.size());
+        assertEquals("Wrong model width", solution.length,
+                model.width());
+        assertEquals("Wrong model height", solution[0].length,
+                model.height());
+        assertEquals("Wrong model size", solution.length
+                        * solution[0].length, model.size());
         HashSet<Integer> actualFixed = new HashSet<>();
         for (int x = 0; x < model.width(); x += 1) {
             for (int y = 0; y < model.height(); y += 1) {
@@ -41,7 +43,8 @@ public class ModelTests {
                 }
             }
         }
-        assertEquals("Fixed positions differ", new HashSet<Integer>(fixed),
+        assertEquals("Fixed positions differ",
+                new HashSet<Integer>(fixed),
                      actualFixed);
     }
 
@@ -62,10 +65,12 @@ public class ModelTests {
         assertEquals("Sq has incorrect group head.", head, sq.head());
         assertEquals("Sq has incorrect predecessor.",
                      predecessor, sq.predecessor());
-        assertEquals("Sq has incorrect successor.", successor, sq.successor());
+        assertEquals("Sq has incorrect successor.", successor,
+                sq.successor());
         assertEquals("Sq has incorrect sequence number.",
                      seqNum, sq.sequenceNum());
-        assertEquals("Sq has incorrect group number.", group, sq.group());
+        assertEquals("Sq has incorrect group number.", group,
+                sq.group());
     }
 
     @Test
@@ -128,8 +133,10 @@ public class ModelTests {
             for (int y = 0; y < model1.height(); y += 1) {
                 Sq sq1 = model1.get(x, y);
                 Sq sq2 = model2.get(x, y);
-                assertFalse("Sq should not be the same instance", sq1 == sq2);
-                assertTrue("Sq should be equivalent objects", sq1.equals(sq2));
+                assertFalse("Sq should not be the same instance",
+                        sq1 == sq2);
+                assertTrue("Sq should be equivalent objects",
+                        sq1.equals(sq2));
             }
         }
 
@@ -160,7 +167,8 @@ public class ModelTests {
     public void autoConnectTest1() {
         Model model = new Model(tr(new int[][] { { 1, 2 } }));
         model.autoconnect();
-        assertTrue("Trivial puzzle should be solved at birth.", model.solved());
+        assertTrue("Trivial puzzle should be solved at birth.",
+                model.solved());
     }
 
     /* In sqConnectTest and sqDisconnectTest, we disregard the solution
@@ -184,7 +192,8 @@ public class ModelTests {
         Sq s5 = model.new Sq(0, 2, 8, true, 4, 0);
         Sq s6 = model.new Sq(0, 1, 1, true, 4, 0);
 
-        assertFalse("A square is not connectable to itself.", s1.connect(s1));
+        assertFalse("A square is not connectable to itself.",
+                s1.connect(s1));
         checkSquare(s1, s1, null, null, 0, -1);
 
         assertFalse("Squares must be one queen move away and in the "
@@ -312,12 +321,18 @@ public class ModelTests {
     @Test
     public void arrowDirectionTest() {
         Model model = new Model(tr(SOLN1));
-        assertEquals("Last element should have no successor", 0, model.arrowDirection(3, 0));
-        assertEquals("10 to 11 should be direction 6", 6, model.arrowDirection(2, 0));
-        assertEquals("1 to 2 should be direction 2", 2, model.arrowDirection(0, 3));
-        assertEquals("14 to 15 should be direction 8 ", 8, model.arrowDirection(3, 1));
-        assertEquals("3 to 4 should be direction 5", 5, model.arrowDirection(2, 3));
-        assertEquals("12 to 13 should be direction 1", 1, model.arrowDirection(0, 2));
+        assertEquals("Last element should have no successor", 0,
+                model.arrowDirection(3, 0));
+        assertEquals("10 to 11 should be direction 6", 6,
+                model.arrowDirection(2, 0));
+        assertEquals("1 to 2 should be direction 2", 2,
+                model.arrowDirection(0, 3));
+        assertEquals("14 to 15 should be direction 8 ", 8,
+                model.arrowDirection(3, 1));
+        assertEquals("3 to 4 should be direction 5", 5,
+                model.arrowDirection(2, 3));
+        assertEquals("12 to 13 should be direction 1", 1,
+                model.arrowDirection(0, 2));
     }
     private static final int[][] ARROWS1 = {
         { 2, 3, 5, 6 },

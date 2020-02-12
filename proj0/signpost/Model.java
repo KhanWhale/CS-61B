@@ -584,7 +584,9 @@ class Model implements Iterable<Model.Sq> {
                 return false;
             } else if ((sequenceNum() != 0) && (s1.sequenceNum() != 0)) {
                 return (sequenceNum() == s1.sequenceNum() - 1);
-            } else return (s1.group() != this.group()) || (this.group() <= 0);
+            } else {
+                return (s1.group() != this.group()) || (this.group() <= 0);
+            }
         }
 
         /** Connect this square to S1, if both are connectable; otherwise do
@@ -603,9 +605,8 @@ class Model implements Iterable<Model.Sq> {
          *     release its group of whichever was unnumbered, so that
          *     it can be reused.
          *     + If both this square and S1 are unnumbered, set the group of
-         *     this square's head to the result of joining the two groups.*/
+         *     this square's head to the result of joining the two groups. */
         boolean connect(Sq s1) {
-            //
             if (!connectable(s1)) {
                 return false;
             } else {
@@ -616,16 +617,21 @@ class Model implements Iterable<Model.Sq> {
                     if (s1.sequenceNum() == 0) {
                         releaseGroup(s1.group());
                     }
-                    for (Sq sq = this; sq._successor != null; sq = sq._successor) {
+                    Sq sq = this;
+                    while(sq._successor != null){
                         sq._successor._sequenceNum = sq._sequenceNum + 1;
+                        sq = sq._successor;
                     }
                 } else if (s1.sequenceNum() != 0) {
                     if (this.sequenceNum() == 0) {
                         releaseGroup(this.group());
                     }
-                    for (Sq sq = s1; sq._predecessor != null; sq = sq._predecessor) {
+                    Sq sq = s1;
+                    while(sq._predecessor != null){
                         sq._predecessor._sequenceNum = sq._sequenceNum - 1;
+                        sq = sq._predecessor;
                     }
+
                 }
                 if (this.sequenceNum() == 0 && s1.sequenceNum() == 0) {
                     this.head()._group = joinGroups(this.group(), s1.group());
@@ -638,13 +644,19 @@ class Model implements Iterable<Model.Sq> {
         }
 
         /** Disconnect this square from its current successor, if any.
-         * If both this and next are now one-element groups, release their former group and set both group numbers to -1.
-         * Otherwise, if either is now a one-element group, set its group number to -1 without releasing the group number.
-         * Otherwise, the group has been split into two multi-element groups.  Create a new group for next.
-         * If neither this nor any square in its group that precedes it has a fixed sequence number, set all
-         * their sequence numbers to 0 and create a new group for them if this has a current predecessor (other set group to -1).
-         * If neither next nor any square in its group that follows it has a fixed sequence number, set all their
-         * sequence numbers to 0 and create a new group for them if next has a current successor
+         * If both this and next are now one-element groups, release their
+         * former group and set both group numbers to -1.
+         * Otherwise, if either is now a one-element group, set its group number
+         * to -1 without releasing the group number.
+         * Otherwise, the group has been split into two multi-element groups.
+         * Create a new group for next.
+         * If neither this nor any square in its group that precedes it has a
+         * fixed sequence number, set all
+         * their sequence numbers to 0 and create a new group for them
+         * if this has a current predecessor (other set group to -1).
+         * If neither next nor any square in its group that follows it has a
+         * fixed sequence number, set all their sequence numbers to 0 and create
+         * a new group for them if next has a current successor
          * (otherwise set next's group to -1.)
          * Set the _head of next and all squares in its group to next. **/
         void disconnect() {
@@ -670,10 +682,7 @@ class Model implements Iterable<Model.Sq> {
             boolean fixedInGroup = false;
             boolean changed = this.sequenceNum() != 0;
             for (Sq sq = this; (sq != null); sq = sq.predecessor()) {
-                if (sq.hasFixedNum()) {
-                    fixedInGroup = true;
-                    break;
-                }
+                fixedInGroup = sq.hasFixedNum() || fixedInGroup;
             }
             if (!fixedInGroup) {
                 for (Sq sq = this; sq != null; sq = sq.predecessor()) {
@@ -682,19 +691,15 @@ class Model implements Iterable<Model.Sq> {
                 if (this.predecessor() != null && changed) {
                     int newGrp = newGroup();
                     this.head()._group = newGrp;
-                } else if(this.predecessor() == null){
+                } else if (this.predecessor() == null) {
                     this._head = this;
                     this._group = -1;
-
                 }
             }
             fixedInGroup = false;
             changed = next.sequenceNum() != 0;
             for (Sq sq = next; sq != null; sq = sq.successor()) {
-                if (sq.hasFixedNum()) {
-                    fixedInGroup = true;
-                    break;
-                }
+                fixedInGroup = sq.hasFixedNum() || fixedInGroup;
             }
             if (!fixedInGroup) {
                 for (Sq sq = next; sq != null; sq = sq.successor()) {
@@ -720,8 +725,7 @@ class Model implements Iterable<Model.Sq> {
                     for (Sq sq = next; sq != null; sq = sq.successor()) {
                         sq._head = next;
                     }
-                }
-                else if (next.successor() == null && changed) {
+                } else if (next.successor() == null && changed) {
                     next._group = -1;
                 }
             }

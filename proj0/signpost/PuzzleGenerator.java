@@ -139,9 +139,11 @@ class PuzzleGenerator implements PuzzleSource {
             return options[0];
         } else {
             if (start.sequenceNum() != 0) {
+                int dir = model.arrowDirection(start.x, start.y);
                 for (Place successor
-                        :model.allSuccessors(start.x, start.y, model.arrowDirection(start.x, start.y))) {
-                    if (model.get(successor).sequenceNum() == start.sequenceNum() + 1) {
+                        :model.allSuccessors(start.x, start.y, dir)) {
+                    Sq succ = model.get(successor);
+                    if (succ.sequenceNum() == start.sequenceNum() + 1) {
                         return model.get(successor);
                     }
                 }
