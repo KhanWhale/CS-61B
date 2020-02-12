@@ -618,7 +618,7 @@ class Model implements Iterable<Model.Sq> {
                         releaseGroup(s1.group());
                     }
                     Sq sq = this;
-                    while(sq._successor != null){
+                    while (sq._successor != null) {
                         sq._successor._sequenceNum = sq._sequenceNum + 1;
                         sq = sq._successor;
                     }
@@ -627,7 +627,7 @@ class Model implements Iterable<Model.Sq> {
                         releaseGroup(this.group());
                     }
                     Sq sq = s1;
-                    while(sq._predecessor != null){
+                    while (sq._predecessor != null) {
                         sq._predecessor._sequenceNum = sq._sequenceNum - 1;
                         sq = sq._predecessor;
                     }
