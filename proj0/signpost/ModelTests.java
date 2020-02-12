@@ -226,32 +226,30 @@ public class ModelTests {
         checkSquare(s6, s6, null, s1, 1, 0);
     }
 
-        /* We disregard the solution board passed into Model and instead
-           instantiate our own squares. This bypasses the dependency
-           on a working Model constructor.  The squares are placed on
-           a 3x3 board shown below, where each tuple represents
-           (square, direction).
+    /* We disregard the solution board passed into Model and instead
+       instantiate our own squares. This bypasses the dependency
+       on a working Model constructor. The squares are placed on
+       a 3x3 board shown below, where each tuple represents
+       (square, direction).
 
-              (s3, E ) (s4, N ) (s9, N )
-              (s2, N ) (      ) (s8, N )
-              (s1, N ) (s6, E ) (s7, N )
+          (s3, E ) (s4, N ) (s9, N )
+          (s2, N ) (      ) (s8, N )
+          (s1, N ) (s6, E ) (s7, N )
 
-           This test requires that you pass sqConnectTest.
-         */
-
-
+       This test requires that you pass sqConnectTest.
+     */
 
     @Test
     public void sqDisconnectTest() {
         Model model = new Model(tr(SOLN1));
-        Sq s1 = model.new Sq(0, 0, 1, true, 8, -1);
+        Sq s1 = model.new Sq(0, 0, 1, true, 8, 0);
         Sq s2 = model.new Sq(0, 1, 0, false, 8, -1);
         Sq s3 = model.new Sq(0, 2, 0, false, 2, -1);
         Sq s4 = model.new Sq(1, 2, 0, false, 8, -1);
         Sq s6 = model.new Sq(1, 0, 0, false, 2, -1);
         Sq s7 = model.new Sq(2, 0, 0, false, 8, -1);
         Sq s8 = model.new Sq(2, 1, 0, false, 8, -1);
-        Sq s9 = model.new Sq(2, 2, 9, true, 8, -1);
+        Sq s9 = model.new Sq(2, 2, 9, true, 8, 0);
 
         assertTrue("These squares should be connectable.", s1.connect(s2));
         assertTrue("These squares should be connectable.", s2.connect(s3));
