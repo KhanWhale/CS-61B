@@ -714,6 +714,9 @@ class Model implements Iterable<Model.Sq> {
                 } else if(next.successor() != null && !changed){
                     if(this.predecessor() == null) {
                         next._group = originalThisGrp;
+                    } else {
+                        int newGrp = newGroup();
+                        next._group = newGrp;
                     }
                     for (Sq sq = next; sq != null; sq = sq.successor()) {
                         sq._head = next;
