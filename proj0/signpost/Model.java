@@ -128,8 +128,8 @@ class Model implements Iterable<Model.Sq> {
         }
         for (int i = 1; i < _solnNumToPlace.length; i += 1) {
             if (_solnNumToPlace[i]  == null) {
-                throw badArgs("All numbers from " +
-                        "1 to size() must appear on the board.");
+                throw badArgs("All numbers from "
+                        + "1 to size() must appear on the board.");
             }
         }
         for (int i = 1; i < _solnNumToPlace.length; i += 1) {
@@ -584,11 +584,7 @@ class Model implements Iterable<Model.Sq> {
                 return false;
             } else if ((sequenceNum() != 0) && (s1.sequenceNum() != 0)) {
                 return (sequenceNum() == s1.sequenceNum() - 1);
-            } else if ((s1.group() == this.group()) && (this.group() > 0)) {
-                return false;
-            } else {
-                return true;
-            }
+            } else return (s1.group() != this.group()) || (this.group() <= 0);
         }
 
         /** Connect this square to S1, if both are connectable; otherwise do
