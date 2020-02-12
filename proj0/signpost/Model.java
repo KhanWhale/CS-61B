@@ -709,11 +709,8 @@ class Model implements Iterable<Model.Sq> {
                     next._group = this.predecessor() == null
                             ? originalThisGrp : newGroup();
                 } else if (next.successor() != null && !changed) {
-                    if (this.predecessor() == null) {
-                        next._group = originalThisGrp;
-                    } else {
-                        next._group = newGroup();
-                    }
+                    next._group = this.predecessor() == null
+                            ? originalThisGrp : newGroup();
                 } else if (next.successor() == null && changed) {
                     next._group = -1;
                 }
