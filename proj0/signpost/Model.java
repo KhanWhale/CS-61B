@@ -706,8 +706,8 @@ class Model implements Iterable<Model.Sq> {
                     sq._sequenceNum = 0;
                 }
                 if (next.successor() != null && changed) {
-                    next._group = this.predecessor() == null ?
-                            originalThisGrp : newGroup();
+                    next._group = this.predecessor() == null
+                            ? originalThisGrp : newGroup();
                 } else if (next.successor() != null && !changed) {
                     if (this.predecessor() == null) {
                         next._group = originalThisGrp;
