@@ -19,7 +19,16 @@ class Lists {
      *  Destructive: creates no new IntList items, and may modify the
      *  original list pointed to by L. */
     static IntListList naturalRuns(IntList L) {
-        /* *Replace this body with the solution. */
-        return null;
+        int prev_num = Integer.MAX_VALUE;
+        IntListList subLists = null;
+        IntList subList = null;
+        while (L != null) {
+            if(L.head <= prev_num){
+
+            } else {
+
+            }
+        }
+        return subLists;
     }
 }
