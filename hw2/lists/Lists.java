@@ -25,16 +25,13 @@ class Lists {
         } else {
             IntList tail = null;
             IntList cp = L;
-            int head = L.head;
-            while (head <= L.head && L != null) {
+            IntList start = L;
+            for(int head = L.head; L != null && head <= L.head; L = L.tail) {
                 head = L.head;
                 tail = L.tail;
-                L = L.tail;
+                start = L;
             }
-            cp = L;
-            if (cp != null && cp.tail != null ) {
-                cp.tail = null;
-            }
+            start.tail = null;
             return new IntListList(cp, naturalRuns(tail));
         }
     }
