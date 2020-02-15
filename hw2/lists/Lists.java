@@ -26,7 +26,7 @@ class Lists {
             IntList tail = null;
             IntList cp = L;
             IntList start = L;
-            for(int head = L.head; L != null && head <= L.head; L = L.tail) {
+            for(int head = L.head; L != null && head < L.head; L = L.tail) {
                 head = L.head;
                 tail = L.tail;
                 start = L;
