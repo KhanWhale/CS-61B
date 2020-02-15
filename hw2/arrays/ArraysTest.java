@@ -60,8 +60,8 @@ public class ArraysTest {
         assertEquals(3, Arrays.naturalRuns(original).length);
         assertArrayEquals(originalNR, Arrays.naturalRuns(original));
         int[] empty = {};
-        int[][] emptyNR = {empty};
-        assertEquals(1, Arrays.naturalRuns(empty).length);
+        int[][] emptyNR = {};
+        assertEquals(0, Arrays.naturalRuns(empty).length);
         assertArrayEquals(emptyNR, Arrays.naturalRuns(empty));
         int [] only_ascending = {0,1,2,3,4,5};
         int [][] only_ascNR = {only_ascending};

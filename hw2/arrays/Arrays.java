@@ -38,9 +38,8 @@ class Arrays {
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
         if (A.length == 0) {
-            int[] empty = {};
-            int[][] empty1 = {empty};
-            return empty1;
+            int[][] empty = {};
+            return empty;
         } else {
             int max_so_far = Integer.MAX_VALUE;
             int num_subs = 0;
