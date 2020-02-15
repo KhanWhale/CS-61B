@@ -1,6 +1,7 @@
 package arrays;
 
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
+import image.MatrixUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -48,6 +49,7 @@ public class ArraysTest {
         int[] remove_last_two = {0, 1, 2, 3, 4, 5, 6, 7, 8};
         assertArrayEquals(remove_last_two, Arrays.remove(A, 9, 2));
     }
+
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(ArraysTest.class));
     }
