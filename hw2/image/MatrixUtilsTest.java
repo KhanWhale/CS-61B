@@ -26,6 +26,9 @@ public class MatrixUtilsTest {
         double[] trans3d = {4, 8, 13};
         double[][] trans2 = {trans2b, trans2a,trans2c, trans3d};
         assertArrayEquals(trans2, MatrixUtils.transpose(orig2));
+        double[][] test = new double[][] {{10, 4, 5, 6}, {3, 10, 18, 6}, {8, 5, 19, 6}};
+        double[][] test_transpose = new double[][] {{10, 3, 8}, {4,10,5}, {5, 18, 19}, {6, 6, 6}};
+        assertArrayEquals(test_transpose, MatrixUtils.transpose(test));
     }
 
     @Test
@@ -43,6 +46,11 @@ public class MatrixUtilsTest {
         double[] ac6 = {2162923,   2124919,   2124919,   2124919};
         double[][] accumulated = {pre1, ac2, ac3, ac4, ac5, ac6};
         assertArrayEquals(accumulated, MatrixUtils.accumulate(pre_vert, MatrixUtils.Orientation.VERTICAL));
+        double[] horiz1 = {1000000, 1000000, 1000000, 1000000};
+        double[] horiz2 = {1000000, 75990, 30003, 1000000};
+        double[] horiz3 = {1000000, 30002, 103046, 1000000};
+        double[] horiz4 = {1000000, 29515, 38273, 1000000};
+        double[] horiz5 = {1000000, 73403, 35399, 1000000};
 
     }
     public static void main(String[] args) {

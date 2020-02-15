@@ -4,31 +4,36 @@ package lists;
  * in testing your answers. */
 
 /** HW #2, Problem #1. */
+import java.util.Arrays;
 
 /** List problem.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 class Lists {
 
     /* B. */
     /** Return the list of lists formed by breaking up L into "natural runs":
-     *  that is, maximal strictly ascending sublists, in the same order as
+     *  that is, maximal strictly ascending sub lists, in the same order as
      *  the original.  For example, if L is (1, 3, 7, 5, 4, 6, 9, 10, 10, 11),
      *  then result is the four-item list
      *            ((1, 3, 7), (5), (4, 6, 9, 10), (10, 11)).
      *  Destructive: creates no new IntList items, and may modify the
      *  original list pointed to by L. */
     static IntListList naturalRuns(IntList L) {
-        int prev_num = Integer.MAX_VALUE;
-        IntListList subLists = null;
-        IntList subList = null;
-        while (L != null) {
-            if(L.head <= prev_num){
-
-            } else {
-
+        if (L == null) {
+            return null;
+        } else {
+            IntList tail = null;
+            IntList cp = L;
+            int head = L.head;
+            while (head <= L.head && L != null) {
+                head = L.head;
+                tail = L.tail;
+                L = L.tail;
             }
+            cp = L;
+            cp.tail = null;
+            return new IntListList(cp, naturalRuns(tail));
         }
-        return subLists;
     }
 }
