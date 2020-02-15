@@ -32,7 +32,9 @@ class Lists {
                 L = L.tail;
             }
             cp = L;
-            cp.tail = null;
+            if (cp != null && cp.tail != null ) {
+                cp.tail = null;
+            }
             return new IntListList(cp, naturalRuns(tail));
         }
     }
