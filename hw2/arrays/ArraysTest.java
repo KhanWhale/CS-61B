@@ -1,7 +1,5 @@
 package arrays;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
-import image.MatrixUtils;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -16,11 +14,11 @@ public class ArraysTest {
     public void testCatenate() {
         int[] A1 = {1, 2, 3};
         int[] B1 = {5, 6, 7};
-        int[] cat1 = {1,2,3,5,6,7};
+        int[] cat1 = {1, 2, 3, 5, 6, 7};
         assertArrayEquals(cat1, Arrays.catenate(A1, B1));
         int[] emptyA = new int[0];
         int[] fullB = {4, 5, 54, 78};
-        int[] emptyACat = {4,5,54,78};
+        int[] emptyACat = {4, 5, 54, 78};
         assertArrayEquals(emptyACat, Arrays.catenate(emptyA, fullB));
         assertArrayEquals(emptyACat, Arrays.catenate(fullB, emptyA));
         int[] emptyB = new int[0];
@@ -32,22 +30,22 @@ public class ArraysTest {
     @Test
     public void testRemove() {
         int[] A = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        int[] remove_none = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        assertArrayEquals(remove_none, Arrays.remove(A, 0, 0));
-        assertArrayEquals(remove_none, Arrays.remove(A, 5, 0));
-        assertArrayEquals(remove_none, Arrays.remove(A, 10, 0));
-        int[] remove_first = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        assertArrayEquals(remove_first, Arrays.remove(A, 0, 1));
-        int[] remove_first_two = {2, 3, 4, 5, 6, 7, 8, 9, 10};
-        assertArrayEquals(remove_first_two, Arrays.remove(A, 0, 2));
-        int[] remove_random = {0,1, 2, 3, 5, 6, 7, 8, 9, 10};
-        assertArrayEquals(remove_random, Arrays.remove(A, 4, 1));
-        int[] remove_random_two = {0,1, 2, 3, 4, 7, 8, 9, 10};
-        assertArrayEquals(remove_random_two, Arrays.remove(A, 5, 2));
-        int[] remove_last = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-        assertArrayEquals(remove_last, Arrays.remove(A, 10, 1));
-        int[] remove_last_two = {0, 1, 2, 3, 4, 5, 6, 7, 8};
-        assertArrayEquals(remove_last_two, Arrays.remove(A, 9, 2));
+        int[] removeNone = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(removeNone, Arrays.remove(A, 0, 0));
+        assertArrayEquals(removeNone, Arrays.remove(A, 5, 0));
+        assertArrayEquals(removeNone, Arrays.remove(A, 10, 0));
+        int[] removeFirst = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(removeFirst, Arrays.remove(A, 0, 1));
+        int[] removeFirstTwo = {2, 3, 4, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(removeFirstTwo, Arrays.remove(A, 0, 2));
+        int[] removeRandom = {0,1, 2, 3, 5, 6, 7, 8, 9, 10};
+        assertArrayEquals(removeRandom, Arrays.remove(A, 4, 1));
+        int[] removeRandomTwo = {0,1, 2, 3, 4, 7, 8, 9, 10};
+        assertArrayEquals(removeRandomTwo, Arrays.remove(A, 5, 2));
+        int[] removeLast = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        assertArrayEquals(removeLast, Arrays.remove(A, 10, 1));
+        int[] removeLastTwo = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        assertArrayEquals(removeLastTwo, Arrays.remove(A, 9, 2));
     }
 
     @Test
@@ -63,21 +61,21 @@ public class ArraysTest {
         int[][] emptyNR = {};
         assertEquals(0, Arrays.naturalRuns(empty).length);
         assertArrayEquals(emptyNR, Arrays.naturalRuns(empty));
-        int [] only_ascending = {0,1,2,3,4,5};
-        int [][] only_ascNR = {only_ascending};
-        assertEquals(1, Arrays.naturalRuns(only_ascending).length);
-        assertArrayEquals(only_ascNR, Arrays.naturalRuns(only_ascending));
-        int [] only_desc = {5, 4, 3, 2, 1};
-        int[] only_desc1 = {5};
-        int[] only_desc2 = {4};
-        int[] only_desc3 = {3};
-        int[] only_desc4 = {2};
-        int[] only_desc5 = {1};
-        int[][] only_descNR = {only_desc1, only_desc2, only_desc3,only_desc4,only_desc5};
-        assertArrayEquals(only_descNR, Arrays.naturalRuns(only_desc));
-        assertEquals(5, Arrays.naturalRuns(only_desc).length);
-        int [] all_equal = {1,1,1,};
-        int[][] all_equal_desc = {only_desc5,only_desc5,only_desc5};
+        int [] onlyAscending = {0, 1, 2, 3, 4, 5};
+        int [][] onlyAscNR = {onlyAscending};
+        assertEquals(1, Arrays.naturalRuns(onlyAscending).length);
+        assertArrayEquals(onlyAscNR, Arrays.naturalRuns(onlyAscending));
+        int [] onlyDesc = {5, 4, 3, 2, 1};
+        int[] onlyDesc1 = {5};
+        int[] onlyDesc2 = {4};
+        int[] onlyDesc3 = {3};
+        int[] onlyDesc4 = {2};
+        int[] onlyDesc5 = {1};
+        int[][] onlyDescNR = {onlyDesc1, onlyDesc2, onlyDesc3,onlyDesc4,onlyDesc5};
+        assertArrayEquals(onlyDescNR, Arrays.naturalRuns(onlyDesc));
+        assertEquals(5, Arrays.naturalRuns(onlyDesc).length);
+        int [] all_equal = {1, 1, 1};
+        int[][] all_equal_desc = {onlyDesc5,onlyDesc5,onlyDesc5};
         assertArrayEquals(all_equal_desc, Arrays.naturalRuns(all_equal));
     }
     public static void main(String[] args) {

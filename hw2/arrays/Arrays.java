@@ -14,7 +14,7 @@ class Arrays {
     /** Returns a new array consisting of the elements of A followed by the
      *  the elements of B. */
     static int[] catenate(int[] A, int[] B) {
-        int [] catenated = new int[A.length+B.length];
+        int [] catenated = new int[A.length + B.length];
         System.arraycopy(A, 0, catenated, 0, A.length);
         System.arraycopy(B, 0, catenated, A.length, B.length);
         return catenated;
@@ -24,9 +24,9 @@ class Arrays {
     /** Returns the array formed by removing LEN items from A,
      *  beginning with item #START. */
     static int[] remove(int[] A, int start, int len) {
-        int[] removed = new int[A.length-len];
+        int[] removed = new int[A.length - len];
         System.arraycopy(A, 0, removed, 0, start);
-        System.arraycopy(A, start+len, removed, start, A.length-start-len);
+        System.arraycopy(A, start + len, removed, start, A.length - start - len);
         return removed;
     }
 
@@ -41,23 +41,23 @@ class Arrays {
             int[][] empty = {};
             return empty;
         } else {
-            int max_so_far = Integer.MAX_VALUE;
-            int num_subs = 0;
+            int maxSoFar = Integer.MAX_VALUE;
+            int numSubs = 0;
             for (int i = 0; i < A.length; i += 1) {
-                if (A[i] <= max_so_far) {
-                    num_subs += 1;
+                if (A[i] <= maxSoFar) {
+                    numSubs += 1;
                 }
-                max_so_far = A[i];
+                maxSoFar = A[i];
             }
-            int[][] natural = new int[num_subs][];
+            int[][] natural = new int[numSubs][];
             int[] ascend = new int[1];
             ascend[0] = A[0];
-            max_so_far = A[0];
-            num_subs = 0;
+            maxSoFar = A[0];
+            numSubs = 0;
             for (int i = 1; i < A.length; i += 1) {
-                if (A[i] <= max_so_far) {
-                    natural[num_subs] = ascend;
-                    num_subs += 1;
+                if (A[i] <= maxSoFar) {
+                    natural[numSubs] = ascend;
+                    numSubs += 1;
                     ascend = new int[1];
                     ascend[0] = A[i];
                 } else {
@@ -65,9 +65,9 @@ class Arrays {
                     temp[0] = A[i];
                     ascend = catenate(ascend, temp);
                 }
-                max_so_far = A[i];
+                maxSoFar = A[i];
             }
-            natural[num_subs] = ascend;
+            natural[numSubs] = ascend;
             return natural;
         }
     }
