@@ -19,23 +19,18 @@ class Lists {
      *            ((1, 3, 7), (5), (4, 6, 9, 10), (10, 11)).
      *  Destructive: creates no new IntList items, and may modify the
      *  original list pointed to by L. */
+
     static IntListList naturalRuns(IntList L) {
-        /* *Replace this body with the solution. */
-        //make a new intlistlist and then add intlist parts into the intlistlist
         if (L == null) {
             return null;
+        } else {
+            IntList natural = L;
+            while (natural.tail != null && natural.tail.head > natural.head) {
+                natural = natural.tail;
+            }
+            IntListList tail = naturalRuns(natural.tail);
+            natural.tail = null;
+            return new IntListList(L, tail);
         }
-        IntList rest = null;
-        IntList start = L;
-        IntList copy = L;
-
-        for (int h = L.head; L != null && h <= L.head; L = L.tail) {
-            h = L.head;
-            rest = L.tail;
-            start = L;
-
-        }
-        start.tail = null;
-        return new IntListList(copy, naturalRuns(rest));
     }
 }

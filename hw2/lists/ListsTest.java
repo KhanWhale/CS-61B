@@ -19,8 +19,8 @@ public class ListsTest {
        assertEquals(IntListList.list(new int[][]{{0,1,2,3,4}}), Lists.naturalRuns(myList1));
        IntList myList2 = IntList.list(4,6,19,3,4,10);
        assertEquals(IntListList.list(new int[][]{{4,6,19}, {3,4,10}}), Lists.naturalRuns(myList2));
-       IntList myList3 = IntList.list(7,9,12,12,12,10,10,4,5);
-       assertEquals(IntListList.list(new int[][]{{7,9,12}, {12}, {12}, {12}, {10}, {10}, {10}, {4,5}}), Lists.naturalRuns(myList3));
+       IntList myList3 = IntList.list(7,9,12,12,12, 12, 10,10,4,5);
+       assertEquals(IntListList.list(new int[][]{{7,9,12}, {12}, {12}, {12}, {10}, {10}, {4,5}}), Lists.naturalRuns(myList3));
 
 
    }
