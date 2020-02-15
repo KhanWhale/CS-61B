@@ -37,7 +37,39 @@ class Arrays {
      *  returns the three-element array
      *  {{1, 3, 7}, {5}, {4, 6, 9, 10}}. */
     static int[][] naturalRuns(int[] A) {
-        /* *Replace this body with the solution. */
-        return null;
+        if (A.length == 0) {
+            int[] empty = {};
+            int[][] empty1 = {empty};
+            return empty1;
+        } else {
+            int max_so_far = Integer.MAX_VALUE;
+            int num_subs = 0;
+            for (int i = 0; i < A.length; i += 1) {
+                if (A[i] <= max_so_far) {
+                    num_subs += 1;
+                }
+                max_so_far = A[i];
+            }
+            int[][] natural = new int[num_subs][];
+            int[] ascend = new int[1];
+            ascend[0] = A[0];
+            max_so_far = A[0];
+            num_subs = 0;
+            for (int i = 1; i < A.length; i += 1) {
+                if (A[i] <= max_so_far) {
+                    natural[num_subs] = ascend;
+                    num_subs += 1;
+                    ascend = new int[1];
+                    ascend[0] = A[i];
+                } else {
+                    int[] temp = new int[1];
+                    temp[0] = A[i];
+                    ascend = catenate(ascend, temp);
+                }
+                max_so_far = A[i];
+            }
+            natural[num_subs] = ascend;
+            return natural;
+        }
     }
 }

@@ -50,6 +50,36 @@ public class ArraysTest {
         assertArrayEquals(remove_last_two, Arrays.remove(A, 9, 2));
     }
 
+    @Test
+    public void testNaturalRuns() {
+        int[] original = {1, 3, 7, 5, 4, 6, 9, 10};
+        int[] originalNR1 = {1, 3, 7};
+        int[] originalNR2 = {5};
+        int[] originalNR3 = {4, 6, 9, 10};
+        int[][] originalNR = {originalNR1, originalNR2, originalNR3};
+        assertEquals(3, Arrays.naturalRuns(original).length);
+        assertArrayEquals(originalNR, Arrays.naturalRuns(original));
+        int[] empty = {};
+        int[][] emptyNR = {empty};
+        assertEquals(1, Arrays.naturalRuns(empty).length);
+        assertArrayEquals(emptyNR, Arrays.naturalRuns(empty));
+        int [] only_ascending = {0,1,2,3,4,5};
+        int [][] only_ascNR = {only_ascending};
+        assertEquals(1, Arrays.naturalRuns(only_ascending).length);
+        assertArrayEquals(only_ascNR, Arrays.naturalRuns(only_ascending));
+        int [] only_desc = {5, 4, 3, 2, 1};
+        int[] only_desc1 = {5};
+        int[] only_desc2 = {4};
+        int[] only_desc3 = {3};
+        int[] only_desc4 = {2};
+        int[] only_desc5 = {1};
+        int[][] only_descNR = {only_desc1, only_desc2, only_desc3,only_desc4,only_desc5};
+        assertArrayEquals(only_descNR, Arrays.naturalRuns(only_desc));
+        assertEquals(5, Arrays.naturalRuns(only_desc).length);
+        int [] all_equal = {1,1,1,};
+        int[][] all_equal_desc = {only_desc5,only_desc5,only_desc5};
+        assertArrayEquals(all_equal_desc, Arrays.naturalRuns(all_equal));
+    }
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(ArraysTest.class));
     }
