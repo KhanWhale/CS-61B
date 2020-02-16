@@ -38,9 +38,9 @@ public class ArraysTest {
         assertArrayEquals(removeFirst, Arrays.remove(A, 0, 1));
         int[] removeFirstTwo = {2, 3, 4, 5, 6, 7, 8, 9, 10};
         assertArrayEquals(removeFirstTwo, Arrays.remove(A, 0, 2));
-        int[] removeRandom = {0,1, 2, 3, 5, 6, 7, 8, 9, 10};
+        int[] removeRandom = {0, 1, 2, 3, 5, 6, 7, 8, 9, 10};
         assertArrayEquals(removeRandom, Arrays.remove(A, 4, 1));
-        int[] removeRandomTwo = {0,1, 2, 3, 4, 7, 8, 9, 10};
+        int[] removeRandomTwo = {0, 1, 2, 3, 4, 7, 8, 9, 10};
         assertArrayEquals(removeRandomTwo, Arrays.remove(A, 5, 2));
         int[] removeLast = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
         assertArrayEquals(removeLast, Arrays.remove(A, 10, 1));
@@ -70,13 +70,13 @@ public class ArraysTest {
         int[] onlyDesc2 = {4};
         int[] onlyDesc3 = {3};
         int[] onlyDesc4 = {2};
-        int[] onlyDesc5 = {1};
-        int[][] onlyDescNR = {onlyDesc1, onlyDesc2, onlyDesc3,onlyDesc4,onlyDesc5};
+        int[] onlyD5 = {1};
+        int[][] onlyDescNR = {onlyDesc1, onlyDesc2, onlyDesc3,onlyDesc4,onlyD5};
         assertArrayEquals(onlyDescNR, Arrays.naturalRuns(onlyDesc));
         assertEquals(5, Arrays.naturalRuns(onlyDesc).length);
-        int [] all_equal = {1, 1, 1};
-        int[][] all_equal_desc = {onlyDesc5,onlyDesc5,onlyDesc5};
-        assertArrayEquals(all_equal_desc, Arrays.naturalRuns(all_equal));
+        int [] allEqual = {1, 1, 1};
+        int[][] allEqualDesc = {onlyD5, onlyD5, onlyD5};
+        assertArrayEquals(allEqualDesc, Arrays.naturalRuns(allEqual));
     }
     public static void main(String[] args) {
         System.exit(ucb.junit.textui.runClasses(ArraysTest.class));
