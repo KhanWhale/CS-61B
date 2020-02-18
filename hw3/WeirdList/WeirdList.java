@@ -1,7 +1,7 @@
 /** A WeirdList holds a sequence of integers.
  * @author your name here
  */
-public class WeirdList {
+public class WeirdList{
     /** The empty sequence of integers. */
     public static final WeirdList EMPTY =
         null;  // TODO: REPLACE THIS LINE
@@ -30,6 +30,8 @@ public class WeirdList {
     public WeirdList map(IntUnaryFunction func) {
         return null;  // TODO: REPLACE THIS LINE
     }
+
+
 
     /*
      * You should not add any methods to WeirdList, but you will need

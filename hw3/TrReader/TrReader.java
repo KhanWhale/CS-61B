@@ -3,7 +3,7 @@ import java.io.IOException;
 
 /** Translating Reader: a stream that is a translation of an
  *  existing reader.
- *  @author your name here
+ *  @author Aniruddh Khanwale
  */
 public class TrReader extends Reader {
     /** A new TrReader that produces the stream of characters produced
@@ -11,8 +11,13 @@ public class TrReader extends Reader {
      *  corresponding characters in TO.  That is, change occurrences of
      *  FROM.charAt(i) to TO.charAt(i), for all i, leaving other characters
      *  in STR unchanged.  FROM and TO must have the same length. */
+    private Reader src;
+    private String input;
+    private String output;
     public TrReader(Reader str, String from, String to) {
-        // TODO: YOUR CODE HERE
+        src = str;
+        input = from;
+        output = to;
     }
 
     /* TODO: IMPLEMENT ANY MISSING ABSTRACT METHODS HERE
@@ -20,4 +25,20 @@ public class TrReader extends Reader {
      *       reject this file, saying that you must declare TrReader
      *       abstract. Don't do that; define the right methods instead!
      */
+    public int read (char[] cbuf, int off, int len) throws IOException {
+        int read = src.read(cbuf);
+        for (int i = 0; i < cbuf.length; i += 1) {
+            for (int j = 0; j < input.length(); j += 1) {
+                if (cbuf[i] == input.charAt(j)) {
+                    cbuf[i] = output.charAt(j);
+                    break;
+                }
+            }
+        }
+        return read;
+    }
+
+    public void close() throws IOException {
+        src.close();
+    }
 }
