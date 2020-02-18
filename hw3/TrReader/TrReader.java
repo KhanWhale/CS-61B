@@ -26,8 +26,8 @@ public class TrReader extends Reader {
      *       abstract. Don't do that; define the right methods instead!
      */
     public int read (char[] cbuf, int off, int len) throws IOException {
-        int read = src.read(cbuf);
-        for (int i = 0; i < cbuf.length; i += 1) {
+        int read = src.read(cbuf, off, len);
+        for (int i = off; i <= off + len && i < cbuf.length; i += 1) {
             for (int j = 0; j < input.length(); j += 1) {
                 if (cbuf[i] == input.charAt(j)) {
                     cbuf[i] = output.charAt(j);
