@@ -4,9 +4,9 @@
  * @author Aniruddh Khanwale
  */
 public class EmptyWeirdList extends WeirdList {
-    /** The head of the empty List, always set to 0 */
+    /** The head of the empty List, always set to 0. */
     private int head = 0;
-    /** Constructs a new Empty Weird List */
+    /** Constructs a new Empty Weird List. */
     public EmptyWeirdList() {
     }
 

@@ -3,9 +3,11 @@
  * @author Aniruddh Khanwale
  */
 public class AddUnaryFunction implements IntUnaryFunction {
-    /** The value to be added to the input */
+    /** The value to be added to the input. */
     private int addend = 0;
-    /** Constructs a new AddUnaryFunction with addend add */
+    /** Constructs a new AddUnaryFunction with addend add.
+     * @param add the value to be added.
+     * */
     public AddUnaryFunction(int add) {
         addend = add;
     }

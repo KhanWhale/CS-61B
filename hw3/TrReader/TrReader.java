@@ -6,11 +6,11 @@ import java.io.IOException;
  *  @author Aniruddh Khanwale
  */
 public class TrReader extends Reader {
-    /** The source reader*/
+    /** The source reader. */
     private Reader src;
-    /** The string with original (input)chars*/
+    /** The string with original (input)chars. */
     private String input;
-    /** THe string with mapped (output) chars */
+    /** THe string with mapped (output) chars. */
     private String output;
     /** A new TrReader that produces the stream of characters produced
      *  by STR, converting all characters that occur in FROM to the

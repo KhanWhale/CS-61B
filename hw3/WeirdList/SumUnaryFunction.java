@@ -6,7 +6,7 @@
 public class SumUnaryFunction implements IntUnaryFunction {
     /** The running sum. */
     private int sum = 0;
-    /** Constructs a new SumUnaryFunction */
+    /** Constructs a new SumUnaryFunction. */
     public SumUnaryFunction() {
     }
     @Override
@@ -14,7 +14,7 @@ public class SumUnaryFunction implements IntUnaryFunction {
         sum += x;
         return x;
     }
-    /** Return sum */
+    /** Return sum. */
     public int getSum() {
         return sum;
     }

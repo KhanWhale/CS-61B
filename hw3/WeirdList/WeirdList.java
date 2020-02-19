@@ -1,19 +1,23 @@
 /** A WeirdList holds a sequence of integers.
- * @author your name here
+ * @author Aniruddh Khanwale
  */
 public class WeirdList {
     /** The empty sequence of integers. */
     public static final WeirdList EMPTY = new EmptyWeirdList();
-    /** The integer HEAD of the WeirdList */
+    /** The integer HEAD of the WeirdList. */
     private int head;
-    /** The WeirdList that this Lists tail points to */
+    /** The WeirdList that this Lists tail points to. */
     private WeirdList tail;
-    /** A new WeirdList whose head is HEAD and tail is TAIL. */
+    /** A new WeirdList whose head is HEAD and tail is TAIL.
+     * @param h the head value.
+     * @param t the tail WeirdList.
+     *
+     * */
     public WeirdList(int h, WeirdList t) {
         head = h;
         tail = t;
     }
-    /** Default WeirdList Constructor */
+    /** Default WeirdList Constructor. */
     public WeirdList() {
     }
     /** Returns the number of elements in the sequence that
