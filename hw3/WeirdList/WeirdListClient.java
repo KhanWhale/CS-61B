@@ -1,3 +1,5 @@
+import net.sf.saxon.functions.Sum;
+
 /** Functions to increment and sum the elements of a WeirdList. */
 class WeirdListClient {
 
@@ -9,7 +11,9 @@ class WeirdListClient {
 
     /** Return the sum of all the elements in L. */
     static int sum(WeirdList L) {
-        return 0; // TODO: REPLACE THIS LINE
+        SumUnaryFunction summer = new SumUnaryFunction();
+        L.map(summer);
+        return summer.getSum();
     }
 
     /* IMPORTANT: YOU ARE NOT ALLOWED TO USE RECURSION IN ADD AND SUM
