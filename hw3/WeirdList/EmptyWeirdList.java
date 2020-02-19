@@ -1,10 +1,8 @@
 public class EmptyWeirdList extends WeirdList {
     private int head;
-    private WeirdList tail;
 
     public EmptyWeirdList() {
         this.head = 0;
-        this.tail = null;
     }
 
     @Override
@@ -20,5 +18,13 @@ public class EmptyWeirdList extends WeirdList {
     @Override
     public WeirdList map(IntUnaryFunction func) {
         return this;
+    }
+
+    public int getHead(){
+        return this.head;
+    }
+
+    public void setHead(int head) {
+        this.head = head;
     }
 }
