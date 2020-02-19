@@ -1,5 +1,11 @@
+/** An AddUnaryFunction adds an inputed number to the input.
+ *
+ * @author Aniruddh Khanwale
+ */
 public class AddUnaryFunction implements IntUnaryFunction {
+    /** The value to be added to the input */
     private int addend = 0;
+    /** Constructs a new AddUnaryFunction with addend add */
     public AddUnaryFunction(int add) {
         addend = add;
     }
@@ -8,11 +14,4 @@ public class AddUnaryFunction implements IntUnaryFunction {
         return x + addend;
     }
 
-    public int getAddend() {
-        return addend;
-    }
-
-    public void setAddend(int addend) {
-        this.addend = addend;
-    }
 }

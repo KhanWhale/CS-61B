@@ -1,17 +1,20 @@
 /** A WeirdList holds a sequence of integers.
  * @author your name here
  */
-public class WeirdList{
+public class WeirdList {
     /** The empty sequence of integers. */
     public static final WeirdList EMPTY = new EmptyWeirdList();
+    /** The integer HEAD of the WeirdList */
     private int head;
+    /** The WeirdList that this Lists tail points to */
     private WeirdList tail;
     /** A new WeirdList whose head is HEAD and tail is TAIL. */
-    public WeirdList(int head, WeirdList tail) { 
-        this.head = head;
-        this.tail = tail;
+    public WeirdList(int h, WeirdList t) {
+        head = h;
+        tail = t;
     }
-    public WeirdList(){
+    /** Default WeirdList Constructor */
+    public WeirdList() {
     }
     /** Returns the number of elements in the sequence that
      *  starts with THIS. */
@@ -30,7 +33,8 @@ public class WeirdList{
     /** Part 3b: Apply FUNC.apply to every element of THIS WeirdList in
      *  sequence, and return a WeirdList of the resulting values. */
     public WeirdList map(IntUnaryFunction func) {
-        WeirdList mapped = new WeirdList(func.apply(this.head), this.tail.map(func));
+        WeirdList mapped = new
+                WeirdList(func.apply(this.head), this.tail.map(func));
         return mapped;
     }
 

@@ -1,6 +1,8 @@
-import net.sf.saxon.functions.Sum;
 
-/** Functions to increment and sum the elements of a WeirdList. */
+/** Functions to increment and sum the elements of a WeirdList.
+ *
+ * @author Aniruddh Khanwale
+ * */
 class WeirdListClient {
 
     /** Return the result of adding N to each element of L. */
