@@ -26,6 +26,11 @@ public class WeirdListClientTest {
 
         WeirdList nwl = WeirdListClient.add(wl2, 4);
         assertEquals((6 + 4) + (5 + 4), WeirdListClient.sum(nwl));
+
+        WeirdList first = new WeirdList(12, WeirdList.EMPTY);
+        assertEquals(12, WeirdListClient.sum(first));
+
+
     }
 
     public static void main(String[] args) {
