@@ -10,6 +10,8 @@ class TestUtils {
     protected static final Alphabet UPPER = new Alphabet();
     protected static final String UPPER_STRING =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    protected static final String LOWER_STRING =
+        "abcdefghijklmonpqrstuvwxyz";
 
     /** Return an identifying error message for failed assertions.
      *  TESTID identifies the test, MSGFORMAT and ARGS provide
