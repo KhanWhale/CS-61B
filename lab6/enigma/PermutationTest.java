@@ -97,12 +97,12 @@ public abstract class PermutationTest {
         checkPerm("p3", "ADTXRE", "DTAXER", p, alph);
         assertFalse(p.derangement());
         alph = getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-//        Permutation Rotor1 = getNewPermutation(
-//                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
-//                alph);
-//        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-//                "EKMFLGDQVZNTOWYHXUJPAIBRCS", Rotor1,
-//                alph);
+        Permutation Rotor1 = getNewPermutation(
+                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
+                alph);
+        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                "EKMFLGDQVZNTOWYHXUJPAIBRCS", Rotor1,
+                alph);
 //        assertTrue(Rotor1.derangement());
 //        alph = getNewAlphabet("LFiHrGneY");
 //        Permutation Hilf = getNewPermutation(
