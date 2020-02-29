@@ -71,6 +71,7 @@ public abstract class PermutationTest {
             assertEquals(msg(testId, "wrong inverse of %d", ei),
                          ci, perm.invert(ei));
         }
+        assertEquals(perm.alphabet(), alpha);
     }
 
     /* ***** TESTS ***** */
@@ -82,36 +83,25 @@ public abstract class PermutationTest {
         checkPerm("identity", UPPER_STRING, UPPER_STRING, perm, alpha);
     }
     @Test
-    public void testInvertChar() {
+    public void testPermuteInvert() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
         checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
-        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AERXTD"));
+        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AXRDET"));
         Permutation Rotor1 = getNewPermutation(
                 "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)",
                 getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
         checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                 "EKMFLGDQVZNTOWYHXUSPAIBRCJ", p,
                 getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-
-    }
-
-    @Test
-    public void testPermuteChar() {
-        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
-        checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
-        p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
-        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
-        p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
-        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AERXTD"));
-        Permutation Rotor1 = getNewPermutation(
-                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)",
-                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                "EKMFLGDQVZNTOWYHXUSPAIBRCJ", p,
-                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+        Permutation Hilf = getNewPermutation(
+                "(HiLF) (nrG)",
+                getNewAlphabet("LFiHrGneY"));
+        checkPerm("hilf", "HiLFnGrYe",
+                "iLFHrGnYe", p,
+                getNewAlphabet("LFiHrGneY"));
 
 
     }
