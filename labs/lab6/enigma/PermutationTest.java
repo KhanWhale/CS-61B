@@ -89,6 +89,13 @@ public abstract class PermutationTest {
         checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
         checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AERXTD"));
+        Permutation Rotor1 = getNewPermutation(
+                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)",
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                "EKMFLGDQVZNTOWYHXUSPAIBRCJ", p,
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
     }
 
     @Test
@@ -99,6 +106,13 @@ public abstract class PermutationTest {
         checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
         checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AERXTD"));
+        Permutation Rotor1 = getNewPermutation(
+                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZ) (S)",
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                "EKMFLGDQVZNTOWYHXUSPAIBRCJ", p,
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+
 
     }
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
