@@ -105,7 +105,7 @@ public abstract class PermutationTest {
                 "(HiLF) (nrG)",
                 getNewAlphabet("LFiHrGneY"));
         checkPerm("hilf", "HiLFnGrYe",
-                "iLFHrGnYe", p,
+                "iLFHrnGYe", p,
                 getNewAlphabet("LFiHrGneY"));
         assertTrue(Hilf.derangement());
     }
