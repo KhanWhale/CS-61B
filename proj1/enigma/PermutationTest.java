@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 import static enigma.TestUtils.*;
 
 /** The suite of all JUnit tests for the Permutation class.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 public class PermutationTest {
 
@@ -50,5 +50,4 @@ public class PermutationTest {
         perm = new Permutation("", UPPER);
         checkPerm("identity", UPPER_STRING, UPPER_STRING);
     }
-
 }

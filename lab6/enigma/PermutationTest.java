@@ -71,6 +71,7 @@ public abstract class PermutationTest {
             assertEquals(msg(testId, "wrong inverse of %d", ei),
                          ci, perm.invert(ei));
         }
+        assertEquals(perm.alphabet(), alpha);
     }
 
     /* ***** TESTS ***** */
@@ -80,7 +81,33 @@ public abstract class PermutationTest {
         Alphabet alpha = getNewAlphabet();
         Permutation perm = getNewPermutation("", alpha);
         checkPerm("identity", UPPER_STRING, UPPER_STRING, perm, alpha);
+        assertFalse(perm.derangement());
     }
-
+    @Test
+    public void testPermuteInvert() {
+        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
+        checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
+        assertTrue(p.derangement());
+        p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
+        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
+        assertFalse(p.derangement());
+        p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
+        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AXRDET"));
+        assertFalse(p.derangement());
+        Permutation Rotor1 = getNewPermutation(
+                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                "EKMFLGDQVZNTOWYHXUJPAIBRCS", p,
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
+        assertTrue(Rotor1.derangement());
+        Permutation Hilf = getNewPermutation(
+                "(HiLF) (nrG)",
+                getNewAlphabet("LFiHrGneY"));
+        checkPerm("hilf", "HiLFnGrYe",
+                "iLFHrGnYe", p,
+                getNewAlphabet("LFiHrGneY"));
+        assertTrue(Hilf.derangement());
+    }
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
 }
