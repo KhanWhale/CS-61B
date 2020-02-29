@@ -96,7 +96,7 @@ public abstract class PermutationTest {
         assertFalse(p.derangement());
         Permutation Rotor1 = getNewPermutation(
                 "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
-                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
         checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                 "EKMFLGDQVZNTOWYHXUJPAIBRCS", p,
                 getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
