@@ -84,63 +84,22 @@ public abstract class PermutationTest {
     @Test
     public void testInvertChar() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
-        assertEquals('B', p.invert('A'));
-        assertEquals('C', p.invert('D'));
-        assertEquals('D', p.invert('B'));
-        assertEquals('A', p.invert('C'));
-        assertEquals(1, p.invert(0));
-        assertEquals(2, p.invert(3));
-        assertEquals(3, p.invert(1));
-        assertEquals(0, p.invert(2));
+        checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
-        assertEquals('A', p.invert('A'));
-        assertEquals('B', p.invert('B'));
-        assertEquals('D', p.invert('C'));
-        assertEquals('C', p.invert('D'));
-        assertEquals(1, p.invert(0));
-        assertEquals(2, p.invert(3));
-        assertEquals(3, p.invert(1));
-        assertEquals(0, p.invert(2));
+        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
-        assertEquals('X', p.invert('X'));
-        assertEquals('R', p.invert('E'));
-        assertEquals('T', p.invert('A'));
-        assertEquals('A', p.invert('D'));
-        assertEquals(1, p.invert(1));
-        assertEquals(2, p.invert(4));
-        assertEquals(5, p.invert(0));
-        assertEquals(0, p.invert(3));
+        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AERXTD"));
     }
 
     @Test
     public void testPermuteChar() {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
-        assertEquals('A', p.permute('B'));
-        assertEquals('D', p.permute('C'));
-        assertEquals('B', p.permute('D'));
-        assertEquals('C', p.permute('A'));
-        assertEquals(1, p.permute(0));
-        assertEquals(2, p.permute(3));
-        assertEquals(3, p.permute(1));
-        assertEquals(0, p.permute(2));
+        checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
-        assertEquals('A', p.permute('A'));
-        assertEquals('B', p.permute('B'));
-        assertEquals('C', p.permute('D'));
-        assertEquals('D', p.permute('C'));
-        assertEquals(0, p.permute(0));
-        assertEquals(1, p.permute(1));
-        assertEquals(3, p.permute(2));
-        assertEquals(2, p.permute(3));
+        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
         p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
-        assertEquals('X', p.permute('X'));
-        assertEquals('R', p.permute('E'));
-        assertEquals('A', p.permute('T'));
-        assertEquals('D', p.permute('A'));
-        assertEquals(1, p.permute(1));
-        assertEquals(4, p.permute(2));
-        assertEquals(0, p.permute(5));
-        assertEquals(3, p.permute(0));
+        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AERXTD"));
+
     }
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
 }
