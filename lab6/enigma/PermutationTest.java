@@ -93,7 +93,7 @@ public abstract class PermutationTest {
         checkPerm("p2", "ABCD", "ABDC", p, alph);
         assertFalse(p.derangement());
         alph = getNewAlphabet("AXRDET");
-        p = getNewPermutation("(A DT) (X ) (RE)", alph);
+        p = getNewPermutation("(ADT) (X) (RE)", alph);
         checkPerm("p3", "ADTXRE", "DTAXER", p, alph);
         assertFalse(p.derangement());
         alph = getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
