@@ -88,9 +88,9 @@ public abstract class PermutationTest {
         Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
         checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
         assertTrue(p.derangement());
-        p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
-        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
-        assertFalse(p.derangement());
+//        p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
+//        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
+//        assertFalse(p.derangement());
 //        p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
 //        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AXRDET"));
 //        assertFalse(p.derangement());
