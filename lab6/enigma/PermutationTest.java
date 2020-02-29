@@ -101,13 +101,13 @@ public abstract class PermutationTest {
 //                "EKMFLGDQVZNTOWYHXUJPAIBRCS", p,
 //                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
 //        assertTrue(Rotor1.derangement());
-        Permutation Hilf = getNewPermutation(
-                "(HiLF) (nrG)",
-                getNewAlphabet("LFiHrGneY"));
-        checkPerm("hilf", "HiLFnGrYe",
-                "iLFHrnGYe", p,
-                getNewAlphabet("LFiHrGneY"));
-        assertTrue(Hilf.derangement());
+//        Permutation Hilf = getNewPermutation(
+//                "(HiLF) (nrG)",
+//                getNewAlphabet("LFiHrGneY"));
+//        checkPerm("hilf", "HiLFnGrYe",
+//                "iLFHrnGYe", p,
+//                getNewAlphabet("LFiHrGneY"));
+//        assertTrue(Hilf.derangement());
     }
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
 }
