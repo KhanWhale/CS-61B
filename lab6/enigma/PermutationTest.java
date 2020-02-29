@@ -85,29 +85,33 @@ public abstract class PermutationTest {
     }
     @Test
     public void testPermuteInvert() {
-//        Permutation p = getNewPermutation("(BACD)", getNewAlphabet("ABCD"));
-//        checkPerm("p1", "ABCD", "CADB", p, getNewAlphabet("ABCD"));
-//        assertTrue(p.derangement());
-//        p = getNewPermutation("(A) (B) (CD)", getNewAlphabet("ABCD"));
-//        checkPerm("p2", "ABCD", "ABDC", p, getNewAlphabet("ABCD"));
-//        assertFalse(p.derangement());
-//        p = getNewPermutation("(A DT) (X ) (RE)", getNewAlphabet("AXRDET"));
-//        checkPerm("p3", "ADTXRE", "DTAXER", p, getNewAlphabet("AXRDET"));
-//        assertFalse(p.derangement());
-//        Permutation Rotor1 = getNewPermutation(
-//                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
-//                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-//        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-//                "EKMFLGDQVZNTOWYHXUJPAIBRCS", p,
-//                getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ"));
-//        assertTrue(Rotor1.derangement());
-//        Permutation Hilf = getNewPermutation(
-//                "(HiLF) (nrG)",
-//                getNewAlphabet("LFiHrGneY"));
-//        checkPerm("hilf", "HiLFnGrYe",
-//                "iLFHrnGYe", p,
-//                getNewAlphabet("LFiHrGneY"));
-//        assertTrue(Hilf.derangement());
+        Alphabet alph = getNewAlphabet("ABCD");
+        Permutation p = getNewPermutation("(BACD)", alph);
+        checkPerm("p1", "ABCD", "CADB", p, alph);
+        assertTrue(p.derangement());
+        p = getNewPermutation("(A) (B) (CD)", alph);
+        checkPerm("p2", "ABCD", "ABDC", p, alph);
+        assertFalse(p.derangement());
+        alph = getNewAlphabet("AXRDET");
+        p = getNewPermutation("(A DT) (X ) (RE)", alph);
+        checkPerm("p3", "ADTXRE", "DTAXER", p, alph);
+        assertFalse(p.derangement());
+        alph = getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        Permutation Rotor1 = getNewPermutation(
+                "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
+                alph);
+        checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                "EKMFLGDQVZNTOWYHXUJPAIBRCS", p,
+                alph);
+        assertTrue(Rotor1.derangement());
+        alph = getNewAlphabet("LFiHrGneY");
+        Permutation Hilf = getNewPermutation(
+                "(HiLF) (nrG)",
+                alph);
+        checkPerm("hilf", "HiLFnGrYe",
+                "iLFHrnGYe", p,
+                alph);
+        assertTrue(Hilf.derangement());
     }
     // FIXME: Add tests here that pass on a correct Permutation and fail on buggy Permutations.
 }
