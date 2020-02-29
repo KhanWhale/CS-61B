@@ -101,7 +101,7 @@ public abstract class PermutationTest {
                 "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
                 alph);
         checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                "EKMFLGDQVZNTOWYHXUJPAIBRCS", p,
+                "EKMFLGDQVZNTOWYHXUJPAIBRCS", Rotor1,
                 alph);
         assertTrue(Rotor1.derangement());
         alph = getNewAlphabet("LFiHrGneY");
@@ -109,7 +109,7 @@ public abstract class PermutationTest {
                 "(HiLF) (nrG)",
                 alph);
         checkPerm("hilf", "HiLFnGrYe",
-                "iLFHrnGYe", p,
+                "iLFHrnGYe", Hilf,
                 alph);
         assertTrue(Hilf.derangement());
     }
