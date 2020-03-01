@@ -27,11 +27,9 @@ public class ReadInts {
         /* The notations ArrayList<Integer> and List<Integer> indicate
          * list types all of whose items are of type Integer. */
         ArrayList<Integer> L = new ArrayList<Integer>();
-
         Scanner s = new Scanner(input);
         while (s.hasNext()) {
-            int nextInt = s.nextInt();
-            // FIXME
+            L.add(s.nextInt());
         }
         return L;
     }
@@ -44,7 +42,15 @@ public class ReadInts {
      *  Use the hasNext(), next(), nextInt() and hasNextInt() methods
      *  on Scanners. */
     public static List<Integer> smartReadInts(String input) {
-        // FIXME
-        return null;
+        ArrayList<Integer> L = new ArrayList<Integer>();
+        Scanner s = new Scanner(input);
+        while (s.hasNext()) {
+            if (s.hasNextInt()) {
+                L.add(s.nextInt());
+            } else {
+                s.next();
+            }
+        }
+        return L;
     }
 }
