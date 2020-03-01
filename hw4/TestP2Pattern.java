@@ -18,7 +18,7 @@ public class TestP2Pattern {
 
     @Test
     public void testP1() {
-        Pattern p = Pattern.compile(P2Pattern.getP1());
+        Pattern p = Pattern.compile(P2Pattern.P1);
 
         String good1 = "3/4/2012";
         String good2 = "03/4/2012";
@@ -45,7 +45,7 @@ public class TestP2Pattern {
 
     @Test
     public void testP2() {
-        Pattern p = Pattern.compile(P2Pattern.getP2());
+        Pattern p = Pattern.compile(P2Pattern.P2);
 
         String good1 = "(1, 2, 33, 1, 63)";
         String good2 = "(1, 0, 3, 4, 5, 6, 7, 12312, 41)";
@@ -68,7 +68,7 @@ public class TestP2Pattern {
 
     @Test
     public void testP3() {
-        Pattern p = Pattern.compile(P2Pattern.getP3());
+        Pattern p = Pattern.compile(P2Pattern.P3);
 
         String good1 = "www.support.spotify.net";
         String good2 = "www.telegraph.co.de";
@@ -96,7 +96,7 @@ public class TestP2Pattern {
 
     @Test
     public void testP4() {
-        Pattern p = Pattern.compile(P2Pattern.getP4());
+        Pattern p = Pattern.compile(P2Pattern.P4);
 
         String good1 = "_tes_$t13$";
         String good2 = "__tes_$t13$$";
@@ -123,7 +123,7 @@ public class TestP2Pattern {
 
     @Test
     public void testP5() {
-        Pattern p = Pattern.compile(P2Pattern.getP5());
+        Pattern p = Pattern.compile(P2Pattern.P5);
 
         String good1 = "1.1.1.1";
         String good2 = "10.10.255.255";
