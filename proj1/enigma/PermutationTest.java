@@ -169,7 +169,11 @@ public class PermutationTest {
         checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
                 "EKMFLGDQVZNTOWYHXUJPAIBRCS", Rotor1,
                 alph);
-
+        Permutation Rotor2 = getNewPermutation(
+                "  (FIXVYOMW) (CDKLHUP)   (ESZ) (BJ) (GR) (NT) (A) (Q)", alpha);
+        checkPerm("r2", "FIXVYOMWCDKLHUPESZBJGRNTAQ",
+                "IXVYOMWFDKLHUPCSZEJBRGTNAQ", Rotor2,
+                alpha);
     }
 
 }
