@@ -17,7 +17,7 @@ public class Matching {
      *  string "QUIT/<newline>" */
     public static void main(String[] ignored) {
         Scanner inp = new Scanner(System.in);
-        String msg = 
+        String msg =
             "Alternately type strings to match and patterns to match against%n"
             + "them. Use \\ at the end of line to enter multi-line strings or%n"
             + "patterns (\\s are removed, leaving newlines).  The program%n"
