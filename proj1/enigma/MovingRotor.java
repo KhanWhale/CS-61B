@@ -21,7 +21,6 @@ class MovingRotor extends Rotor {
                 this.notches().add(notches.charAt(i));
             }
         }
-        this.set(0);
     }
 
     @Override
@@ -41,7 +40,10 @@ class MovingRotor extends Rotor {
             this.set(this.setting() + 1);
         }
     }
-
+    @Override
+    public String toString() {
+        return "Moving Rotor " + name();
+    }
     ArrayList<Character> notches () {
         return _notches;
     }

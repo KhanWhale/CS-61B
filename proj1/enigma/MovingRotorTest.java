@@ -36,8 +36,9 @@ public class MovingRotorTest {
             int ci = alpha.indexOf(c), ei = alpha.indexOf(e);
             assertEquals(msg(testId, "wrong translation of %d (%c)", ci, c),
                          ei, rotor.convertForward(ci));
+            int converted = rotor.convertBackward(ei);
             assertEquals(msg(testId, "wrong inverse of %d (%c)", ei, e),
-                         ci, rotor.convertBackward(ei));
+                         ci, converted);
         }
     }
 

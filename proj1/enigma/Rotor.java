@@ -11,6 +11,7 @@ class Rotor {
     Rotor(String name, Permutation perm) {
         _name = name;
         _permutation = perm;
+        this.set(0);
     }
 
     /** Return my name. */
@@ -55,19 +56,23 @@ class Rotor {
 
     /** Set setting() to character CPOSN. */
     void set(char cposn) {
-        _setting = this.permutation().alphabet().toInt(cposn);
+        this.set(this.alphabet().toInt(cposn));
     }
 
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        return this.permutation().permute(p+this.setting());
+        int enterAlias = this.permutation().wrap(p + this.setting());
+        int convert = this.permutation().permute(enterAlias);
+        return this.permutation().wrap(convert - this.setting());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        return this.permutation().invert(e - this.setting());
+        int enterAlias = this.permutation().wrap(e + this.setting());
+        int convert = this.permutation().invert(enterAlias);
+        return this.permutation().wrap(convert - this.setting());
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
