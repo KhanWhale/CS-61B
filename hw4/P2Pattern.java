@@ -23,23 +23,23 @@ public class P2Pattern {
     /** Pattern to match a valid IPv4 address. Eg: 127.0.0.1 */
     private static String p5 = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
 
-    /** Return pattern 1 */
+    /** Return pattern 1. */
     public static String getP1() {
         return p1;
     }
-    /** Return pattern 2 */
+    /** Return pattern 2. */
     public static String getP2() {
         return p2;
     }
-    /** Return pattern 3 */
+    /** Return pattern 3. */
     public static String getP3() {
         return p3;
     }
-    /** Return pattern 4 */
+    /** Return pattern 4. */
     public static String getP4() {
         return p4;
     }
-    /** Return pattern 5 */
+    /** Return pattern 5. */
     public static String getP5() {
         return p5;
     }
