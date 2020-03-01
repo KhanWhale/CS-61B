@@ -21,13 +21,25 @@ class MovingRotor extends Rotor {
                 this.notches().add(notches.charAt(i));
             }
         }
+        this.set(0);
     }
 
-    // FIXME?
+    @Override
+    boolean rotates () {
+        return true;
+    }
 
     @Override
+    boolean atNotch () {
+        return notches().contains(this.alphabet().toChar(this.setting()));
+    }
+    @Override
     void advance() {
-        // FIXME
+        if (this.setting() == this.alphabet().size() - 1) {
+            this.set(0);
+        } else {
+            this.set(this.setting() + 1);
+        }
     }
 
     ArrayList<Character> notches () {
