@@ -19,7 +19,7 @@ class Permutation {
         _alphabet = alphabet;
         int i = 0;
         int charsAdded = 0;
-        cycles = cycles.replaceAll("\\s","");
+        cycles.replaceAll("\\s","");
         cycles.trim();
         while (i < cycles.length()) {
             if(cycles.charAt(i) == '(') {

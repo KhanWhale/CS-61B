@@ -32,6 +32,7 @@ class MovingRotor extends Rotor {
     boolean atNotch () {
         return notches().contains(this.alphabet().toChar(this.setting()));
     }
+    
     @Override
     void advance() {
         if (this.setting() == this.alphabet().size() - 1) {
