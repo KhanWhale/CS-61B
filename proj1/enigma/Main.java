@@ -77,16 +77,36 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        // FIXME
+        _myMachine = readConfig();
+        setUp(_myMachine, _input.next());
+        while (_input.hasNextLine()) {
+            printMessageLine(_input.nextLine());
+        }
+
     }
 
     /** Return an Enigma machine configured from the contents of configuration
      *  file _config. */
     private Machine readConfig() {
         try {
-            // FIXME
-            _alphabet = new Alphabet();
-            return new Machine(_alphabet, 2, 1, null);
+            _alphabet = new Alphabet(_config.nextLine());
+            int numRotors = _config.nextInt();
+            int pawls = _config.nextInt();
+            ArrayList<Rotor> allRotors = new ArrayList<Rotor>();
+            while (_config.hasNextLine()){
+                allRotors.add(readRotor());
+            }
+            Machine myMachine = new Machine(_alphabet, numRotors, pawls,
+                    allRotors);
+            String[] rotors = new String[numRotors];
+            if (_input.next() != "*") {
+                throw new EnigmaException("Must begin settings with *");
+            }
+            for (int i = 0; i < numRotors; i += 1) {
+                rotors[i] = _input.next();
+            }
+            myMachine.insertRotors(rotors);
+            return myMachine;
         } catch (NoSuchElementException excp) {
             throw error("configuration file truncated");
         }
@@ -95,7 +115,19 @@ public final class Main {
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
         try {
-            return null; // FIXME
+            String name = _config.next();
+            String typeNotch = _config.next();
+            String type = Character.toString(typeNotch.charAt(0));
+            String cycles = _config.nextLine();
+            Permutation perm = new Permutation(cycles, _alphabet);
+            if (type.equals("M")) {
+                return new MovingRotor(name, perm, typeNotch.substring(1));
+            } else if (type.equals("N")) {
+                return new FixedRotor(name, perm);
+            } else {
+                return new Reflector(name, perm);
+            }
+
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
@@ -104,13 +136,27 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) {
-        // FIXME
+        M.setRotors(settings);
+        String cycles = _input.nextLine();
+        if (cycles.length() > 0 ) {
+            Permutation perm = new Permutation(cycles, _alphabet);
+            M.setPlugboard(perm);
+        }
     }
 
     /** Print MSG in groups of five (except that the last group may
      *  have fewer letters). */
     private void printMessageLine(String msg) {
-        // FIXME
+        String message = "";
+        msg.trim();
+        msg.replaceAll("\\s+", "" );
+        for(int i = 0; i < msg.length(); i += 1) {
+            message += Character.toString(_myMachine.convert(
+                    _alphabet.toInt(msg.charAt(i))));
+            if(i > 0 && i % 5 == 0) {
+                message += " ";
+            }
+        }
     }
 
     /** Alphabet used in this machine. */
@@ -124,4 +170,7 @@ public final class Main {
 
     /** File for encoded/decoded messages. */
     private PrintStream _output;
+
+    /**Settings line from input message */
+    private Machine _myMachine;
 }
