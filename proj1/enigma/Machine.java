@@ -113,7 +113,7 @@ class Machine {
     private int _pawls;
 
     /** The collection of my rotors. */
-    private ArrayList<Rotor> _myRotors = new ArrayList<Rotor>();
+    public ArrayList<Rotor> _myRotors = new ArrayList<Rotor>();
 
     /** The collection of all rotors this machine could be configured with. */
     private HashMap<String, Rotor> _rotorOptions = new HashMap<String, Rotor>();

@@ -81,7 +81,12 @@ public final class Main {
         _myMachine = readConfig();
         setUp(_myMachine, _input.next());
         while (_input.hasNextLine()) {
-            printMessageLine(_input.nextLine());
+            String next = _input.nextLine();
+            next = next.strip();
+            if(next.charAt(0) == '*') {
+                setUp(_myMachine, _input.next());
+            }
+            printMessageLine(next);
         }
 
     }
@@ -151,12 +156,16 @@ public final class Main {
         String message = "";
         msg = msg.trim();
         msg = msg.replaceAll("\\s+", "" );
-        for(int i = 0; i < msg.length(); i += 1) {
+        for (int i = 0; i < msg.length(); i += 1) {
             int charIndex = _alphabet.toInt(msg.charAt(i));
             int convertedInt = _myMachine.convert(charIndex);
+//            for (int j = 0; j < _myMachine._myRotors.size(); j += 1) {
+//                System.out.print(_myMachine._myRotors.get(j).setting());
+//            }
+//            System.out.println();
             char convertedChar = _alphabet.toChar(convertedInt);
             message += Character.toString(convertedChar);
-            if(i > 0 && i % 5 == 0) {
+            if(i > 3 && (i+1) % 5 == 0) {
                 message += " ";
             }
         }
