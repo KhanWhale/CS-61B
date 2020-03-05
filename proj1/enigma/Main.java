@@ -46,6 +46,7 @@ public final class Main {
             _input = getInput(args[1]);
         } else {
             _input = new Scanner(System.in);
+
         }
 
         if (args.length > 2) {
@@ -99,7 +100,7 @@ public final class Main {
             Machine myMachine = new Machine(_alphabet, numRotors, pawls,
                     allRotors);
             String[] rotors = new String[numRotors];
-            if (_input.next() != "*") {
+            if (!_input.next().equals("*")) {
                 throw new EnigmaException("Must begin settings with *");
             }
             for (int i = 0; i < numRotors; i += 1) {
@@ -148,15 +149,18 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         String message = "";
-        msg.trim();
-        msg.replaceAll("\\s+", "" );
+        msg = msg.trim();
+        msg = msg.replaceAll("\\s+", "" );
         for(int i = 0; i < msg.length(); i += 1) {
-            message += Character.toString(_myMachine.convert(
-                    _alphabet.toInt(msg.charAt(i))));
+            int charIndex = _alphabet.toInt(msg.charAt(i));
+            int convertedInt = _myMachine.convert(charIndex);
+            char convertedChar = _alphabet.toChar(convertedInt);
+            message += Character.toString(convertedChar);
             if(i > 0 && i % 5 == 0) {
                 message += " ";
             }
         }
+        _output.println(message);
     }
 
     /** Alphabet used in this machine. */

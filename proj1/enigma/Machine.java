@@ -18,6 +18,7 @@ class Machine {
             Collection<Rotor> allRotors) {
         _alphabet = alpha;
         _numRotors = numRotors;
+        _pawls = pawls;
         for (Rotor rotor : allRotors) {
             _rotorOptions.put(rotor.name(), rotor);
         }
@@ -58,12 +59,9 @@ class Machine {
 
     void advance() {
         boolean[] advanced = new boolean[_myRotors.size()];
-        for (int i = 0; i < advanced.length; i += 1) {
-            advanced[i] = false;
-        }
         this._myRotors.get(_myRotors.size() - 1).advance();
         for (int i = _myRotors.size() - 2;
-             i > _myRotors.size() - numPawls(); i -= 1) {
+             i >= _myRotors.size() - numPawls(); i -= 1) {
             if (_myRotors.get(i + 1).atNotch()) {
                 if (!advanced[i]) {
                     _myRotors.get(i).advance();
@@ -76,18 +74,20 @@ class Machine {
     }
     /** Returns the result of converting the input character C (as an
      *  index in the range 0..alphabet size - 1), after first advancing
-
      *  the machine. */
     int convert(int c) {
         this.advance();
         int reflectedIndex = this._plugboard.permute(c);
+        char currChar= 'y';
         for (int i = _myRotors.size() - 1; i >= 0; i -= 1) {
             reflectedIndex = _myRotors.get(i).convertForward(reflectedIndex);
+            currChar = _alphabet.toChar(reflectedIndex);
         }
-        for (int i = 0; i < _myRotors.size(); i += 1) {
+        for (int i = 1; i < _myRotors.size(); i += 1) {
             reflectedIndex = _myRotors.get(i).convertBackward(reflectedIndex);
+            currChar = _alphabet.toChar(reflectedIndex);
         }
-        return reflectedIndex;
+        return this._plugboard.permute(reflectedIndex);
     }
 
     /** Returns the encoding/decoding of MSG, updating the state of
