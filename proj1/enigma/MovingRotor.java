@@ -1,11 +1,9 @@
 package enigma;
 
-import java.util.ArrayList;
-
 import static enigma.EnigmaException.*;
 
 /** Class that represents a rotating rotor in the enigma machine.
- *  @author Aniruddh Khanwale
+ *  @author
  */
 class MovingRotor extends Rotor {
 
@@ -16,39 +14,16 @@ class MovingRotor extends Rotor {
      */
     MovingRotor(String name, Permutation perm, String notches) {
         super(name, perm);
-        for (int i = 0; i < notches.length(); i += 1) {
-            if (this.permutation().alphabet().contains(notches.charAt(i))) {
-                this.notches().add(notches.charAt(i));
-            }
-        }
+        // FIXME
     }
 
-    @Override
-    boolean rotates () {
-        return true;
-    }
+    // FIXME?
 
-    @Override
-    boolean atNotch () {
-        return notches().contains(this.alphabet().toChar(this.setting()));
-    }
-    
     @Override
     void advance() {
-        if (this.setting() == this.alphabet().size() - 1) {
-            this.set(0);
-        } else {
-            this.set(this.setting() + 1);
-        }
+        // FIXME
     }
-    @Override
-    public String toString() {
-        return "Moving Rotor " + name();
-    }
-    ArrayList<Character> notches () {
-        return _notches;
-    }
-    private ArrayList<Character> _notches = new ArrayList<Character>();
+
     // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 
 }
