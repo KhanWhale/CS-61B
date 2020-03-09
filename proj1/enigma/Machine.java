@@ -60,6 +60,7 @@ class Machine {
     void advance() {
         boolean[] advanced = new boolean[_myRotors.size()];
         this._myRotors.get(_myRotors.size() - 1).advance();
+        advanced[_myRotors.size() - 1] = true;
         for (int i = _myRotors.size() - 2;
              i >= _myRotors.size() - numPawls(); i -= 1) {
             if (_myRotors.get(i + 1).atNotch()) {
