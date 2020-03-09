@@ -65,9 +65,11 @@ class Machine {
             if (_myRotors.get(i + 1).atNotch()) {
                 if (!advanced[i]) {
                     _myRotors.get(i).advance();
+                    advanced[i] = true;
                 }
                 if (!advanced[i + 1]) {
                     _myRotors.get(i + 1).advance();
+                    advanced[i] = true;
                 }
             }
         }
