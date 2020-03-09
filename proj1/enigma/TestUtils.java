@@ -9,7 +9,9 @@ class TestUtils {
 
     protected static final Alphabet UPPER = new Alphabet();
     protected static final String UPPER_STRING =
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    protected static final String LOWER_STRING =
+            "abcdefghijklmonpqrstuvwxyz";
 
     /** Return an identifying error message for failed assertions.
      *  TESTID identifies the test, MSGFORMAT and ARGS provide
@@ -32,11 +34,11 @@ class TestUtils {
         NAVALA.put("Beta", "(ALBEVFCYODJWUGNMQTZSKPR) (HIX)");
         NAVALA.put("Gamma", "(AFNIRLBSQWVXGUZDKMTPCOYJHE)");
         NAVALA.put("B",
-                  "(AE) (BN) (CK) (DQ) (FU) (GY) (HW) (IJ) (LO) "
-                  + "(MP) (RX) (SZ) (TV)");
+                "(AE) (BN) (CK) (DQ) (FU) (GY) (HW) (IJ) (LO) "
+                        + "(MP) (RX) (SZ) (TV)");
         NAVALA.put("C",
-                  "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
-                  + "(PW) (QZ) (SX) (UY)");
+                "(AR) (BD) (CO) (EJ) (FN) (GT) (HK) (IV) (LM) "
+                        + "(PW) (QZ) (SX) (UY)");
     }
 
     /** The mapping of the upper-case alphabet by NAVALA. */
@@ -68,11 +70,11 @@ class TestUtils {
         NAVALB.put("Beta", " (ZKADUEBXNCIVTFMLPSYRJOQ) (GHW) ");
         NAVALB.put("Gamma", " (ZEMHQKARPVUWFTYCJLSOBNXIGD) ");
         NAVALB.put("B",
-                  " (ZD) (AM) (BJ) (CP) (ET) (FX) (GV) (HI) (KN)  "
-                  + " (LO) (QW) (RY) (SU) ");
+                " (ZD) (AM) (BJ) (CP) (ET) (FX) (GV) (HI) (KN)  "
+                        + " (LO) (QW) (RY) (SU) ");
         NAVALB.put("C",
-                  " (ZQ) (AC) (BN) (DI) (EM) (FS) (GJ) (HU) (KL)  "
-                  + " (OV) (PY) (RW) (TX) ");
+                " (ZQ) (AC) (BN) (DI) (EM) (FS) (GJ) (HU) (KL)  "
+                        + " (OV) (PY) (RW) (TX) ");
     }
 
     /** The mapping of the upper-case alphabet by NAVALB. */
@@ -104,11 +106,11 @@ class TestUtils {
         NAVALZ.put("Beta", " (BMCFWGDZPEKXVHONRUATLQS) (IJY) ");
         NAVALZ.put("Gamma", " (BGOJSMCTRXWYHVAELNUQDPZKIF) ");
         NAVALZ.put("B",
-                  " (BF) (CO) (DL) (ER) (GV) (HZ) (IX) (JK) (MP)  "
-                  + " (NQ) (SY) (TA) (UW) ");
+                " (BF) (CO) (DL) (ER) (GV) (HZ) (IX) (JK) (MP)  "
+                        + " (NQ) (SY) (TA) (UW) ");
         NAVALZ.put("C",
-                  " (BS) (CE) (DP) (FK) (GO) (HU) (IL) (JW) (MN)  "
-                  + " (QX) (RA) (TY) (VZ) ");
+                " (BS) (CE) (DP) (FK) (GO) (HU) (IL) (JW) (MN)  "
+                        + " (QX) (RA) (TY) (VZ) ");
     }
 
     /** The mapping of the upper-case alphabet by NAVALZ. */
