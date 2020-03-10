@@ -93,7 +93,6 @@ public final class Main {
                 if (_input.hasNextLine()) {
                     myLine = col1 + _input.nextLine();
                 }
-                myLine.strip();
                 printMessageLine(myLine);
             }
         }
