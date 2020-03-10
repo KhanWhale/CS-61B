@@ -41,7 +41,7 @@ public final class Main {
         }
 
         _config = getInput(args[0]);
-
+        _storeArgs = args;
         if (args.length > 1) {
             _input = getInput(args[1]);
         } else {
@@ -78,16 +78,27 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        _myMachine = readConfig();
-        setUp(_myMachine, _input.next());
-        while (_input.hasNextLine()) {
-            String next = _input.nextLine();
-            next = next.strip();
-            if (next.charAt(0) == '*') {
+        while(_input.hasNextLine()) {
+            String col1 = _input.next();
+            if (col1.charAt(0) == '*') {
+                _myMachine = readConfig();
                 setUp(_myMachine, _input.next());
+            } else {
+                String myLine = col1 + _input.nextLine();
+                myLine.strip();
+                printMessageLine(myLine);
             }
-            printMessageLine(next);
         }
+//        _myMachine = readConfig();
+//        setUp(_myMachine, _input.next());
+//        while (_input.hasNextLine()) {
+//            String next = _input.nextLine();
+//            next = next.strip();
+//            if (next.charAt(0) == '*') {
+//                setUp(_myMachine, _input.next());
+//            }
+//            printMessageLine(next);
+//        }
 
     }
 
@@ -95,6 +106,7 @@ public final class Main {
      *  file _config. */
     private Machine readConfig() {
         try {
+            _config = getInput(_storeArgs[0]);
             _alphabet = new Alphabet(_config.nextLine());
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
@@ -105,9 +117,6 @@ public final class Main {
             Machine myMachine = new Machine(_alphabet, numRotors, pawls,
                     allRotors);
             String[] rotors = new String[numRotors];
-            if (!_input.next().equals("*")) {
-                throw new EnigmaException("Must begin settings with *");
-            }
             for (int i = 0; i < numRotors; i += 1) {
                 rotors[i] = _input.next();
             }
@@ -181,4 +190,6 @@ public final class Main {
 
     /**Settings line from input message. */
     private Machine _myMachine;
+
+    private String[] _storeArgs;
 }
