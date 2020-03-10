@@ -78,16 +78,22 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
+        boolean moreConfigs = false;
         while(_input.hasNextLine()) {
             String col1 = _input.next();
             if (col1.charAt(0) == '*') {
+                if (moreConfigs) {
+                    _output.println();
+                }
                 _myMachine = readConfig();
                 setUp(_myMachine, _input.next());
+                moreConfigs = true;
             } else {
                 String myLine = col1;
                 if (_input.hasNextLine()) {
                     myLine = col1 + _input.nextLine();
                 }
+                myLine.strip();
                 printMessageLine(myLine);
             }
         }
