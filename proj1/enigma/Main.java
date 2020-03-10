@@ -108,7 +108,7 @@ public final class Main {
      *  file _config. */
     private Machine readConfig() {
         try {
-            _config.reset();
+            _config = _config.reset();
             _alphabet = new Alphabet(_config.nextLine());
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
