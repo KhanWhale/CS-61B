@@ -107,7 +107,14 @@ public final class Main {
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
             while (_config.hasNextLine()) {
-                allRotors.add(readRotor());
+                wasNew = true;
+                Rotor myRotor = readRotor();
+                if (wasNew) {
+                    allRotors.add(myRotor);
+                }
+            }
+            for (int i  = 0; i < allRotors.size(); i += 1) {
+                allRotors.get(i).setPermutation(new Permutation(allCycles.get(i), _alphabet));
             }
             Machine myMachine = new Machine(_alphabet, numRotors, pawls,
                     allRotors);
@@ -129,14 +136,22 @@ public final class Main {
             String typeNotch = _config.next();
             String type = Character.toString(typeNotch.charAt(0));
             String cycles = _config.nextLine();
-                Permutation perm = new Permutation(cycles, _alphabet);
-                if (type.equals("M")) {
-                    return new MovingRotor(name, perm, typeNotch.substring(1));
-                } else if (type.equals("N")) {
-                    return new FixedRotor(name, perm);
-                } else {
-                    return new Reflector(name, perm);
-                }
+            if (name.contains("(")) {
+                wasNew = false;
+                allCycles.set(allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + name);
+                allCycles.set(allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + typeNotch);
+                allCycles.set(allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + cycles);
+            } else {
+                allCycles.add(cycles);
+            }
+            Permutation perm = new Permutation(cycles, _alphabet);
+            if (type.equals("M")) {
+                return new MovingRotor(name, perm, typeNotch.substring(1));
+            } else if (type.equals("N")) {
+                return new FixedRotor(name, perm);
+            } else {
+                return new Reflector(name, perm);
+            }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
@@ -186,6 +201,8 @@ public final class Main {
     private String[] _storeArgs;
 
     private ArrayList<Rotor> allRotors = new ArrayList<Rotor>();
+
+    private ArrayList<String> allCycles = new ArrayList<String>();
 
     private boolean wasNew = true;
 }
