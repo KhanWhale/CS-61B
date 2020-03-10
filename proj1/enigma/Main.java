@@ -1,10 +1,12 @@
 package enigma;
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -100,18 +102,24 @@ public final class Main {
 
     /** Return an Enigma machine configured from the contents of configuration
      *  file _config. */
-    private Machine readConfig() {
+    private Machine readConfig() throws EnigmaException{
         try {
             _config = getInput(_storeArgs[0]);
             _alphabet = new Alphabet(_config.nextLine());
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
+            List<String> rotorNames = new ArrayList<String>();
+            Set<String> set = new HashSet<String>(rotorNames);
             while (_config.hasNextLine()) {
                 wasNew = true;
                 Rotor myRotor = readRotor();
                 if (wasNew) {
                     allRotors.add(myRotor);
+                    rotorNames.add(myRotor.name());
                 }
+            }
+            if (set.size() < rotorNames.size()) {
+                throw new EnigmaException("Duplicate Rotor");
             }
             for (int i  = 0; i < allRotors.size(); i += 1) {
                 allRotors.get(i).setPermutation(new Permutation(allCycles.get(i), _alphabet));
@@ -121,6 +129,11 @@ public final class Main {
             String[] rotors = new String[numRotors];
             for (int i = 0; i < numRotors; i += 1) {
                 rotors[i] = _input.next();
+            }
+            for (int i = 0; i < rotors.length; i += 1) {
+                if (!rotorNames.contains(rotors[i])) {
+                    throw new EnigmaException("Bad Rotor Name");
+                }
             }
             myMachine.insertRotors(rotors);
             return myMachine;
@@ -159,7 +172,17 @@ public final class Main {
 
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
-    private void setUp(Machine M, String settings) {
+    private void setUp(Machine M, String settings) throws EnigmaException{
+        if (settings.length() < _myMachine.getMyRotors().size()) {
+            throw new EnigmaException("Wheel settings too short");
+        } else if (settings.length() > _myMachine.getMyRotors().size()) {
+            throw new EnigmaException("Wheel settings too long");
+        }
+        for (int i = 0; i < settings.length(); i += 1) {
+            if(!_alphabet.contains(settings.charAt(i))) {
+                throw new EnigmaException("Bad character in wheel settings");
+            }
+        }
         M.setRotors(settings);
         String cycles = _input.nextLine();
         Permutation perm = new Permutation(cycles, _alphabet);
