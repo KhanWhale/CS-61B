@@ -81,31 +81,28 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        boolean moreConfigs = false;
         if(_input.hasNextLine()) {
-            String col1 = _input.next();
-            if (col1.charAt(0) == '*') {
+            currLine = _input.nextLine();
+            if (currLine.charAt(0) == '*') {
+                myLineScanner = new Scanner(currLine);
+                myLineScanner.next();
                 _myMachine = readConfig();
-                setUp(_myMachine, _input.next());
-                moreConfigs = true;
+                setUp(_myMachine, myLineScanner.next());
             } else {
                 throw new EnigmaException("No Configuration Specified");
             }
         }
         while (_input.hasNextLine()) {
-            String col1 = _input.next();
-            if (col1.charAt(0) == '*') {
+           currLine = _input.nextLine();
+           if (currLine.isEmpty()) {
+               _output.println();
+           } else if (currLine.charAt(0) == '*') {
+                myLineScanner = new Scanner(currLine);
+                myLineScanner.next();
                 _myMachine = readConfig();
-                setUp(_myMachine, _input.next());
-                moreConfigs = true;
-            } else if (col1.isEmpty()) {
-                _output.println();
+                setUp(_myMachine, myLineScanner.next());
             } else {
-                String myLine = col1;
-                if (_input.hasNextLine()) {
-                    myLine = col1 + _input.nextLine();
-                }
-                printMessageLine(myLine);
+                printMessageLine(currLine);
             }
         }
     }
@@ -139,7 +136,7 @@ public final class Main {
                     allRotors);
             String[] rotors = new String[numRotors];
             for (int i = 0; i < numRotors; i += 1) {
-                rotors[i] = _input.next();
+                rotors[i] = myLineScanner.next();
             }
             for (int i = 0; i < rotors.length; i += 1) {
                 if (!rotorNames.contains(rotors[i])) {
@@ -201,7 +198,10 @@ public final class Main {
             }
         }
         M.setRotors(settings);
-        String cycles = _input.nextLine();
+        String cycles = "";
+        if (myLineScanner.hasNextLine()) {
+            cycles = myLineScanner.nextLine();
+        }
         Permutation perm = new Permutation(cycles, _alphabet);
         M.setPlugboard(perm);
     }
@@ -249,4 +249,8 @@ public final class Main {
 
     /** Determine whether or not a rotor is new. */
     private boolean wasNew = true;
+
+    private String currLine;
+
+    private Scanner myLineScanner;
 }
