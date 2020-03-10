@@ -113,7 +113,7 @@ public final class Main {
      *  file _config. */
     private Machine readConfig() {
         try {
-            _config = _config.reset();
+            _config = getInput(_storeArgs[0]);
             _alphabet = new Alphabet(_config.nextLine());
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
@@ -170,7 +170,6 @@ public final class Main {
         String message = "";
         msg = msg.replaceAll("\\s+", "");
         for (int i = 0; i < msg.length(); i += 1) {
-            Character ref = msg.charAt(i);
             int charIndex = _alphabet.toInt(msg.charAt(i));
             int convertedInt = _myMachine.convert(charIndex);
             char convertedChar = _alphabet.toChar(convertedInt);
