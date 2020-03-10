@@ -153,7 +153,14 @@ public final class Main {
     /** Return a rotor, reading its description from _config. */
     private Rotor readRotor() {
         try {
-            String name = _config.next();
+            String name;
+            if (_config.hasNext()) {
+                name = _config.next();
+            } else {
+                _config.nextLine();
+                wasNew = false;
+                return null;
+            }
             String typeNotch = _config.next();
             String type = Character.toString(typeNotch.charAt(0));
             String cycles = _config.nextLine();
