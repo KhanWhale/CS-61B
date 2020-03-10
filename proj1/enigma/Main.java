@@ -103,7 +103,7 @@ public final class Main {
 
     /** Return an Enigma machine configured from the contents of configuration
      *  file _config. */
-    private Machine readConfig() throws EnigmaException{
+    private Machine readConfig() throws EnigmaException {
         try {
             _config = getInput(_storeArgs[0]);
             _alphabet = new Alphabet(_config.nextLine());
@@ -154,11 +154,14 @@ public final class Main {
             if (name.contains("(")) {
                 wasNew = false;
                 allCycles.set(
-                        allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + name);
+                        allCycles.size() - 1,
+                        allCycles.get(allCycles.size() - 1) + name);
                 allCycles.set(
-                        allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + typeNotch);
+                        allCycles.size() - 1,
+                        allCycles.get(allCycles.size() - 1) + typeNotch);
                 allCycles.set(
-                        allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + cycles);
+                        allCycles.size() - 1,
+                        allCycles.get(allCycles.size() - 1) + cycles);
             } else {
                 allCycles.add(cycles);
             }
