@@ -169,7 +169,6 @@ public final class Main {
      *  have fewer letters). */
     private void printMessageLine(String msg) {
         String message = "";
-        msg = msg.trim();
         msg = msg.replaceAll("\\s+", "");
         for (int i = 0; i < msg.length(); i += 1) {
             Character ref = msg.charAt(i);
