@@ -29,7 +29,8 @@ class Rotor {
         return _permutation;
     }
 
-    void setPermutation (Permutation perm) {
+    /** Set this rotors permutation. */
+    void setPermutation(Permutation perm) {
         _permutation = perm;
     }
     /** Return the size of my alphabet. */

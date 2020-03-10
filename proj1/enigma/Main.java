@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -79,7 +82,7 @@ public final class Main {
      *  results to _output. */
     private void process() {
         boolean moreConfigs = false;
-        while(_input.hasNextLine()) {
+        while (_input.hasNextLine()) {
             String col1 = _input.next();
             if (col1.charAt(0) == '*') {
                 if (moreConfigs) {
@@ -120,7 +123,8 @@ public final class Main {
                 throw new EnigmaException("Duplicate Rotor");
             }
             for (int i  = 0; i < allRotors.size(); i += 1) {
-                allRotors.get(i).setPermutation(new Permutation(allCycles.get(i), _alphabet));
+                allRotors.get(i).setPermutation(
+                        new Permutation(allCycles.get(i), _alphabet));
             }
             Machine myMachine = new Machine(_alphabet, numRotors, pawls,
                     allRotors);
@@ -149,9 +153,12 @@ public final class Main {
             String cycles = _config.nextLine();
             if (name.contains("(")) {
                 wasNew = false;
-                allCycles.set(allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + name);
-                allCycles.set(allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + typeNotch);
-                allCycles.set(allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + cycles);
+                allCycles.set(
+                        allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + name);
+                allCycles.set(
+                        allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + typeNotch);
+                allCycles.set(
+                        allCycles.size() - 1, allCycles.get(allCycles.size() - 1) + cycles);
             } else {
                 allCycles.add(cycles);
             }
@@ -170,14 +177,14 @@ public final class Main {
 
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
-    private void setUp(Machine M, String settings) throws EnigmaException{
+    private void setUp(Machine M, String settings) throws EnigmaException {
         if (settings.length() < _myMachine.numRotors() - 1) {
             throw new EnigmaException("Wheel settings too short");
         } else if (settings.length() > _myMachine.numRotors() - 1) {
             throw new EnigmaException("Wheel settings too long");
         }
         for (int i = 0; i < settings.length(); i += 1) {
-            if(!_alphabet.contains(settings.charAt(i))) {
+            if (!_alphabet.contains(settings.charAt(i))) {
                 throw new EnigmaException("Bad character in wheel settings");
             }
         }
@@ -219,11 +226,15 @@ public final class Main {
     /**Settings line from input message. */
     private Machine _myMachine;
 
+    /** Stores the original configuration input. */
     private String[] _storeArgs;
 
+    /** Store all the rotors. */
     private ArrayList<Rotor> allRotors = new ArrayList<Rotor>();
 
+    /** Store all the cyles. */
     private ArrayList<String> allCycles = new ArrayList<String>();
 
+    /** Determine whether or not a rotor is new. */
     private boolean wasNew = true;
 }

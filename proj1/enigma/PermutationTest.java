@@ -60,22 +60,22 @@ public class PermutationTest {
      *  vice-versa. TESTID is used in error messages. */
     private void checkPerm(String testId,
                            String fromAlpha, String toAlpha,
-                           Permutation perm, Alphabet alpha) {
+                           Permutation _perm, Alphabet _alpha) {
         int N = fromAlpha.length();
-        assertEquals(testId + " (wrong length)", N, perm.size());
+        assertEquals(testId + " (wrong length)", N, _perm.size());
         for (int i = 0; i < N; i += 1) {
             char c = fromAlpha.charAt(i), e = toAlpha.charAt(i);
             assertEquals(msg(testId, "wrong translation of '%c'", c),
-                    e, perm.permute(c));
+                    e, _perm.permute(c));
             assertEquals(msg(testId, "wrong inverse of '%c'", e),
-                    c, perm.invert(e));
-            int ci = alpha.toInt(c), ei = alpha.toInt(e);
+                    c, _perm.invert(e));
+            int ci = _alpha.toInt(c), ei = _alpha.toInt(e);
             assertEquals(msg(testId, "wrong translation of %d", ci),
-                    ei, perm.permute(ci));
+                    ei, _perm.permute(ci));
             assertEquals(msg(testId, "wrong inverse of %d", ei),
-                    ci, perm.invert(ei));
+                    ci, _perm.invert(ei));
         }
-        assertEquals(perm.alphabet(), alpha);
+        assertEquals(_perm.alphabet(), _alpha);
     }
 
 
@@ -84,7 +84,6 @@ public class PermutationTest {
     /* *** TESTS for Alphabet **** */
     @Test
     public void checkAlphabet() {
-        /** Default Alphabet Tests **/
         Alphabet def = getNewAlphabet();
         assertEquals(26, def.size());
         assertTrue(def.contains('A'));
@@ -99,7 +98,6 @@ public class PermutationTest {
         assertEquals(12, def.toInt('M'));
         assertEquals(def.size() - 1, def.toInt('Z'));
 
-        /** Non Default Alphabet Tests */
         Alphabet lower = getNewAlphabet(LOWER_STRING);
         assertEquals(26, def.size());
         assertTrue(lower.contains('a'));
