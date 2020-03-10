@@ -107,7 +107,6 @@ public final class Main {
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
             List<String> rotorNames = new ArrayList<String>();
-            Set<String> set = new HashSet<String>(rotorNames);
             while (_config.hasNextLine()) {
                 wasNew = true;
                 Rotor myRotor = readRotor();
@@ -116,6 +115,7 @@ public final class Main {
                     rotorNames.add(myRotor.name());
                 }
             }
+            Set<String> set = new HashSet<String>(rotorNames);
             if (set.size() < rotorNames.size()) {
                 throw new EnigmaException("Duplicate Rotor");
             }
