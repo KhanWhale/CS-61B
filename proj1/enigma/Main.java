@@ -171,9 +171,9 @@ public final class Main {
     /** Set M according to the specification given on SETTINGS,
      *  which must have the format specified in the assignment. */
     private void setUp(Machine M, String settings) throws EnigmaException{
-        if (settings.length() < _myMachine.getMyRotors().size()) {
+        if (settings.length() < _myMachine.numRotors() - 1) {
             throw new EnigmaException("Wheel settings too short");
-        } else if (settings.length() > _myMachine.getMyRotors().size()) {
+        } else if (settings.length() > _myMachine.numRotors() - 1) {
             throw new EnigmaException("Wheel settings too long");
         }
         for (int i = 0; i < settings.length(); i += 1) {
