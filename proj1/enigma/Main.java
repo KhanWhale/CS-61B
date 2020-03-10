@@ -82,6 +82,16 @@ public final class Main {
      *  results to _output. */
     private void process() {
         boolean moreConfigs = false;
+        if(_input.hasNextLine()) {
+            String col1 = _input.next();
+            if (col1.charAt(0) == '*') {
+                _myMachine = readConfig();
+                setUp(_myMachine, _input.next());
+                moreConfigs = true;
+            } else {
+                throw new EnigmaException("No Configuration Specified");
+            }
+        }
         while (_input.hasNextLine()) {
             String col1 = _input.next();
             if (col1.charAt(0) == '*') {
