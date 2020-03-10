@@ -57,7 +57,7 @@ class Machine {
         this._plugboard = plugboard;
     }
 
-    /** Advance this machine */
+    /** Advance this machine. */
     void advance() {
         boolean[] advanced = new boolean[_myRotors.size()];
         boolean[] atNotches = new boolean[_myRotors.size()];
@@ -108,7 +108,7 @@ class Machine {
         }
         return converted;
     }
-
+    /** Return the machines rotors. */
     public ArrayList<Rotor> getMyRotors() {
         return this._myRotors;
     }

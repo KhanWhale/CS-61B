@@ -149,7 +149,8 @@ class Permutation {
     }
 
     /** Find the cycle in which this character is found.
-     * @param c Character to find cycle for **/
+     * @param c Character to find cycle for
+     * @return myCycle the Cycle in which this char is found **/
     private String charCycle(char c) {
         String myCycle = Character.toString(c);
         for (String cycle : this.cycles()) {

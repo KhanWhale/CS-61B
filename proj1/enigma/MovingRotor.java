@@ -46,7 +46,7 @@ class MovingRotor extends Rotor {
         return "Moving Rotor " + name();
     }
     /** Return the notches of this Rotor. **/
-    ArrayList<Character> notches () {
+    ArrayList<Character> notches() {
         return _notches;
     }
     /** Stores the notches of this rotor. **/

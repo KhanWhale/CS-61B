@@ -99,7 +99,7 @@ public class PermutationTest {
         assertEquals(12, def.toInt('M'));
         assertEquals(def.size() - 1, def.toInt('Z'));
 
-        /** Non Default Alphabet Tests **/
+        /** Non Default Alphabet Tests */
         Alphabet lower = getNewAlphabet(LOWER_STRING);
         assertEquals(26, def.size());
         assertTrue(lower.contains('a'));

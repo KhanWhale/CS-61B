@@ -99,7 +99,7 @@ public final class Main {
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
             ArrayList<Rotor> allRotors = new ArrayList<Rotor>();
-            while (_config.hasNextLine()){
+            while (_config.hasNextLine()) {
                 allRotors.add(readRotor());
             }
             Machine myMachine = new Machine(_alphabet, numRotors, pawls,
@@ -162,7 +162,7 @@ public final class Main {
             int convertedInt = _myMachine.convert(charIndex);
             char convertedChar = _alphabet.toChar(convertedInt);
             message += Character.toString(convertedChar);
-            if(i > 3 && (i + 1) % 5 == 0) {
+            if (i > 3 && (i + 1) % 5 == 0) {
                 message += " ";
             }
         }
