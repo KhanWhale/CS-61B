@@ -96,17 +96,6 @@ public final class Main {
                 printMessageLine(myLine);
             }
         }
-//        _myMachine = readConfig();
-//        setUp(_myMachine, _input.next());
-//        while (_input.hasNextLine()) {
-//            String next = _input.nextLine();
-//            next = next.strip();
-//            if (next.charAt(0) == '*') {
-//                setUp(_myMachine, _input.next());
-//            }
-//            printMessageLine(next);
-//        }
-
     }
 
     /** Return an Enigma machine configured from the contents of configuration
