@@ -106,7 +106,6 @@ public final class Main {
             _alphabet = new Alphabet(_config.nextLine());
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
-            ArrayList<Rotor> allRotors = new ArrayList<Rotor>();
             while (_config.hasNextLine()) {
                 allRotors.add(readRotor());
             }
@@ -130,15 +129,14 @@ public final class Main {
             String typeNotch = _config.next();
             String type = Character.toString(typeNotch.charAt(0));
             String cycles = _config.nextLine();
-            Permutation perm = new Permutation(cycles, _alphabet);
-            if (type.equals("M")) {
-                return new MovingRotor(name, perm, typeNotch.substring(1));
-            } else if (type.equals("N")) {
-                return new FixedRotor(name, perm);
-            } else {
-                return new Reflector(name, perm);
-            }
-
+                Permutation perm = new Permutation(cycles, _alphabet);
+                if (type.equals("M")) {
+                    return new MovingRotor(name, perm, typeNotch.substring(1));
+                } else if (type.equals("N")) {
+                    return new FixedRotor(name, perm);
+                } else {
+                    return new Reflector(name, perm);
+                }
         } catch (NoSuchElementException excp) {
             throw error("bad rotor description");
         }
@@ -186,4 +184,8 @@ public final class Main {
     private Machine _myMachine;
 
     private String[] _storeArgs;
+
+    private ArrayList<Rotor> allRotors = new ArrayList<Rotor>();
+
+    private boolean wasNew = true;
 }
