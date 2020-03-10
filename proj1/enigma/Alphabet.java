@@ -41,5 +41,6 @@ class Alphabet {
         return chars.indexOf(ch);
     }
 
+    /** Stores the current characters. */
     private ArrayList<Character> chars = new ArrayList<Character>();
 }

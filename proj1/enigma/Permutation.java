@@ -19,10 +19,10 @@ class Permutation {
         _alphabet = alphabet;
         int i = 0;
         int charsAdded = 0;
-        cycles.replaceAll("\\s","");
+        cycles.replaceAll("\\s", "");
         cycles.trim();
         while (i < cycles.length()) {
-            if(cycles.charAt(i) == '(') {
+            if (cycles.charAt(i) == '(') {
                 String cycle = "";
                 i += 1;
                 while (cycles.charAt(i) != ')') {
@@ -137,6 +137,7 @@ class Permutation {
         return _alphabet;
     }
 
+    /** Return the cycles of this permutation. */
     ArrayList<String> cycles() {
         return _cycles;
     }
@@ -147,7 +148,8 @@ class Permutation {
         return this._deranged;
     }
 
-    /** Find the cycle in which this character is found **/
+    /** Find the cycle in which this character is found.
+     * @param c Character to find cycle for **/
     private String charCycle(char c) {
         String myCycle = Character.toString(c);
         for (String cycle : this.cycles()) {
@@ -163,6 +165,6 @@ class Permutation {
     /** Cycles of this permutation. */
     private ArrayList<String> _cycles = new ArrayList<String>();
 
+    /** Stores whether the permutation is a derangement. */
     private boolean _deranged = true;
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 }

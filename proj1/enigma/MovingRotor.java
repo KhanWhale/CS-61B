@@ -24,12 +24,12 @@ class MovingRotor extends Rotor {
     }
 
     @Override
-    boolean rotates () {
+    boolean rotates() {
         return true;
     }
 
     @Override
-    boolean atNotch () {
+    boolean atNotch() {
         return notches().contains(this.alphabet().toChar(this.setting()));
     }
 
@@ -45,10 +45,11 @@ class MovingRotor extends Rotor {
     public String toString() {
         return "Moving Rotor " + name();
     }
+    /** Return the notches of this Rotor. **/
     ArrayList<Character> notches () {
         return _notches;
     }
+    /** Stores the notches of this rotor. **/
     private ArrayList<Character> _notches = new ArrayList<Character>();
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 
 }

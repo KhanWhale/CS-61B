@@ -11,7 +11,7 @@ import java.util.Scanner;
 import static enigma.EnigmaException.*;
 
 /** Enigma simulator.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 public final class Main {
 
@@ -83,7 +83,7 @@ public final class Main {
         while (_input.hasNextLine()) {
             String next = _input.nextLine();
             next = next.strip();
-            if(next.charAt(0) == '*') {
+            if (next.charAt(0) == '*') {
                 setUp(_myMachine, _input.next());
             }
             printMessageLine(next);
@@ -144,7 +144,7 @@ public final class Main {
     private void setUp(Machine M, String settings) {
         M.setRotors(settings);
         String cycles = _input.nextLine();
-        if (cycles.length() > 0 ) {
+        if (cycles.length() > 0) {
             Permutation perm = new Permutation(cycles, _alphabet);
             M.setPlugboard(perm);
         }
@@ -155,14 +155,14 @@ public final class Main {
     private void printMessageLine(String msg) {
         String message = "";
         msg = msg.trim();
-        msg = msg.replaceAll("\\s+", "" );
+        msg = msg.replaceAll("\\s+", "");
         for (int i = 0; i < msg.length(); i += 1) {
             Character ref = msg.charAt(i);
             int charIndex = _alphabet.toInt(msg.charAt(i));
             int convertedInt = _myMachine.convert(charIndex);
             char convertedChar = _alphabet.toChar(convertedInt);
             message += Character.toString(convertedChar);
-            if(i > 3 && (i+1) % 5 == 0) {
+            if(i > 3 && (i + 1) % 5 == 0) {
                 message += " ";
             }
         }
@@ -181,6 +181,6 @@ public final class Main {
     /** File for encoded/decoded messages. */
     private PrintStream _output;
 
-    /**Settings line from input message */
+    /**Settings line from input message. */
     private Machine _myMachine;
 }

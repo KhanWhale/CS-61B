@@ -7,7 +7,7 @@ import java.util.Collection;
 import static enigma.EnigmaException.*;
 
 /** Class that represents a complete enigma machine.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 class Machine {
 
@@ -48,7 +48,7 @@ class Machine {
      *  to the leftmost rotor setting (not counting the reflector).  */
     void setRotors(String setting) {
         for (int i = 1; i < _myRotors.size(); i += 1) {
-            _myRotors.get(i).set(setting.charAt(i-1));
+            _myRotors.get(i).set(setting.charAt(i - 1));
         }
     }
 
@@ -57,6 +57,7 @@ class Machine {
         this._plugboard = plugboard;
     }
 
+    /** Advance this machine */
     void advance() {
         boolean[] advanced = new boolean[_myRotors.size()];
         boolean[] atNotches = new boolean[_myRotors.size()];
@@ -68,7 +69,7 @@ class Machine {
         advanced[_myRotors.size() - 1] = true;
         for (int i = _myRotors.size() - 2;
              i >= _myRotors.size() - numPawls(); i -= 1) {
-            if (atNotches[i+1]) {
+            if (atNotches[i + 1]) {
                 if (!advanced[i]) {
                     _myRotors.get(i).advance();
                     advanced[i] = true;
@@ -86,14 +87,11 @@ class Machine {
     int convert(int c) {
         this.advance();
         int reflectedIndex = this._plugboard.permute(c);
-        char currChar= 'y';
         for (int i = _myRotors.size() - 1; i >= 0; i -= 1) {
             reflectedIndex = _myRotors.get(i).convertForward(reflectedIndex);
-            currChar = _alphabet.toChar(reflectedIndex);
         }
         for (int i = 1; i < _myRotors.size(); i += 1) {
             reflectedIndex = _myRotors.get(i).convertBackward(reflectedIndex);
-            currChar = _alphabet.toChar(reflectedIndex);
         }
         return this._plugboard.permute(reflectedIndex);
     }
@@ -102,7 +100,7 @@ class Machine {
      *  the rotors accordingly. */
     String convert(String msg) {
         String converted = "";
-        for(int i = 0; i < msg.length(); i += 1) {
+        for (int i = 0; i < msg.length(); i += 1) {
             int index = this._alphabet.toInt(msg.charAt(i));
             int convertedIndex = convert(index);
             converted += Character.toString(
@@ -111,6 +109,9 @@ class Machine {
         return converted;
     }
 
+    public ArrayList<Rotor> getMyRotors() {
+        return this._myRotors;
+    }
     /** Common alphabet of my rotors. */
     private final Alphabet _alphabet;
 
@@ -121,7 +122,7 @@ class Machine {
     private int _pawls;
 
     /** The collection of my rotors. */
-    public ArrayList<Rotor> _myRotors = new ArrayList<Rotor>();
+    private ArrayList<Rotor> _myRotors = new ArrayList<Rotor>();
 
     /** The collection of all rotors this machine could be configured with. */
     private HashMap<String, Rotor> _rotorOptions = new HashMap<String, Rotor>();

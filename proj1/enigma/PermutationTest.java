@@ -109,7 +109,7 @@ public class PermutationTest {
         assertFalse(lower.contains(' '));
         assertEquals('a', lower.toChar(0));
         assertEquals('m', lower.toChar(12));
-        assertEquals('z', lower.toChar(lower.size()-1));
+        assertEquals('z', lower.toChar(lower.size() - 1));
         assertEquals(0, lower.toInt('a'));
         assertEquals(12, lower.toInt('m'));
         assertEquals(lower.size() - 1, lower.toInt('z'));
@@ -121,10 +121,10 @@ public class PermutationTest {
         assertTrue(nums.contains('8'));
         assertEquals('1', nums.toChar(0));
         assertEquals('6', nums.toChar(5));
-        assertEquals('9', nums.toChar(nums.size()-1));
+        assertEquals('9', nums.toChar(nums.size() - 1));
         assertEquals(0, nums.toInt('1'));
         assertEquals(5, nums.toInt('6'));
-        assertEquals(nums.size() - 1 , nums.toInt('9'));
+        assertEquals(nums.size() - 1, nums.toInt('9'));
 
         Alphabet alphanum = getNewAlphabet("a45nl!&Zx4f+");
         assertEquals(12, alphanum.size());
@@ -163,16 +163,16 @@ public class PermutationTest {
         checkPerm("p3", "ADTXRE", "DTAXER", p, alph);
         assertFalse(p.derangement());
         alph = getNewAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        Permutation Rotor1 = getNewPermutation(
+        Permutation rotor1 = getNewPermutation(
                 "(AELTPHQXRU) (BKNW) (CMOY) (DFG) (IV) (JZS)",
                 alph);
         checkPerm("r1", "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                "EKMFLGDQVZNTOWYHXUJPAIBRCS", Rotor1,
+                "EKMFLGDQVZNTOWYHXUJPAIBRCS", rotor1,
                 alph);
-        Permutation Rotor2 = getNewPermutation(
+        Permutation rotor2 = getNewPermutation(
                 "  (FIXVYOMW) (CDKLHUP)   (ESZ) (BJ) (GR) (NT) (A) ", alpha);
         checkPerm("r2", "FIXVYOMWCDKLHUPESZBJGRNTAQ",
-                "IXVYOMWFDKLHUPCSZEJBRGTNAQ", Rotor2,
+                "IXVYOMWFDKLHUPCSZEJBRGTNAQ", rotor2,
                 alpha);
     }
 

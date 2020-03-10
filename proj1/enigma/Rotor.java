@@ -98,6 +98,5 @@ class Rotor {
 
     /** The current setting of this rotor **/
     private int _setting = 0;
-    // FIXME: ADDITIONAL FIELDS HERE, AS NEEDED
 
 }
