@@ -1,7 +1,5 @@
 package enigma;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
