@@ -95,12 +95,11 @@ public final class Main {
         while (_input.hasNextLine()) {
             String col1 = _input.next();
             if (col1.charAt(0) == '*') {
-                if (moreConfigs) {
-                    _output.println();
-                }
                 _myMachine = readConfig();
                 setUp(_myMachine, _input.next());
                 moreConfigs = true;
+            } else if (col1.isEmpty()) {
+                _output.println();
             } else {
                 String myLine = col1;
                 if (_input.hasNextLine()) {
