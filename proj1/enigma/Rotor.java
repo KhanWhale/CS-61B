@@ -29,7 +29,8 @@ class Rotor {
         return _permutation;
     }
 
-    /** Set this rotors permutation. */
+    /** Set this rotors permutation.
+     * @param perm the permutation to set this to */
     void setPermutation(Permutation perm) {
         _permutation = perm;
     }

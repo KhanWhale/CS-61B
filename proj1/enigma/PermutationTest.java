@@ -60,22 +60,22 @@ public class PermutationTest {
      *  vice-versa. TESTID is used in error messages. */
     private void checkPerm(String testId,
                            String fromAlpha, String toAlpha,
-                           Permutation _perm, Alphabet _alpha) {
+                           Permutation permA, Alphabet alphaA) {
         int N = fromAlpha.length();
-        assertEquals(testId + " (wrong length)", N, _perm.size());
+        assertEquals(testId + " (wrong length)", N, permA.size());
         for (int i = 0; i < N; i += 1) {
             char c = fromAlpha.charAt(i), e = toAlpha.charAt(i);
             assertEquals(msg(testId, "wrong translation of '%c'", c),
-                    e, _perm.permute(c));
+                    e, permA.permute(c));
             assertEquals(msg(testId, "wrong inverse of '%c'", e),
-                    c, _perm.invert(e));
-            int ci = _alpha.toInt(c), ei = _alpha.toInt(e);
+                    c, permA.invert(e));
+            int ci = alphaA.toInt(c), ei = alphaA.toInt(e);
             assertEquals(msg(testId, "wrong translation of %d", ci),
-                    ei, _perm.permute(ci));
+                    ei, permA.permute(ci));
             assertEquals(msg(testId, "wrong inverse of %d", ei),
-                    ci, _perm.invert(ei));
+                    ci, permA.invert(ei));
         }
-        assertEquals(_perm.alphabet(), _alpha);
+        assertEquals(permA.alphabet(), alphaA);
     }
 
 
