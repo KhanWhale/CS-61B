@@ -89,7 +89,10 @@ public final class Main {
                 setUp(_myMachine, _input.next());
                 moreConfigs = true;
             } else {
-                String myLine = col1 + _input.nextLine();
+                String myLine = col1;
+                if (_input.hasNextLine()) {
+                    myLine = col1 + _input.nextLine();
+                }
                 myLine.strip();
                 printMessageLine(myLine);
             }
