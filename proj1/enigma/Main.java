@@ -144,10 +144,8 @@ public final class Main {
     private void setUp(Machine M, String settings) {
         M.setRotors(settings);
         String cycles = _input.nextLine();
-        if (cycles.length() > 0) {
-            Permutation perm = new Permutation(cycles, _alphabet);
-            M.setPlugboard(perm);
-        }
+        Permutation perm = new Permutation(cycles, _alphabet);
+        M.setPlugboard(perm);
     }
 
     /** Print MSG in groups of five (except that the last group may
