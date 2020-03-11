@@ -37,9 +37,17 @@ class Machine {
     /** Set my rotor slots to the rotors named ROTORS from my set of
      *  available rotors (ROTORS[0] names the reflector).
      *  Initially, all rotors are set at their 0 setting. */
-    void insertRotors(String[] rotors) {
+    void insertRotors(String[] rotors) throws EnigmaException {
+        int numMoving = numPawls();
         for (int i = 0; i < rotors.length; i += 1) {
-            _myRotors.add(_rotorOptions.get(rotors[i]));
+            Rotor toAdd = _rotorOptions.get(rotors[i]);
+            if (toAdd instanceof MovingRotor) {
+                numMoving -= 1;
+            }
+            _myRotors.add(toAdd);
+        }
+        if (numMoving != 0) {
+            throw new EnigmaException("Incorrect number of arguments");
         }
     }
 
