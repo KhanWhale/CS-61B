@@ -15,7 +15,7 @@ class Permutation {
      *  is interpreted as a permutation in cycle notation.  Characters in the
      *  alphabet that are not included in any cycle map to themselves.
      *  Whitespace is ignored. */
-    Permutation(String cycles, Alphabet alphabet) {
+    Permutation(String cycles, Alphabet alphabet) throws EnigmaException {
         _alphabet = alphabet;
         int i = 0;
         int charsAdded = 0;
@@ -25,9 +25,13 @@ class Permutation {
             if (cycles.charAt(i) == '(') {
                 String cycle = "";
                 i += 1;
-                while (cycles.charAt(i) != ')') {
-                    cycle += Character.toString(cycles.charAt(i));
-                    i += 1;
+                try {
+                    while (cycles.charAt(i) != ')') {
+                        cycle += Character.toString(cycles.charAt(i));
+                        i += 1;
+                    }
+                } catch (StringIndexOutOfBoundsException s) {
+                    throw new EnigmaException("Bad config file");
                 }
                 addCycle(cycle);
                 charsAdded += cycle.length();
