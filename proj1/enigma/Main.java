@@ -206,9 +206,22 @@ public final class Main {
         }
         M.setRotors(settings);
         String cycles = "";
-        if (myLineScanner.hasNextLine()) {
-            cycles = myLineScanner.nextLine();
+        if (myLineScanner.hasNext()) {
+            String stellung = myLineScanner.next();
+            if (stellung.contains("(")) {
+                cycles = stellung;
+                if (myLineScanner.hasNextLine()) {
+                    cycles = cycles.concat(myLineScanner.nextLine());
+                }
+            } else {
+                M.setStellung(stellung);
+            }
         }
+
+//        String cycles = "";
+//        if (myLineScanner.hasNextLine()) {
+//            cycles = myLineScanner.nextLine();
+//        }
         Permutation perm = new Permutation(cycles, _alphabet);
         M.setPlugboard(perm);
     }

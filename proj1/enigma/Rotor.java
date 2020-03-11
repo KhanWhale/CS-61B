@@ -50,9 +50,10 @@ class Rotor {
         return false;
     }
 
-    /** Set the Ringstellung value */
-    void set_stellung(int stellung) {
-        this._stellung = stellung;
+    /** Set the Ringstellung value.
+     * @param stellung the value to which stellung should be set */
+    void setStellung(char stellung) {
+        this._stellung = this.alphabet().toInt(stellung);
     }
     /** Return my current setting. */
     int setting() {

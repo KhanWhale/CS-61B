@@ -60,6 +60,11 @@ class Machine {
         }
     }
 
+    void setStellung(String setting) {
+        for (int i = 1; i < _myRotors.size(); i += 1) {
+            _myRotors.get(i).setStellung(setting.charAt(i - 1));
+        }
+    }
     /** Set the plugboard to PLUGBOARD. */
     void setPlugboard(Permutation plugboard) {
         this._plugboard = plugboard;
