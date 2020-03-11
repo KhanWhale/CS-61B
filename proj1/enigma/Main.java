@@ -116,7 +116,6 @@ public final class Main {
             int numRotors = _config.nextInt();
             int pawls = _config.nextInt();
             List<String> rotorNames = new ArrayList<String>();
-            int numMoving = 0;
             while (_config.hasNextLine()) {
                 wasNew = true;
                 Rotor myRotor = readRotor();

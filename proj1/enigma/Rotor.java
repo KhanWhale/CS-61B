@@ -12,6 +12,7 @@ class Rotor {
         _name = name;
         _permutation = perm;
         this.set(0);
+        this._stellung = 0;
     }
 
     /** Return my name. */
@@ -49,6 +50,10 @@ class Rotor {
         return false;
     }
 
+    /** Set the Ringstellung value */
+    void set_stellung(int stellung) {
+        this._stellung = stellung;
+    }
     /** Return my current setting. */
     int setting() {
         return _setting;
@@ -103,5 +108,8 @@ class Rotor {
 
     /** The current setting of this rotor. **/
     private int _setting = 0;
+
+    /** The Ringstellung. */
+    private int _stellung = 0;
 
 }
