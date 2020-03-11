@@ -81,7 +81,7 @@ public final class Main {
      *  file _config and apply it to the messages in _input, sending the
      *  results to _output. */
     private void process() {
-        if(_input.hasNextLine()) {
+        if (_input.hasNextLine()) {
             currLine = _input.nextLine();
             if (currLine.charAt(0) == '*') {
                 myLineScanner = new Scanner(currLine);
@@ -93,10 +93,10 @@ public final class Main {
             }
         }
         while (_input.hasNextLine()) {
-           currLine = _input.nextLine();
-           if (currLine.isEmpty()) {
-               _output.println();
-           } else if (currLine.charAt(0) == '*') {
+            currLine = _input.nextLine();
+            if (currLine.isEmpty()) {
+                _output.println();
+            } else if (currLine.charAt(0) == '*') {
                 myLineScanner = new Scanner(currLine);
                 myLineScanner.next();
                 _myMachine = readConfig();
@@ -258,7 +258,9 @@ public final class Main {
     /** Determine whether or not a rotor is new. */
     private boolean wasNew = true;
 
+    /** Store the current input line. */
     private String currLine;
 
+    /** Scanner for the current input lin. */
     private Scanner myLineScanner;
 }
