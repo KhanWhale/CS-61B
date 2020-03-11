@@ -217,11 +217,9 @@ public final class Main {
                 M.setStellung(stellung);
             }
         }
-
-//        String cycles = "";
-//        if (myLineScanner.hasNextLine()) {
-//            cycles = myLineScanner.nextLine();
-//        }
+        if (myLineScanner.hasNextLine()) {
+            cycles = cycles.concat(myLineScanner.nextLine());
+        }
         Permutation perm = new Permutation(cycles, _alphabet);
         M.setPlugboard(perm);
     }
