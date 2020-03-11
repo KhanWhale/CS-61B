@@ -53,7 +53,7 @@ class Rotor {
     /** Set the Ringstellung value.
      * @param stellung the value to which stellung should be set */
     void setStellung(char stellung) {
-        this._stellung = this.alphabet().toInt(stellung);
+        _stellung = this.permutation().alphabet().toInt(stellung);
     }
     /** Return my current setting. */
     int setting() {
@@ -76,15 +76,15 @@ class Rotor {
         int enterAlias = this.permutation().wrap(
                 p - _stellung + this.setting());
         int convert = this.permutation().permute(enterAlias);
-        return this.permutation().wrap(convert - _stellung - this.setting());
+        return this.permutation().wrap(convert + _stellung - this.setting());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)
      *  according to the inverse of my permutation. */
     int convertBackward(int e) {
-        int enterAlias = this.permutation().wrap(e + this.setting());
+        int enterAlias = this.permutation().wrap(e - _stellung + this.setting());
         int convert = this.permutation().invert(enterAlias);
-        return this.permutation().wrap(convert - this.setting());
+        return this.permutation().wrap(convert + _stellung - this.setting());
     }
 
     /** Returns true iff I am positioned to allow the rotor to my left
