@@ -73,9 +73,9 @@ class Rotor {
     /** Return the conversion of P (an integer in the range 0..size()-1)
      *  according to my permutation. */
     int convertForward(int p) {
-        int enterAlias = this.permutation().wrap(p + this.setting());
+        int enterAlias = this.permutation().wrap(p - _stellung + this.setting());
         int convert = this.permutation().permute(enterAlias);
-        return this.permutation().wrap(convert - this.setting());
+        return this.permutation().wrap(convert - _stellung - this.setting());
     }
 
     /** Return the conversion of E (an integer in the range 0..size()-1)

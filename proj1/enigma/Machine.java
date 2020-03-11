@@ -59,7 +59,10 @@ class Machine {
             _myRotors.get(i).set(setting.charAt(i - 1));
         }
     }
-
+    /** Set my rotors according to SETTING, which must be a string of
+     *  numRotors()-1 characters in my alphabet. The first letter refers
+     *  to the leftmost rotor setting (not counting the reflector).
+     *  @param setting the stellung settings for all rotors. */
     void setStellung(String setting) {
         for (int i = 1; i < _myRotors.size(); i += 1) {
             _myRotors.get(i).setStellung(setting.charAt(i - 1));
