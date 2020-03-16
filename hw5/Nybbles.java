@@ -1,6 +1,6 @@
 /** Represents an array of integers each in the range -8..7.
  *  Such integers may be represented in 4 bits (called nybbles).
- *  @author
+ *  @author Aniruddh Khanwale
  */
 public class Nybbles {
 
@@ -16,7 +16,7 @@ public class Nybbles {
 
     /** Return the size of THIS. */
     public int size() {
-        return _n;
+        return _data.length;
     }
 
     /** Return the Kth integer in THIS array, numbering from 0.
