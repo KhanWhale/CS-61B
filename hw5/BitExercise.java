@@ -11,9 +11,7 @@ public class BitExercise {
     * should return 4, which in binary is 0b100.
     */
     public static int lastBit(int x) {
-        int complement = x - 1;
-        int or = x | complement;
-        return or ^ complement;
+        return x & -x;
 
     }
 
