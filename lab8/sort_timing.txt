@@ -1,8 +1,8 @@
 Q: Is one sorting algorithm always faster than another?
-A:
+A: Not necessarily; depending on the size of the input, the fastest/slowest algorithm varies.
 
 Q: Above we said that BubbleSort, WipingBubbleSort, and InsertionSort each had the same Theta(N^2) asymptotic time complexity. How can you explain the differences in the plots for these three algorithms?
-A:
+A: Theta notation simply says that the algorithm is bounded above and below by functions in the N^2 family. However, there can be constant variations in time which are still bounded by Big Theta notation.
 
 Q: What information can we gain from empirical analysis of algorithms which might not be as noticeable in asymptotical bounds?
 A:
