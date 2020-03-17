@@ -37,7 +37,7 @@ public class Nybbles {
             if (myNybble.charAt(0) == '0') {
                 return parsed;
             } else {
-                return -8;
+                return parsed - (int) Math.pow(2, 4);
             }
         }
     }
