@@ -69,7 +69,8 @@ public class Nybbles {
             int endIndex = myDataString.length()- (4 * k);
             myDataString = myDataString.substring(0, endIndex - 4) + myValString + myDataString.substring(endIndex);
             if (myDataString.charAt(0) == '1') {
-                _data[whichData] = - Integer.valueOf(myDataString.substring(1), 2);
+                long avoidOverflows = Long.parseLong(myDataString, 2);
+                _data[whichData] = (int) avoidOverflows;
             } else {
                 _data[whichData] = Integer.valueOf(myDataString, 2);
             }
