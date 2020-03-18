@@ -31,9 +31,11 @@ public class TreeMap<K extends Comparable<K>, V> implements SimpleMap<K, V> {
             node._value = value;
             return node;
         } else if (key.compareTo(node._key) < 0) {
-            return putHelper(node._left, key, value);
+            node._left = putHelper(node._left, key, value);
+            return node;
         } else {
-            return putHelper(node._right, key, value);
+            node._right =  putHelper(node._right, key, value);
+            return node;
         }
     }
 
