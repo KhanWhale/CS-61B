@@ -119,7 +119,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             if (_high == null) {
                 this.addTree(node.right);
             } else if (_high.compareTo(node.right.s) > 0){
-                this.addTree(node.right);
+                this.addTree(node.right, _low);
             }
             return node.s;
         }
