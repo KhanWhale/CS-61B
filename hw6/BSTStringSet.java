@@ -1,3 +1,5 @@
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
+
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.util.Stack;
  * Implementation of a BST based String Set.
  * @author
  */
-public class BSTStringSet implements StringSet, Iterable<String> {
+public class BSTStringSet implements SortedStringSet, Iterable<String> {
     /** Creates a new empty set. */
     public BSTStringSet() {
         _root = null;
@@ -16,17 +18,53 @@ public class BSTStringSet implements StringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        // FIXME: PART A
+        if (this.contains(s)) {
+            return;
+        } else {
+            _root = putHelper(_root, s);
+        }
+    }
+
+    private Node putHelper(Node n, String s) {
+        if (n == null) {
+            return new Node(s);
+        } else if (s.compareTo(n.s) == 0) {
+            return n;
+        } else if (s.compareTo(n.s) < 0) {
+            n.left = putHelper(n.left, s);
+            return n;
+        } else {
+            n.right = putHelper(n.right, s);
+            return n;
+        }
     }
 
     @Override
     public boolean contains(String s) {
-        return false; // FIXME: PART A
+        if (_root == null) {
+            return false;
+        } else {
+            Node myNode = _root;
+            while (myNode != null) {
+                if (s.compareTo(myNode.s) == 0) {
+                    return true;
+                } else if (s.compareTo(myNode.s) < 0) {
+                    myNode = myNode.left;
+                } else {
+                    myNode = myNode.right;
+                }
+            }
+            return false;
+        }
     }
 
     @Override
     public List<String> asList() {
-        return null; // FIXME: PART A
+        ArrayList<String> myTree = new ArrayList<String>();
+        while (iterator().hasNext()) {
+            myTree.add(iterator().next());
+        }
+        return myTree;
     }
 
 
@@ -95,10 +133,9 @@ public class BSTStringSet implements StringSet, Iterable<String> {
         return new BSTIterator(_root);
     }
 
-    // FIXME: UNCOMMENT THE NEXT LINE FOR PART B
-    // @Override
+    @Override
     public Iterator<String> iterator(String low, String high) {
-        return null;  // FIXME: PART B
+        return new BSTIterator(_root);
     }
 
 

@@ -12,7 +12,6 @@ public class BitExercise {
     */
     public static int lastBit(int x) {
         return x & -x;
-
     }
 
     /** Fill in the function below so that it returns 
