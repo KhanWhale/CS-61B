@@ -98,6 +98,12 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             addTree(node);
         }
 
+        BSTIterator(Node node, String low, String high){
+            _low = low;
+            _high = high;
+            addTree(node, _low);
+        }
+
         @Override
         public boolean hasNext() {
             return !_toDo.empty();
@@ -110,7 +116,11 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             }
 
             Node node = _toDo.pop();
-            addTree(node.right);
+            if (_high == null) {
+                this.addTree(node.right);
+            } else if (_high.compareTo(node.right.s) > 0){
+                this.addTree(node.right);
+            }
             return node.s;
         }
 
@@ -126,6 +136,15 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
                 node = node.left;
             }
         }
+
+        private void addTree(Node node, String lower) {
+            while (node != null && (node.s.compareTo(lower) >= 0)) {
+                _toDo.push(node);
+                node = node.left;
+            }
+        }
+        String _low;
+        String _high;
     }
 
     @Override
@@ -135,7 +154,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return new BSTIterator(_root);
+        return new BSTIterator(_root, low, high);
     }
 
 
