@@ -57,9 +57,7 @@ class ECHashStringSet implements StringSet {
     public List<String> asList() {
         ArrayList<String> myList = new ArrayList<String>();
         for (int i = 0; i < _myHashTable.length; i += 1) {
-            if (_myHashTable[i] == null) {
-                myList.add(i, "[]");
-            } else {
+            if (_myHashTable[i] != null) {
                 myList.add(i, _myHashTable[i].toString());
             }
         }
