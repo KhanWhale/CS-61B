@@ -120,18 +120,30 @@ public class ArrayHeap<T> {
 
     /** Returns the index of the left child of the node at i. */
     private int getLeftOf(int i) {
-        return 2*i;
+        if ((2*i) > size()) {
+            return i;
+        } else {
+            return 2 * i;
+        }
     }
 
     /** Returns the index of the right child of the node at i. */
     private int getRightOf(int i) {
-        return 2*i + 1;
+        if ((2*i + 1) > size()) {
+            return i;
+        } else {
+            return 2 * i + 1;
+        }
     }
 
     /** Returns the index of the node that is the parent of the
      *  node at i. */
     private int getParentOf(int i) {
-        return i / 2;
+        if ( i == 1) {
+            return i;
+        } else {
+            return  i / 2;
+        }
     }
 
     /** Returns the index of the node with smaller priority. If one
@@ -161,13 +173,14 @@ public class ArrayHeap<T> {
         if (getNode(1) == null) {
             return null;
         } else {
-            return (T) getNode(1);
+            return getNode(1).item();
         }
     }
 
     /** Bubbles up the node currently at the given index until no longer
      *  needed. */
     private void bubbleUp(int index) {
+        Node myNode = getNode(index);
         if (getNode(index).priority() >=
                 getNode(getParentOf(index)).priority()) {
             return;
@@ -181,6 +194,9 @@ public class ArrayHeap<T> {
     /** Bubbles down the node currently at the given index until no longer
      *  needed. */
     private void bubbleDown(int index) {
+        if (getNode(index) == null) {
+            return;
+        }
         double myNodePriority = getNode(index).priority();
         int smallerChild = min(getLeftOf(index), getRightOf(index));
         int otherChild;
@@ -208,7 +224,7 @@ public class ArrayHeap<T> {
      * not already in the heap. Same as enqueue, or offer. */
     public void insert(T item, double priority) {
         setNode(size() + 1, new Node(item, priority));
-        bubbleUp(size() + 1);
+        bubbleUp(size());
     }
 
     /** Returns the element with the smallest priority value, and removes
@@ -216,12 +232,16 @@ public class ArrayHeap<T> {
      * removes any of them. Returns null if the heap is empty. Same as
      * dequeue, or poll. */
     public T removeMin() {
-        swap(size(), 1);
-        removeNode(size());
-        bubbleDown(1);
-        return null;
+        T myEl = peek();
+        if (myEl == null) {
+            return null;
+        } else {
+            swap(size(), 1);
+            removeNode(size());
+            bubbleDown(1);
+            return myEl;
+        }
     }
-
     /** Changes the node in this heap with the given item to have the given
      * priority. You can assume the heap will not have two nodes with the
      * same item. Does nothing if the item is not in the heap. Check for
