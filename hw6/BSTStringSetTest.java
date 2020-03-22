@@ -44,8 +44,8 @@ public class BSTStringSetTest  {
     public void emptyTest() {
         BSTStringSet test = new BSTStringSet();
         test.put("a");
-        test.put("b");
         test.put("c");
+        test.put("b");
         test.put("d");
         System.out.println(test.asList());
     }
