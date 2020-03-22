@@ -1,5 +1,6 @@
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
 
+import java.sql.SQLOutput;
 import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,11 +95,18 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
          *  the stack. */
         private Stack<Node> _toDo = new Stack<>();
 
+        private boolean bounded = false;
         /** A new iterator over the labels in NODE. */
         BSTIterator(Node node) {
             addTree(node);
         }
 
+        BSTIterator(Node node, String low, String high) {
+            _low = low;
+            _high = high;
+            bounded = true;
+            addTree(node);
+        }
         @Override
         public boolean hasNext() {
             return !_toDo.empty();
@@ -121,11 +129,21 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
         /** Add the relevant subtrees of the tree rooted at NODE. */
         private void addTree(Node node) {
-            while (node != null) {
-                _toDo.push(node);
-                node = node.left;
+            if (!bounded) {
+                while (node != null) {
+                    _toDo.push(node);
+                    node = node.left;
+                }
+            } else {
+                while (node != null && (_low.compareTo(node.s) <= 0)
+                && (_high.compareTo(node.s) > 0)) {
+                    _toDo.push(node);
+                    node = node.left;
+                }
             }
         }
+        String _low;
+        String _high;
     }
 
     @Override
@@ -135,7 +153,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public Iterator<String> iterator(String low, String high) {
-        return new BSTIterator(_root);
+        return new BSTIterator(_root, low, high);
     }
 
 
