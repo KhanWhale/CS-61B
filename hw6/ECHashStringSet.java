@@ -11,46 +11,26 @@ import java.util.List;
 class ECHashStringSet implements StringSet {
     @Override
     public void put(String s) {
-        boolean full = true;
-        for(int i = 0; i < _myHashTable.length; i += 1) {
-            if(_myHashTable[i] == null) {
-                full = false;
-                break;
-            }
+        if (totalEls / _myHashTable.length > 5) {
+            ECHashStringSet tempSet = new ECHashStringSet(_myHashTable.length * 2, _myHashTable);
+            totalEls = tempSet.totalEls;
+            _myHashTable = tempSet.getTable();
         }
-        if (full) {
-            ArrayList[] temp = new ArrayList[_myHashTable.length * 2];
-            for (int i = 0; i < _myHashTable.length; i += 1) {
-                temp[i] = _myHashTable[i];
-            }
-            _myHashTable=temp;
+        int hash = getHash(s);
+        if (_myHashTable[hash] == null) {
+            _myHashTable[hash] = new ArrayList<String>();
         }
-            int myHash = s.hashCode();
-            if (myHash < 0) {
-                myHash = (s.hashCode() & 0x7fffffff) % _myHashTable.length;
-            } else {
-                myHash = s.hashCode() % _myHashTable.length;
-            }
-            if (_myHashTable[myHash] == null) {
-                _myHashTable[myHash] = new ArrayList<String>();
-            }
-            _myHashTable[myHash].add(s);
+        totalEls += 1;
+        _myHashTable[hash].add(s);
     }
-
     @Override
     public boolean contains(String s) {
-        int myHash = s.hashCode();
-        if (myHash < 0) {
-            myHash = (s.hashCode() & 0x7fffffff) % _myHashTable.length;
-        } else {
-            myHash = s.hashCode() % _myHashTable.length;
-        }
-        if (_myHashTable[myHash] == null) {
+        int hash = getHash(s);
+        if (_myHashTable[hash] == null) {
             return false;
         } else {
-            return _myHashTable[myHash].contains(s);
+            return _myHashTable[hash].contains(s);
         }
-
     }
 
     @Override
@@ -59,9 +39,7 @@ class ECHashStringSet implements StringSet {
         for (int i = 0; i < _myHashTable.length; i += 1) {
             if (_myHashTable[i] != null) {
                 for (int  j= 0 ; j < _myHashTable[i].size(); j += 1) {
-                    ArrayList myarr = _myHashTable[i];
-                    String mystr = (String) myarr.get(j);
-                    myList.add(mystr);
+                    myList.add((String) _myHashTable[i].get(j));
                 }
             }
         }
@@ -71,5 +49,26 @@ class ECHashStringSet implements StringSet {
     public ECHashStringSet () {
 
     }
-    private ArrayList[] _myHashTable = new ArrayList[4];
+    public ECHashStringSet(int numBuckets, ArrayList[] table) {
+        _myHashTable = new ArrayList[numBuckets];
+        for (int i = 0; i < table.length; i += 1) {
+            if (table[i] != null) {
+                for (int j = 0; j < table[i].size(); j += 1) {
+                    put((String) table[i].get(j));
+                }
+            }
+        }
+    }
+    public ArrayList[] getTable() {
+        return _myHashTable;
+    }
+    public int getHash(String s) {
+        int hash = s.hashCode();
+        if(hash < 0) {
+            hash = hash & 0x7fffffff;
+        }
+        return hash % _myHashTable.length;
+    }
+    private ArrayList[] _myHashTable = new ArrayList[2];
+    int totalEls = 0;
 }
