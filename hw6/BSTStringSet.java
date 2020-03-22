@@ -8,7 +8,7 @@ import java.util.Stack;
 
 /**
  * Implementation of a BST based String Set.
- * @author
+ * @author Aniruddh Khanwale
  */
 public class BSTStringSet implements SortedStringSet, Iterable<String> {
     /** Creates a new empty set. */
@@ -117,9 +117,9 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
             Node node = _toDo.pop();
             if (_high == null) {
-                this.addTree(node.right);
+                addTree(node.right);
             } else if (_high.compareTo(node.right.s) > 0){
-                this.addTree(node.right, _low);
+                addTree(node.right, _low);
             }
             return node.s;
         }
@@ -129,16 +129,15 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
             throw new UnsupportedOperationException();
         }
 
-        /** Add the relevant subtrees of the tree rooted at NODE. */
-        private void addTree(Node node) {
-            while (node != null) {
+        private void addTree(Node node, String lower) {
+            while (node != null && (node.s.compareTo(lower) >= 0)) {
                 _toDo.push(node);
                 node = node.left;
             }
         }
-
-        private void addTree(Node node, String lower) {
-            while (node != null && (node.s.compareTo(lower) >= 0)) {
+        /** Add the relevant subtrees of the tree rooted at NODE. */
+        private void addTree(Node node) {
+            while (node != null) {
                 _toDo.push(node);
                 node = node.left;
             }
