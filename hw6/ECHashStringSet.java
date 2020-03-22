@@ -58,7 +58,11 @@ class ECHashStringSet implements StringSet {
         ArrayList<String> myList = new ArrayList<String>();
         for (int i = 0; i < _myHashTable.length; i += 1) {
             if (_myHashTable[i] != null) {
-                myList.add(i, _myHashTable[i].toString());
+                for (int  j= 0 ; j < _myHashTable[i].size(); j += 1) {
+                    ArrayList myarr = _myHashTable[i];
+                    String mystr = (String) myarr.get(j);
+                    myList.add(mystr);
+                }
             }
         }
         return myList;
