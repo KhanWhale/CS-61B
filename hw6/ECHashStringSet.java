@@ -45,14 +45,23 @@ class ECHashStringSet implements StringSet {
         } else {
             myHash = s.hashCode() % _myHashTable.length;
         }
-        return _myHashTable[myHash].contains(s);
+        if (_myHashTable[myHash] == null) {
+            return false;
+        } else {
+            return _myHashTable[myHash].contains(s);
+        }
+
     }
 
     @Override
     public List<String> asList() {
         ArrayList<String> myList = new ArrayList<String>();
         for (int i = 0; i < _myHashTable.length; i += 1) {
-            myList.add(i, _myHashTable[i].toString());
+            if (_myHashTable[i] == null) {
+                myList.add(i, "[]");
+            } else {
+                myList.add(i, _myHashTable[i].toString());
+            }
         }
         return myList;
     }
