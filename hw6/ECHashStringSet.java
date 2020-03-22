@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,7 +27,7 @@ class ECHashStringSet implements StringSet {
 
     @Override
     public List<String> asList() {
-
+        return new ArrayList<String>();
     }
 
     public ECHashStringSet () {

@@ -61,8 +61,9 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
     @Override
     public List<String> asList() {
         ArrayList<String> myTree = new ArrayList<String>();
-        while (iterator().hasNext()) {
-            myTree.add(iterator().next());
+        Iterator<String> myIterator = iterator();
+        while (myIterator.hasNext()) {
+            myTree.add(myIterator.next());
         }
         return myTree;
     }
