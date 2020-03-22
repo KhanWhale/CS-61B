@@ -31,6 +31,9 @@ class ECHashStringSet implements StringSet {
             } else {
                 myHash = s.hashCode() % _myHashTable.length;
             }
+            if (_myHashTable[myHash] == null) {
+                _myHashTable[myHash] = new ArrayList<String>();
+            }
             _myHashTable[myHash].add(s);
     }
 
