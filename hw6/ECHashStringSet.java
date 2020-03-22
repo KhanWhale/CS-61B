@@ -47,7 +47,11 @@ class ECHashStringSet implements StringSet {
 
     @Override
     public List<String> asList() {
-        return new ArrayList<String>();
+        ArrayList<String> myList = new ArrayList<String>();
+        for (int i = 0; i < _myHashTable.length; i += 1) {
+            myList.add(i, _myHashTable[i].toString());
+        }
+        return myList;
     }
 
     public ECHashStringSet () {
