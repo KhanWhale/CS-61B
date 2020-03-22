@@ -7,10 +7,11 @@ import java.util.List;
  * @author
  */
 public class ECHashStringSetTest  {
-    // FIXME: Add your own tests for your ECHashStringSetTest
 
     @Test
     public void testNothing() {
-        // FIXME: Delete this function and add your own tests
+        ECHashStringSet myHash = new ECHashStringSet();
+        myHash.put("hi");
+        assertTrue(myHash.contains("hi"));
     }
 }

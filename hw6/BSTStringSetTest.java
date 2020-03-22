@@ -8,4 +8,14 @@ import java.util.List;
  */
 public class BSTStringSetTest  {
 
+    @Test
+    public void myTest() {
+        BSTStringSet myBST = new BSTStringSet();
+        myBST.put("a");
+        myBST.put("b");
+        myBST.put("c");
+        myBST.put("d");
+        assertTrue(myBST.contains("d"));
+        assertFalse(myBST.contains("adkv"));
+    }
 }
