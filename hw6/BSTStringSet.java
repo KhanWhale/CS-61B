@@ -135,10 +135,14 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
                     node = node.left;
                 }
             } else {
-                while (node != null && (_low.compareTo(node.s) <= 0)
+                while (node != null) {
+                    if ((_low.compareTo(node.s) <= 0)
                 && (_high.compareTo(node.s) > 0)) {
-                    _toDo.push(node);
-                    node = node.left;
+                        _toDo.push(node);
+                        node = node.left;
+                    } else if ((_low.compareTo(node.s)) > 0 && _high.compareTo(node.s) > 0) {
+                        node = node.right;
+                    }
                 }
             }
         }
