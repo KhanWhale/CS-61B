@@ -19,11 +19,11 @@ class ECHashStringSet implements StringSet {
             }
         }
         if (full) {
-            ArrayList[] _temp = _myHashTable;
-            _myHashTable = new ArrayList[_temp.length * 2];
-            for (int i = 0; i < _temp.length; i += 1) {
-                _myHashTable[i] = _temp[i];
+            ArrayList[] temp = new ArrayList[_myHashTable.length * 2];
+            for (int i = 0; i < _myHashTable.length; i += 1) {
+                temp[i] = _myHashTable[i];
             }
+            _myHashTable=temp;
         }
             int myHash = s.hashCode();
             if (myHash < 0) {
