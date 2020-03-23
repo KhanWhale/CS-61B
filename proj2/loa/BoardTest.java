@@ -125,4 +125,44 @@ public class BoardTest {
                      0, b1.movesMade());
     }
 
+    @Test
+    public void testCopier() {
+        Board b0 = new Board(BOARD1, BP);
+        Board b1 = new Board(BOARD1, BP);
+        b1.makeMove(mv("f3-d5"));
+        assertEquals("square d5 after f3-d5", BP, b1.get(sq(3, 4)));
+        assertEquals("square f3 after f3-d5", EMP, b1.get(sq(5, 2)));
+        assertEquals("Check move count for board 1 after one move",
+                1, b1.movesMade());
+        Board b2 = new Board(b1);
+        assertEquals("Verify that d5 was copied over correctly",
+                b2.get(sq(3, 4)), b1.get(sq(3, 4)));
+        assertEquals("Verify that f3 was copied over correctly",
+                b2.get(sq(5, 2)), b1.get(sq(5, 2)));
+        assertEquals("Correct players are ready to go", b1.turn(), b2.turn());
+
+        b2.retract();
+        b1 = new Board(b2);
+        assertEquals("Check for board 1 restored after retraction", b0, b1);
+        assertEquals("Check move count for board 1 after move + retraction",
+                0, b1.movesMade());
+
+    }
+
+    @Test
+    public void testMoveSequence() {
+        Board b = new Board(BOARD1, BP);
+        b.makeMove(mv("f3-d5"));
+        assertEquals("square d5 after f3-d5", BP, b.get(sq(3, 4)));
+        assertEquals("square f3 after f3-d5", EMP, b.get(sq(5, 2)));
+        assertEquals("Check move count for board 1 after one move",
+                1, b.movesMade());
+        b.makeMove(mv("h6-e3"));
+        assertEquals("square h6 after h6-e3", EMP, b.get(sq(7, 5)));
+        assertEquals("square e3 after h6-e3", WP, b.get(sq(4, 2)));
+        assertEquals("Check move count for board 1 after one move",
+                2, b.movesMade());
+
+    }
+
 }

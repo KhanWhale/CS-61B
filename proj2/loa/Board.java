@@ -14,7 +14,7 @@ import static loa.Piece.*;
 import static loa.Square.*;
 
 /** Represents the state of a game of Lines of Action.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 class Board {
 
@@ -51,10 +51,15 @@ class Board {
 
     /** Set my state to CONTENTS with SIDE to move. */
     void initialize(Piece[][] contents, Piece side) {
-        // FIXME
+        for (int i = 0; i < contents.length; i += 1) {
+            for (int j = 0; j < contents[i].length; j += 1) {
+                _board[i + j] = contents[i][j];
+            }
+        }
         _turn = side;
         _moveLimit = DEFAULT_MOVE_LIMIT;
     }
+
 
     /** Set me to the initial configuration. */
     void clear() {
@@ -65,8 +70,9 @@ class Board {
     void copyFrom(Board board) {
         if (board == this) {
             return;
+        } else {
+            //FIXME: Understand how to copy object reference.
         }
-        // FIXME
     }
 
     /** Return the contents of the square at SQ. */
@@ -237,6 +243,9 @@ class Board {
         { WP,  EMP, EMP, EMP, EMP, EMP, EMP, WP  },
         { EMP, BP,  BP,  BP,  BP,  BP,  BP,  EMP }
     };
+
+    // FIXME: Other methods, variables?
+
 
     /** Current contents of the board.  Square S is at _board[S.index()]. */
     private final Piece[] _board = new Piece[BOARD_SIZE  * BOARD_SIZE];
