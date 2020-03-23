@@ -16,11 +16,7 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        if (_root == null) {
-            _root = new Node(s);
-        } else {
-            _root = putHelper(_root, s);
-        }
+        _root = putHelper(_root, s);
     }
 
     private Node putHelper(Node n, String s) {
