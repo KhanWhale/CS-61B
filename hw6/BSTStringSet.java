@@ -16,8 +16,8 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
 
     @Override
     public void put(String s) {
-        if (this.contains(s)) {
-            return;
+        if (_root == null) {
+            _root = new Node(s);
         } else {
             _root = putHelper(_root, s);
         }
