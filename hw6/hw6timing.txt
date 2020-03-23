@@ -33,27 +33,31 @@ Seems to be roughly linear.
 
 
 2a. Results for InsertInOrderSpeedTest for N = 10000:
-Testing 1000000 in-order 10-character strings.
-Inserting 1000000 in-order strings into a StringSet of type ECHashStringSet
-Took: 0.98 sec.
+Testing 10000 in-order 10-character strings.
+Inserting 10000 in-order strings into a StringSet of type BSTStringSet
+Took: 1.50 sec.
 
-Inserting 1000000 in-order strings Strings into a StringSet of type java.util.TreeSet
-Took: 0.90 sec.
+Inserting 10000 in-order strings into a StringSet of type ECHashStringSet
+Took: 0.01 sec.
 
-Inserting 1000000 in-order strings Strings into a StringSet of type java.util.HashSet
-Took: 0.64 sec.
+Inserting 10000 in-order strings Strings into a StringSet of type java.util.TreeSet
+Took: 0.01 sec.
 
+Inserting 10000 in-order strings Strings into a StringSet of type java.util.HashSet
+Took: 0.00 sec.
 2b. Results for InsertInOrderSpeedTest for N = 20000:
-Testing 2000000 in-order 10-character strings.
-Inserting 2000000 in-order strings into a StringSet of type ECHashStringSet
-Took: 1.63 sec.
+Testing 20000 in-order 10-character strings.
+Inserting 20000 in-order strings into a StringSet of type BSTStringSet
+Took: 4.36 sec.
 
-Inserting 2000000 in-order strings Strings into a StringSet of type java.util.TreeSet
-Took: 1.42 sec.
+Inserting 20000 in-order strings into a StringSet of type ECHashStringSet
+Took: 0.02 sec.
 
-Inserting 2000000 in-order strings Strings into a StringSet of type java.util.HashSet
-Took: 1.30 sec.
+Inserting 20000 in-order strings Strings into a StringSet of type java.util.TreeSet
+Took: 0.04 sec.
 
+Inserting 20000 in-order strings Strings into a StringSet of type java.util.HashSet
+Took: 0.02 sec.
 2c. Does your **BST**StringSet look roughly linear or roughly
 quadratic in its scaling behavior for in order strings?
 Looks roughly quadratic

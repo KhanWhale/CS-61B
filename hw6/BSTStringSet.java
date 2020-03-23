@@ -22,15 +22,13 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
     private Node putHelper(Node n, String s) {
         if (n == null) {
             return new Node(s);
-        } else if (s.compareTo(n.s) == 0) {
-            return n;
-        } else if (s.compareTo(n.s) < 0) {
+        }else {
             Node copy = n;
-            copy.left = putHelper(n.left, s);
-            return copy;
-        } else {
-            Node copy = n;
-            copy.right = putHelper(n.right, s);
+            if (s.compareTo(n.s) < 0) {
+                copy.left = putHelper(n.left, s);
+            } else if (s.compareTo(n.s) > 0){
+                copy.right = putHelper(n.right, s);
+            }
             return copy;
         }
     }
