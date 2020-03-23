@@ -108,7 +108,8 @@ class Board {
      *  is false. */
     void makeMove(Move move) {
         assert isLegal(move);
-        // FIXME
+        _board[move.getTo().index()] = null;
+
     }
 
     /** Retract (unmake) one move, returning to the state immediately before
