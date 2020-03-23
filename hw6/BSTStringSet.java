@@ -29,11 +29,13 @@ public class BSTStringSet implements SortedStringSet, Iterable<String> {
         } else if (s.compareTo(n.s) == 0) {
             return n;
         } else if (s.compareTo(n.s) < 0) {
-            n.left = putHelper(n.left, s);
-            return n;
+            Node copy = n;
+            copy.left = putHelper(n.left, s);
+            return copy;
         } else {
-            n.right = putHelper(n.right, s);
-            return n;
+            Node copy = n;
+            copy.right = putHelper(n.right, s);
+            return copy;
         }
     }
 
