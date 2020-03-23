@@ -126,6 +126,7 @@ public class BoardTest {
     }
 
     @Test
+    /** Method written by ME to test the copyFrom method. */
     public void testCopier() {
         Board b0 = new Board(BOARD1, BP);
         Board b1 = new Board(BOARD1, BP);
@@ -150,6 +151,7 @@ public class BoardTest {
     }
 
     @Test
+    /** Method written by ME to test a sequence of moves and verify expected behavior. */
     public void testMoveSequence() {
         Board b = new Board(BOARD1, BP);
         b.makeMove(mv("f3-d5"));
