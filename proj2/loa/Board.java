@@ -71,7 +71,20 @@ class Board {
         if (board == this) {
             return;
         } else {
-            //FIXME: Understand how to copy object reference.
+            for (int i = 0; i < this._board.length; i += 1) {
+                this._board[i] = board._board[i];
+            }
+            this._moves.addAll(board._moves);
+            this._turn = board._turn;
+            this._moveLimit = board._moveLimit;
+            this._winnerKnown = board._winnerKnown;
+            if (_winnerKnown) {
+                this._winner = board._winner;
+            }
+            this._subsetsInitialized = board._subsetsInitialized;
+            this._whiteRegionSizes.addAll(board._whiteRegionSizes);
+            this._blackRegionSizes.addAll(board._blackRegionSizes);
+            /** True iff subsets computation is up-to-date. */
         }
     }
 
@@ -108,7 +121,8 @@ class Board {
      *  is false. */
     void makeMove(Move move) {
         assert isLegal(move);
-        _board[move.getTo().index()] = null;
+        _board[move.getFrom().index()] = EMP;
+        _moves.add(move);
 
     }
 
