@@ -86,7 +86,6 @@ class Board {
             this._subsetsInitialized = board._subsetsInitialized;
             this._whiteRegionSizes.addAll(board._whiteRegionSizes);
             this._blackRegionSizes.addAll(board._blackRegionSizes);
-            /** True iff subsets computation is up-to-date. */
         }
     }
 
@@ -215,11 +214,17 @@ class Board {
     /** Return the winning side, if any.  If the game is not over, result is
      *  null.  If the game has ended in a tie, returns EMP. */
     Piece winner() {
-        if (!_winnerKnown) {
-            // FIXME
+        if (!gameOver()) {
+            return null;
+        } else if (movesMade() == _moveLimit) {
             _winnerKnown = true;
+            _winner = EMP;
+            return _winner;
+        } else if (!_winnerKnown) {
+            return null;
+        } else {
+            return _winner;
         }
-        return _winner;
     }
 
     /** Return the total number of moves that have been made (and not
@@ -372,8 +377,6 @@ class Board {
         { WP,  EMP, EMP, EMP, EMP, EMP, EMP, WP  },
         { EMP, BP,  BP,  BP,  BP,  BP,  BP,  EMP }
     };
-
-    // FIXME: Other methods, variables?
 
     /** Current contents of the board.  Square S is at _board[S.index()]. */
     private final Piece[] _board = new Piece[BOARD_SIZE  * BOARD_SIZE];
