@@ -47,9 +47,11 @@ class Board {
 
     /** Set my state to CONTENTS with SIDE to move. */
     void initialize(Piece[][] contents, Piece side) {
+        int boardIndex = 0;
         for (int i = 0; i < contents.length; i += 1) {
             for (int j = 0; j < contents[i].length; j += 1) {
-                _board[i + j] = contents[i][j];
+                _board[boardIndex] = contents[i][j];
+                boardIndex += 1;
             }
         }
         _turn = side;
@@ -162,22 +164,19 @@ class Board {
             return false;
         } else {
             int dir = from.direction(to);
-            int piecesInLine = 1;
-            Square mySq = from;
-            while (mySq != null) {
-                mySq = mySq.moveDest(dir, 1);
+            int piecesInLine = -1;
+            for (Square mySq = from; mySq != null;
+                 mySq = mySq.moveDest(dir, 1)) {
                 if ((get(mySq) == BP) || (get(mySq)  == WP)) {
                     piecesInLine += 1;
                 }
             }
-            mySq = from;
             dir = (dir + 4) % 8;
-            while (mySq != null) {
-                mySq = mySq.moveDest(dir, 1);
+            for (Square mySq = from; mySq != null;
+                 mySq = mySq.moveDest(dir, 1)) {
                 if ((get(mySq) == BP) || (get(mySq)  == WP)) {
                     piecesInLine += 1;
                 }
-
             }
             if (from.distance(to) != piecesInLine) {
                 return false;
@@ -243,7 +242,9 @@ class Board {
         for (int r = BOARD_SIZE - 1; r >= 0; r -= 1) {
             out.format("    ");
             for (int c = 0; c < BOARD_SIZE; c += 1) {
-                out.format("%s ", get(sq(c, r)).abbrev());
+                Square mySq = sq(c, r);
+                Piece myPiece = get(mySq);
+                out.format("%s ", myPiece.abbrev());
             }
             out.format("%n");
         }
