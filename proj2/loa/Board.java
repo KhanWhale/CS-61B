@@ -134,7 +134,7 @@ class Board {
             set(move.getFrom(), EMP);
             _moves.add(move);
         }
-
+        computeRegions();
     }
 
     /** Retract (unmake) one move, returning to the state immediately before
@@ -281,21 +281,27 @@ class Board {
      *  have already been processed or are in different clusters.  Update
      *  VISITED to reflect squares counted. */
     private int numContig(Square sq, boolean[][] visited, Piece p) {
-        int num = 0;
-        if (!visited[sq.row()][sq.col()]) {
-            num += 1;
+        if (visited[sq.row()][sq.col()]) {
+            return 0;
+        } else {
+            Stack<Square> toProcess = new Stack<>();
+            int num =  1;
+            Square[] adj = sq.adjacent();
+            for (int i = 0; i < adj.length; i += 1) {
+                if (get(adj[i]) == p) {
+                    if (!visited[adj[i].row()][adj[i].col()]) {
+                        toProcess.push(adj[i]);
+                    }
+                }
+            }
+            visited[sq.row()][sq.col()] = true;
+            while (!toProcess.empty()) {
+                num += numContig(toProcess.pop(), visited, p);
+            }
+            return num;
         }
-        Square[] adj = sq.adjacent();
-        for (int i = 0; i < adj.length; i += 1) {
-           if (!visited[adj[i].row()][adj[i].col()]) {
-               if (get(adj[i]) == p) {
-                   num += 1;
-               }
-           }
-
-        }
-        return num;
     }
+
 
     /** Set the values of _whiteRegionSizes and _blackRegionSizes. */
     private void computeRegions() {
@@ -306,12 +312,37 @@ class Board {
         _blackRegionSizes.clear();
         boolean [][] whiteVisited = new boolean[BOARD_SIZE][BOARD_SIZE];
         boolean [][] blackVisited = new boolean[BOARD_SIZE][BOARD_SIZE];
-        for (int i = 0; i < _board.length; i += 1) {
+        for (int i = 0; i < BOARD_SIZE; i += 1) {
+            for (int j = 0; j < BOARD_SIZE; j += 1) {
+                Square mySq = sq(j, i);
+                if (get(mySq) == WP && !whiteVisited[i][j]) {
+                    _whiteRegionSizes.add(
+                            numContig(mySq, whiteVisited, WP));
+                    blackVisited[i][j] = true;
+                } else if (get(mySq) == BP && !blackVisited[i][j]) {
+                    _blackRegionSizes.add(
+                            numContig(mySq, blackVisited, BP));
+                    whiteVisited[i][j] = true;
+                } else {
+                    whiteVisited[i][j] = true;
+                    blackVisited[i][j] = true;
+                }
+            }
 
         }
         Collections.sort(_whiteRegionSizes, Collections.reverseOrder());
         Collections.sort(_blackRegionSizes, Collections.reverseOrder());
         _subsetsInitialized = true;
+        if (piecesContiguous(BP) && piecesContiguous(WP)) {
+            _winnerKnown = true;
+            _winner = _turn.opposite();
+        } else if (piecesContiguous(BP)) {
+            _winnerKnown = true;
+            _winner = BP;
+        } else if (piecesContiguous(WP)) {
+            _winner = WP;
+            _winnerKnown = true;
+        }
     }
 
     /** Return the sizes of all the regions in the current union-find
