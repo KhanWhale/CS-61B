@@ -259,13 +259,17 @@ class Board {
         Piece myPiece = get(from);
         Square mySq = from;
         int steps = from.distance(to);
-        while (steps != 0 && mySq != null) {
+        while (steps != 0) {
             mySq = mySq.moveDest(dir, 1);
-            steps -= 1;
-            if (steps == 0) {
-                return get(mySq) != myPiece;
-            } else if (get(mySq) == myPiece.opposite()) {
-                return false;
+            if (mySq != null) {
+                steps -= 1;
+                if (steps == 0) {
+                    return get(mySq) == myPiece;
+                } else if (get(mySq) == myPiece.opposite()) {
+                    return true;
+                }
+            } else {
+                break;
             }
         }
         return mySq != null;
