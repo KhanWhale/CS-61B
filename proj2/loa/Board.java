@@ -88,7 +88,8 @@ class Board {
 
     /** Return the contents of the square at SQ. */
     Piece get(Square sq) {
-        return _board[sq.index()];
+        int index = sq.index();
+        return _board[index];
     }
 
     /** Set the square at SQ to V and set the side that is to move next
@@ -280,7 +281,20 @@ class Board {
      *  have already been processed or are in different clusters.  Update
      *  VISITED to reflect squares counted. */
     private int numContig(Square sq, boolean[][] visited, Piece p) {
-        return 0;  // FIXME
+        int num = 0;
+        if (!visited[sq.row()][sq.col()]) {
+            num += 1;
+        }
+        Square[] adj = sq.adjacent();
+        for (int i = 0; i < adj.length; i += 1) {
+           if (!visited[adj[i].row()][adj[i].col()]) {
+               if (get(adj[i]) == p) {
+                   num += 1;
+               }
+           }
+
+        }
+        return num;
     }
 
     /** Set the values of _whiteRegionSizes and _blackRegionSizes. */
@@ -290,7 +304,11 @@ class Board {
         }
         _whiteRegionSizes.clear();
         _blackRegionSizes.clear();
-        // FIXME
+        boolean [][] whiteVisited = new boolean[BOARD_SIZE][BOARD_SIZE];
+        boolean [][] blackVisited = new boolean[BOARD_SIZE][BOARD_SIZE];
+        for (int i = 0; i < _board.length; i += 1) {
+
+        }
         Collections.sort(_whiteRegionSizes, Collections.reverseOrder());
         Collections.sort(_blackRegionSizes, Collections.reverseOrder());
         _subsetsInitialized = true;
@@ -322,7 +340,6 @@ class Board {
 
     // FIXME: Other methods, variables?
 
-
     /** Current contents of the board.  Square S is at _board[S.index()]. */
     private final Piece[] _board = new Piece[BOARD_SIZE  * BOARD_SIZE];
 
@@ -341,7 +358,7 @@ class Board {
     /** True iff subsets computation is up-to-date. */
     private boolean _subsetsInitialized;
 
-    /** List of the sizes of continguous clusters of pieces, by color. */
+    /** List of the sizes of contiguous clusters of pieces, by color. */
     private final ArrayList<Integer>
         _whiteRegionSizes = new ArrayList<>(),
         _blackRegionSizes = new ArrayList<>();
