@@ -121,8 +121,16 @@ class Board {
      *  is false. */
     void makeMove(Move move) {
         assert isLegal(move);
-        _board[move.getFrom().index()] = EMP;
-        _moves.add(move);
+        if (!move.isCapture()) {
+            if (get(move.getTo()) == get(move.getFrom()).opposite()) {
+                makeMove(move.captureMove());
+                return;
+            } else {
+
+            }
+        } else {
+
+        }
 
     }
 
@@ -141,7 +149,34 @@ class Board {
     /** Return true iff FROM - TO is a legal move for the player currently on
      *  move. */
     boolean isLegal(Square from, Square to) {
-        return true;   // FIXME
+        if (get(from) != turn()) {
+            return false;
+        } else if (!from.isValidMove(to)) {
+            return false;
+        } else {
+            int dir = from.direction(to);
+            int piecesInLine = 1;
+            Square mySq = from;
+            while (mySq != null) {
+                mySq = mySq.moveDest(dir, 1);
+                if ((get(mySq) == BP) || (get(mySq)  == WP)) {
+                    piecesInLine += 1;
+                }
+            }
+            mySq = from;
+            dir = (dir + 4) % 8;
+            while (mySq != null) {
+                mySq = mySq.moveDest(dir, 1);
+                if ((get(mySq) == BP) || (get(mySq)  == WP)) {
+                    piecesInLine += 1;
+                }
+
+            }
+            if (from.distance(to) != piecesInLine) {
+                return false;
+            }
+        }
+        return !blocked(from, to);
     }
 
     /** Return true iff MOVE is legal for the player currently on move.
@@ -212,7 +247,20 @@ class Board {
     /** Return true if a move from FROM to TO is blocked by an opposing
      *  piece or by a friendly piece on the target square. */
     private boolean blocked(Square from, Square to) {
-        return false; // FIXME
+        int dir = from.direction(to);
+        Piece myPiece = get(from);
+        Square mySq = from;
+        int steps = from.distance(to);
+        while (steps != 0 && mySq != null) {
+            mySq = mySq.moveDest(dir, 1);
+            steps -= 1;
+            if (steps == 0) {
+                return get(mySq) != myPiece;
+            } else if (get(mySq) == myPiece.opposite()) {
+                return false;
+            }
+        }
+        return mySq != null;
     }
 
     /** Return the size of the as-yet unvisited cluster of squares
