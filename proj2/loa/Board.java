@@ -2,11 +2,7 @@
  * University of California.  All rights reserved. */
 package loa;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Formatter;
-import java.util.List;
+import java.util.*;
 
 import java.util.regex.Pattern;
 
@@ -126,10 +122,14 @@ class Board {
                 makeMove(move.captureMove());
                 return;
             } else {
-
+                set(move.getTo(), get(move.getFrom()), _turn.opposite());
+                set(move.getFrom(), EMP);
+                _moves.add(move);
             }
         } else {
-
+            set(move.getTo(), get(move.getFrom()), _turn.opposite());
+            set(move.getFrom(), EMP);
+            _moves.add(move);
         }
 
     }
@@ -138,7 +138,14 @@ class Board {
      *  that move.  Requires that movesMade () > 0. */
     void retract() {
         assert movesMade() > 0;
-        // FIXME
+        Move toRetract = _moves.remove(_moves.size() - 1);
+        if (toRetract.isCapture()) {
+            set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
+            set(toRetract.getTo(), get(toRetract.getFrom()).opposite());
+        } else {
+            set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
+            set(toRetract.getTo(), EMP);
+        }
     }
 
     /** Return the Piece representing who is next to move. */
@@ -333,4 +340,5 @@ class Board {
     private final ArrayList<Integer>
         _whiteRegionSizes = new ArrayList<>(),
         _blackRegionSizes = new ArrayList<>();
+
 }
