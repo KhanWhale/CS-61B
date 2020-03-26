@@ -223,11 +223,26 @@ class Board {
     Piece winner() {
         if (_winnerKnown) {
             return _winner;
-        } else if (movesMade() == _moveLimit) {
-            _winner = EMP;
-            return _winner;
         } else {
-            return null;
+            if (piecesContiguous(BP) && piecesContiguous(WP)) {
+                _winnerKnown = true;
+                _winner = _turn.opposite();
+                return _winner;
+            } else if (piecesContiguous(WP)) {
+                _winnerKnown = true;
+                _winner = WP;
+                return _winner;
+            } else if (piecesContiguous(BP)) {
+                _winnerKnown = true;
+                _winner = BP;
+                return _winner;
+            } else if (movesMade() == _moveLimit) {
+                _winnerKnown = true;
+                _winner = EMP;
+                return _winner;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -346,16 +361,6 @@ class Board {
         Collections.sort(_whiteRegionSizes, Collections.reverseOrder());
         Collections.sort(_blackRegionSizes, Collections.reverseOrder());
         _subsetsInitialized = true;
-        if (piecesContiguous(BP) && piecesContiguous(WP)) {
-            _winnerKnown = true;
-            _winner = _turn.opposite();
-        } else if (piecesContiguous(BP)) {
-            _winnerKnown = true;
-            _winner = BP;
-        } else if (piecesContiguous(WP)) {
-            _winner = WP;
-            _winnerKnown = true;
-        }
     }
 
     /** Return the sizes of all the regions in the current union-find
