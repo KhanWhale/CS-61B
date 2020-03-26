@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /** The suite of all JUnit tests for the loa package.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 public class UnitTests {
 

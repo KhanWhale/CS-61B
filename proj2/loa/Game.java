@@ -15,7 +15,7 @@ import static loa.Main.*;
 import static loa.Utils.*;
 
 /** Represents one game of Lines of Action.
- *  @author  */
+ *  @author Aniruddh Khanwale */
 class Game {
 
     /** Number of milliseconds in 1 second. */
@@ -133,6 +133,9 @@ class Game {
             default:
                 if (!processMove(line)) {
                     error("unknown command: %s%n", line);
+                    if (_strict) {
+                        System.exit(1);
+                    }
                 }
                 break;
             }

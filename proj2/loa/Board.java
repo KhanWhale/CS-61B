@@ -2,12 +2,8 @@
  * University of California.  All rights reserved. */
 package loa;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Stack;
-import java.util.Collections;
-import java.util.Arrays;
-import java.util.Formatter;
+
+import java.util.*;
 import java.util.regex.Pattern;
 
 import static loa.Piece.*;
@@ -131,13 +127,14 @@ class Board {
                 set(move.getTo(), get(move.getFrom()), _turn.opposite());
                 set(move.getFrom(), EMP);
                 _moves.add(move);
+                _subsetsInitialized = false;
             }
         } else {
             set(move.getTo(), get(move.getFrom()), _turn.opposite());
             set(move.getFrom(), EMP);
             _moves.add(move);
+            _subsetsInitialized = false;
         }
-        computeRegions();
     }
 
     /** Retract (unmake) one move, returning to the state immediately before
@@ -152,6 +149,7 @@ class Board {
             set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
             set(toRetract.getTo(), EMP);
         }
+        _subsetsInitialized = false;
     }
 
     /** Return the Piece representing who is next to move. */
@@ -196,8 +194,17 @@ class Board {
     }
 
     /** Return a sequence of all legal moves from this position. */
-    List<Move> legalMoves() {
-        return null;  // FIXME
+    HashMap<Square, ArrayList<Move>> legalMoves() {
+        HashMap<Square, ArrayList<Move>> legalMoves = new HashMap<Square, ArrayList<Move>>();
+        for (Square sq : ALL_SQUARES) {
+            ArrayList<Move> sqMoves = new ArrayList<Move>();
+            for (Square dest : ALL_SQUARES) {
+                if (sq.isValidMove(dest) && isLegal(sq, dest)) {
+                    sqMoves.add(Move.mv(sq, dest));
+                }
+            }
+        }
+        return legalMoves;
     }
 
     /** Return true iff the game is over (either player has all his
@@ -214,16 +221,13 @@ class Board {
     /** Return the winning side, if any.  If the game is not over, result is
      *  null.  If the game has ended in a tie, returns EMP. */
     Piece winner() {
-        if (!gameOver()) {
-            return null;
+        if (_winnerKnown) {
+            return _winner;
         } else if (movesMade() == _moveLimit) {
-            _winnerKnown = true;
             _winner = EMP;
             return _winner;
-        } else if (!_winnerKnown) {
-            return null;
         } else {
-            return _winner;
+            return null;
         }
     }
 
