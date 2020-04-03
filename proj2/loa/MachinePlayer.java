@@ -28,8 +28,7 @@ class MachinePlayer extends Player {
 
     @Override
     String getMove() {
-        Move choice;
-
+        Move choice = searchForMove();
         assert side() == getGame().getBoard().turn();
         int depth;
         choice = searchForMove();
@@ -51,7 +50,7 @@ class MachinePlayer extends Player {
      *  from the current position. Assumes the game is not over. */
     private Move searchForMove() {
         Board work = new Board(getBoard());
-        int value;
+        int value = staticValuation();
         assert side() == work.turn();
         _foundMove = null;
         if (side() == WP) {
@@ -71,6 +70,7 @@ class MachinePlayer extends Player {
      *  on BOARD, does not set _foundMove. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
+
         // FIXME
         if (saveMove) {
             _foundMove = null; // FIXME
@@ -84,7 +84,19 @@ class MachinePlayer extends Player {
     }
 
     // FIXME: Other methods, variables here.
-
+    private int staticValuation() {
+       int numOpponent = getBoard().getRegionSizes(side().opposite()).size();
+        int numMine = getBoard().getRegionSizes(side()).size();
+        int won = 0;
+        if (getBoard().gameOver()) {
+            if (getBoard().winner() == side()) {
+                won = 100;
+            } else {
+                won = -100;
+            }
+        }
+        return numOpponent - numMine + won;
+    }
     /** Used to convey moves discovered by findMove. */
     private Move _foundMove;
 

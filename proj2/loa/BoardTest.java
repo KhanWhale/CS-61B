@@ -50,6 +50,17 @@ public class BoardTest {
         { EMP, EMP, EMP, EMP, EMP, EMP, EMP, EMP },
     };
 
+    static final Piece[][] BOARD4 = {
+            { EMP, EMP, EMP, EMP,  EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, EMP,  EMP, EMP, EMP, EMP },
+            { EMP, EMP, EMP, BP,   BP,  BP,  BP, EMP  },
+            { EMP, EMP, EMP, EMP,  EMP, BP, EMP, EMP  },
+            { EMP, EMP, EMP, BP,   EMP, BP, EMP, EMP  },
+            { EMP, EMP, EMP, EMP,  BP,  BP, EMP, EMP  },
+            { EMP, EMP, EMP, EMP,  EMP, EMP, EMP, EMP  },
+            { EMP, EMP, EMP, EMP,  EMP, EMP, EMP, EMP  }
+    };
+
 
     static final String BOARD1_STRING =
         "===\n"
@@ -100,6 +111,9 @@ public class BoardTest {
         assertTrue("Board 3 white contiguous?", b3.piecesContiguous(WP));
         assertTrue("Board 3 black contiguous?", b3.piecesContiguous(BP));
         assertTrue("Board 3 game over", b3.gameOver());
+        Board b4 = new Board(BOARD4,BP);
+        assertTrue("Board 4 game over", b4.gameOver());
+
     }
 
     @Test

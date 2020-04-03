@@ -199,11 +199,16 @@ class Board {
     HashMap<Square, ArrayList<Move>> legalMoves() {
         HashMap<Square, ArrayList<Move>> legalMoves = new HashMap<Square, ArrayList<Move>>();
         for (Square sq : ALL_SQUARES) {
-            ArrayList<Move> sqMoves = new ArrayList<Move>();
-            for (Square dest : ALL_SQUARES) {
-                if (sq.isValidMove(dest) && isLegal(sq, dest)) {
-                    sqMoves.add(Move.mv(sq, dest));
+            if (get(sq) == turn()) {
+                ArrayList<Move> sqMoves = new ArrayList<Move>();
+                for (Square dest : ALL_SQUARES) {
+                    if (sq.isValidMove(dest) && isLegal(sq, dest)) {
+                        sqMoves.add(Move.mv(sq, dest));
+                    }
                 }
+                legalMoves.put(sq, sqMoves);
+            } else {
+                legalMoves.put(sq, new ArrayList<Move>());
             }
         }
         return legalMoves;
