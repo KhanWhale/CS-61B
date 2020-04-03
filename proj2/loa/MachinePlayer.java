@@ -2,6 +2,8 @@
  * University of California.  All rights reserved. */
 package loa;
 
+import java.util.ArrayList;
+
 import static loa.Piece.*;
 
 /** An automated Player.
@@ -50,7 +52,7 @@ class MachinePlayer extends Player {
      *  from the current position. Assumes the game is not over. */
     private Move searchForMove() {
         Board work = new Board(getBoard());
-        int value = staticValuation();
+        int value;
         assert side() == work.turn();
         _foundMove = null;
         if (side() == WP) {
@@ -70,32 +72,101 @@ class MachinePlayer extends Player {
      *  on BOARD, does not set _foundMove. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
-
-        // FIXME
-        if (saveMove) {
-            _foundMove = null; // FIXME
+        if (depth == 0 || board.gameOver()) {
+            return staticValuation();
+        } else if (sense == 1) {
+            Board boardCopy = new Board(board);
+            int maxSquareVal = Integer.MIN_VALUE;
+            Move bestMove = null;
+            for (Square sq : Square.ALL_SQUARES) {
+                ArrayList<Move> sqMoves = board.legalMoves().get(sq);
+                int moveAlpha = alpha;
+                int maxMoveVal = Integer.MIN_VALUE;
+                Move bestSqMove = null;
+                for (Move mv : sqMoves) {
+                    boardCopy.makeMove(mv);
+                    int eval = findMove(board, depth - 1, saveMove, -1, alpha, beta);
+                    boardCopy.retract();
+                    maxMoveVal = Math.max(maxMoveVal, eval);
+                    moveAlpha = Math.max(moveAlpha, eval);
+                    if (eval == maxMoveVal) {
+                        bestSqMove = mv;
+                    }
+                    if (beta <= moveAlpha) {
+                        break;
+                    }
+                }
+                maxSquareVal = Math.max(maxSquareVal, maxMoveVal);
+                if (maxMoveVal == maxSquareVal) {
+                    bestMove = bestSqMove;
+                }
+                alpha = Math.max(alpha,moveAlpha);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            if (saveMove && bestMove != null) {
+                _foundMove = bestMove;
+            }
+            return maxSquareVal;
+        } else {
+            Board boardCopy = new Board(board);
+            int minSquareVal = Integer.MAX_VALUE;
+            Move worstMove = null;
+            for (Square sq : Square.ALL_SQUARES) {
+                ArrayList<Move> sqMoves = board.legalMoves().get(sq);
+                int moveBeta = beta;
+                int minMoveVal = Integer.MAX_VALUE;
+                Move worstSqMove = null;
+                for (Move mv : sqMoves) {
+                    boardCopy.makeMove(mv);
+                    int eval = findMove(board, depth - 1, saveMove, 1, alpha, beta);
+                    boardCopy.retract();
+                    minMoveVal = Math.max(minMoveVal, eval);
+                    moveBeta = Math.min(moveBeta, eval);
+                    if (eval == minMoveVal) {
+                        worstSqMove = mv;
+                    }
+                    if (moveBeta <= alpha) {
+                        break;
+                    }
+                }
+                minSquareVal = Math.min(minSquareVal, minMoveVal);
+                if (minMoveVal == minMoveVal) {
+                    worstMove = worstSqMove;
+                }
+                beta = Math.min(beta,moveBeta);
+                if (beta <= alpha) {
+                    break;
+                }
+            }
+            if (saveMove && worstMove != null) {
+                _foundMove = worstMove;
+            }
+            return minSquareVal;
         }
-        return 0; // FIXME
     }
 
     /** Return a search depth for the current position. */
     private int chooseDepth() {
-        return 1;  // FIXME
+        return 3;  // FIXME
     }
 
     // FIXME: Other methods, variables here.
     private int staticValuation() {
        int numOpponent = getBoard().getRegionSizes(side().opposite()).size();
         int numMine = getBoard().getRegionSizes(side()).size();
-        int won = 0;
         if (getBoard().gameOver()) {
+            int won;
             if (getBoard().winner() == side()) {
-                won = 100;
+                won = Integer.MAX_VALUE;
             } else {
-                won = -100;
+                won = Integer.MIN_VALUE;
             }
+            return won;
+
         }
-        return numOpponent - numMine + won;
+        return numOpponent - numMine;
     }
     /** Used to convey moves discovered by findMove. */
     private Move _foundMove;
