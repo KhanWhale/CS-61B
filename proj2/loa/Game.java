@@ -134,9 +134,7 @@ class Game {
                            command.group(4).toLowerCase());
                 break;
             case "limit": limitCommand(command.group(2)); break;
-            case "?": case "help":
-                help();
-                break;
+            case "?": case "help": help(); break;
             default:
                 if (!processMove(line)) {
                     error("unknown command: %s%n", line);
