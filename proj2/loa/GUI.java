@@ -41,12 +41,13 @@ class GUI extends TopLevel implements View, Reporter {
         addMenuButton("Game->New", this::newGame);
         addMenuButton("Game->Quit", this::quit);
         _widget = new BoardWidget(_pendingCommands);
-        add(_widget, new LayoutSpec("y", 1, "height", 1, "width", 3));
+        add(_widget,
+                new LayoutSpec("y", 1, "height", 1, "width", 3));
         _widget.setMoveCollection(true);
-        addLabel("To move: White", "CurrentTurn", new LayoutSpec("x", 0, "y", 0, "height", 1, "width", 3));
-        // FIXME: Other components?
+        addLabel("To move: White", "CurrentTurn",
+                new LayoutSpec("x", 0, "y", 0, "height", 1, "width", 3));
         addMenuButton("Help->About", (s) -> displayText("About", ABOUT_TEXT));
-        addMenuButton("Help->LOA", (s) -> displayText("Signpost Help", HELP_TEXT));
+        addMenuButton("Help->LOA", (s) -> displayText("LOA Help", HELP_TEXT));
     }
 
     /** Response to "Quit" button click. */
@@ -90,7 +91,6 @@ class GUI extends TopLevel implements View, Reporter {
 
         boolean manualWhite = controller.manualWhite(),
             manualBlack = controller.manualBlack();
-        // FIXME: More?
     }
 
     /** Display text in resource named TEXTRESOURCE in a new window titled

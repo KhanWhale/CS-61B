@@ -93,7 +93,6 @@ class BoardWidget extends Pad {
         for (Square sq : Square.ALL_SQUARES) {
             drawPiece(g, sq);
         }
-        // More? FIXME
     }
 
     /** Draw the contents of S on G. */

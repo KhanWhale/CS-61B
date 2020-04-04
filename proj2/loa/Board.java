@@ -256,6 +256,9 @@ class Board {
         }
     }
 
+    /**
+     * Check whether the winner needs to be updated after retracting a move.
+     */
     void retractWinner() {
         computeRegions();
         if (piecesContiguous(BP) && piecesContiguous(WP)) {
