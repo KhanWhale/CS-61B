@@ -72,11 +72,11 @@ class MachinePlayer extends Player {
      *  on BOARD, does not set _foundMove. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
-        Board boardCopy = new Board(board);
         if (depth == 0 || board.gameOver()) {
-            return staticValuation(boardCopy);
+            return staticValuation(board);
         } else if (sense == 1) {
             int maxEval = Integer.MIN_VALUE;
+            Board boardCopy = new Board(board);
             for (Move mv : board.legalMoves()) {
                 boardCopy.makeMove(mv);
                 int eval = findMove(boardCopy, depth - 1, false, -1, alpha, beta);
@@ -90,6 +90,7 @@ class MachinePlayer extends Player {
             return maxEval;
         } else {
             int minEval = Integer.MAX_VALUE;
+            Board boardCopy = new Board(board);
             for (Move mv : board.legalMoves()) {
                 boardCopy.makeMove(mv);
                 int eval = findMove(boardCopy, depth - 1, false, 1, alpha, beta);

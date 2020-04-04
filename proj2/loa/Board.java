@@ -144,14 +144,16 @@ class Board {
     void retract() {
         assert movesMade() > 0;
         Move toRetract = _moves.remove(_moves.size() - 1);
+        _subsetsInitialized = false;
         if (toRetract.isCapture()) {
             set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
             set(toRetract.getTo(), get(toRetract.getFrom()).opposite());
+            retractWinner();
         } else {
             set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
             set(toRetract.getTo(), EMP);
+            retractWinner();
         }
-        _subsetsInitialized = false;
     }
 
     /** Return the Piece representing who is next to move. */
@@ -246,6 +248,26 @@ class Board {
             } else {
                 return null;
             }
+        }
+    }
+
+    void retractWinner() {
+        computeRegions();
+        if (piecesContiguous(BP) && piecesContiguous(WP)) {
+            _winnerKnown = true;
+            _winner = _turn.opposite();
+        } else if (piecesContiguous(WP)) {
+            _winnerKnown = true;
+            _winner = WP;
+        } else if (piecesContiguous(BP)) {
+            _winnerKnown = true;
+            _winner = BP;
+        } else if (movesMade() >= _moveLimit) {
+            _winnerKnown = true;
+            _winner = EMP;
+        } else {
+            _winnerKnown = false;
+            _winner = null;
         }
     }
 
