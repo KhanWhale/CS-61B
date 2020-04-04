@@ -243,7 +243,7 @@ class Board {
                 _winnerKnown = true;
                 _winner = BP;
                 return _winner;
-            } else if (movesMade() == _moveLimit) {
+            } else if (movesMade() >= _moveLimit) {
                 _winnerKnown = true;
                 _winner = EMP;
                 return _winner;

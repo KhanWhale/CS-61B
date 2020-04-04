@@ -85,7 +85,7 @@ class MachinePlayer extends Player {
                 Move bestSqMove = null;
                 for (Move mv : sqMoves) {
                     boardCopy.makeMove(mv);
-                    int eval = findMove(board, depth - 1, saveMove, -1, alpha, beta);
+                    int eval = findMove(board, depth - 1, false, -1, alpha, beta);
                     boardCopy.retract();
                     maxMoveVal = Math.max(maxMoveVal, eval);
                     moveAlpha = Math.max(moveAlpha, eval);
@@ -107,6 +107,7 @@ class MachinePlayer extends Player {
             }
             if (saveMove && bestMove != null) {
                 _foundMove = bestMove;
+
             }
             return maxSquareVal;
         } else {
@@ -120,9 +121,9 @@ class MachinePlayer extends Player {
                 Move worstSqMove = null;
                 for (Move mv : sqMoves) {
                     boardCopy.makeMove(mv);
-                    int eval = findMove(board, depth - 1, saveMove, 1, alpha, beta);
+                    int eval = findMove(board, depth - 1, false, 1, alpha, beta);
                     boardCopy.retract();
-                    minMoveVal = Math.max(minMoveVal, eval);
+                    minMoveVal = Math.min(minMoveVal, eval);
                     moveBeta = Math.min(moveBeta, eval);
                     if (eval == minMoveVal) {
                         worstSqMove = mv;
@@ -132,7 +133,7 @@ class MachinePlayer extends Player {
                     }
                 }
                 minSquareVal = Math.min(minSquareVal, minMoveVal);
-                if (minMoveVal == minMoveVal) {
+                if (minMoveVal == minSquareVal) {
                     worstMove = worstSqMove;
                 }
                 beta = Math.min(beta,moveBeta);
@@ -157,14 +158,13 @@ class MachinePlayer extends Player {
        int numOpponent = getBoard().getRegionSizes(side().opposite()).size();
         int numMine = getBoard().getRegionSizes(side()).size();
         if (getBoard().gameOver()) {
-            int won;
             if (getBoard().winner() == side()) {
-                won = Integer.MAX_VALUE;
+               return Integer.MAX_VALUE;
+            } else if (getBoard().winner() == side().opposite()){
+                return Integer.MIN_VALUE;
             } else {
-                won = Integer.MIN_VALUE;
+                return 0;
             }
-            return won;
-
         }
         return numOpponent - numMine;
     }
