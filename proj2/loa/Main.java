@@ -64,11 +64,11 @@ public class Main {
                                   excp.getMessage());
                 System.exit(1);
             }
-        } if (options.contains("--display")) {
+        } else if (options.contains("--display")) {
             try {
                 System.in.close();
             } catch (IOException e) {
-
+                int dummy = 3;
             }
         }
         Game game = getGame(options);
