@@ -64,16 +64,7 @@ public class Main {
                                   excp.getMessage());
                 System.exit(1);
             }
-        } else if (options.contains("--display")) {
-            try {
-                System.in.close();
-                System.err.println("Display option not implemented.");
-                System.exit(2);
-            } catch (IOException dummy) {
-                /* Ignore IOException. */
-            }
         }
-
         Game game = getGame(options);
         if (!options.contains("--display")) {
             System.out.printf("Lines of Action.  Version %s.%n"
@@ -91,7 +82,7 @@ public class Main {
         Reporter reporter;
 
         if (options.contains("--display")) {
-            gui = new GUI("LOA 61B");
+            gui = new GUI("Lines of Action");
             reporter = gui;
             gui.display(true);
             view = gui;
