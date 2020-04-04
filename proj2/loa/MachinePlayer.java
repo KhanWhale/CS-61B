@@ -100,6 +100,9 @@ class MachinePlayer extends Player {
                 if (eval == minEval && saveMove) {
                     _foundMove = mv;
                 }
+                if (beta <= alpha) {
+                    break;
+                }
             }
             return minEval;
         }
