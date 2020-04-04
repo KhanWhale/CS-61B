@@ -100,31 +100,13 @@ class Game {
         if (command.matches()) {
             switch (command.group(1).toLowerCase()) {
             case "switchwhite":
-                if (manualWhite()) {
-                    autoCommand("white");
-                } else {
-                    manualCommand("white");
-                }
+                switchPlayer("w");
                 break;
             case "switchblack":
-                if (manualBlack()) {
-                    autoCommand("black");
-                } else {
-                    manualCommand("black");
-                }
+                switchPlayer("b");
                 break;
             case "retract":
-                if (_board.turn() == WP && manualWhite()) {
-                    _board.retract();
-                    if (!manualBlack()) {
-                        _board.retract();
-                    }
-                } else if (_board.turn() == BP && manualBlack()) {
-                    _board.retract();
-                    if (!manualWhite()) {
-                        _board.retract();
-                    }
-                }
+                retract();
                 break;
             case "#":
                 break;
@@ -328,7 +310,38 @@ class Game {
             break;
         }
     }
+    /** Handle retracting */
+    private void retract() {
+        if (_board.turn() == WP && manualWhite()) {
+            _board.retract();
+            if (!manualBlack()) {
+                _board.retract();
+            }
+        } else if (_board.turn() == BP && manualBlack()) {
+            _board.retract();
+            if (!manualWhite()) {
+                _board.retract();
+            }
+        }
+    }
 
+    /** Handle switching the Player
+     * @param player the player */
+    private void switchPlayer(String player) {
+        if (player.equals("w")) {
+            if (manualWhite()) {
+                autoCommand("white");
+            } else {
+                manualCommand("white");
+            }
+        }else if (player.equals("b")) {
+            if (manualBlack()) {
+                autoCommand("black");
+            } else {
+                manualCommand("black");
+            }
+        }
+    }
     /** Return an integer r, 0 <= r < N, randomly chosen from a
      *  uniform distribution using the current random source. */
     int randInt(int n) {
