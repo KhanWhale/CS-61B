@@ -154,11 +154,13 @@ class Board {
             Move toRetract = _moves.remove(_moves.size() - 1);
             _subsetsInitialized = false;
             if (toRetract.isCapture()) {
-                set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
+                set(toRetract.getFrom(), get(toRetract.getTo()),
+                        _turn.opposite());
                 set(toRetract.getTo(), get(toRetract.getFrom()).opposite());
                 retractWinner();
             } else {
-                set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
+                set(toRetract.getFrom(), get(toRetract.getTo()),
+                        _turn.opposite());
                 set(toRetract.getTo(), EMP);
                 retractWinner();
             }
