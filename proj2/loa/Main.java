@@ -64,6 +64,12 @@ public class Main {
                                   excp.getMessage());
                 System.exit(1);
             }
+        } if (options.contains("--display")) {
+            try {
+                System.in.close();
+            } catch (IOException e) {
+
+            }
         }
         Game game = getGame(options);
         if (!options.contains("--display")) {
