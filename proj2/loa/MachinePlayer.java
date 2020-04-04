@@ -2,7 +2,6 @@
  * University of California.  All rights reserved. */
 package loa;
 
-import java.util.ArrayList;
 
 import static loa.Piece.*;
 
@@ -79,7 +78,8 @@ class MachinePlayer extends Player {
             Board boardCopy = new Board(board);
             for (Move mv : board.legalMoves()) {
                 boardCopy.makeMove(mv);
-                int eval = findMove(boardCopy, depth - 1, false, -1, alpha, beta);
+                int eval = findMove(boardCopy, depth - 1,
+                        false, -1, alpha, beta);
                 boardCopy.retract();
                 maxEval = Math.max(maxEval, eval);
                 alpha = Math.max(alpha, eval);
@@ -93,7 +93,8 @@ class MachinePlayer extends Player {
             Board boardCopy = new Board(board);
             for (Move mv : board.legalMoves()) {
                 boardCopy.makeMove(mv);
-                int eval = findMove(boardCopy, depth - 1, false, 1, alpha, beta);
+                int eval = findMove(boardCopy, depth - 1,
+                        false, 1, alpha, beta);
                 boardCopy.retract();
                 minEval = Math.min(minEval, eval);
                 beta = Math.min(beta, eval);
@@ -113,13 +114,17 @@ class MachinePlayer extends Player {
         return 3;
     }
 
-    // FIXME: Other methods, variables here.
+    /**
+     * Method to compute the static value of a board.
+     * @param b The board whose heuristic is calculated
+     * @return The heuristic value
+     */
     private int staticValuation(Board b) {
-       int numOpponent = b.getRegionSizes(side().opposite()).size();
+        int numOpponent = b.getRegionSizes(side().opposite()).size();
         int numMine = b.getRegionSizes(side()).size();
         if (b.gameOver()) {
             if (b.winner() == side()) {
-               return Integer.MAX_VALUE;
+                return Integer.MAX_VALUE;
             } else if (b.winner() == side().opposite()){
                 return Integer.MIN_VALUE;
             } else {
