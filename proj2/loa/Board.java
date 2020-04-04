@@ -3,6 +3,8 @@
 package loa;
 
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -196,19 +198,15 @@ class Board {
     }
 
     /** Return a sequence of all legal moves from this position. */
-    HashMap<Square, ArrayList<Move>> legalMoves() {
-        HashMap<Square, ArrayList<Move>> legalMoves = new HashMap<Square, ArrayList<Move>>();
+    ArrayList<Move> legalMoves() {
+        ArrayList<Move> legalMoves = new ArrayList<Move>();
         for (Square sq : ALL_SQUARES) {
             if (get(sq) == turn()) {
-                ArrayList<Move> sqMoves = new ArrayList<Move>();
                 for (Square dest : ALL_SQUARES) {
                     if (sq.isValidMove(dest) && isLegal(sq, dest)) {
-                        sqMoves.add(Move.mv(sq, dest));
+                        legalMoves.add(Move.mv(sq, dest));
                     }
                 }
-                legalMoves.put(sq, sqMoves);
-            } else {
-                legalMoves.put(sq, new ArrayList<Move>());
             }
         }
         return legalMoves;

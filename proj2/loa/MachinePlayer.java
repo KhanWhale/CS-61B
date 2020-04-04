@@ -72,95 +72,51 @@ class MachinePlayer extends Player {
      *  on BOARD, does not set _foundMove. */
     private int findMove(Board board, int depth, boolean saveMove,
                          int sense, int alpha, int beta) {
+        Board boardCopy = new Board(board);
         if (depth == 0 || board.gameOver()) {
-            return staticValuation();
+            return staticValuation(boardCopy);
         } else if (sense == 1) {
-            Board boardCopy = new Board(board);
-            int maxSquareVal = Integer.MIN_VALUE;
-            Move bestMove = null;
-            for (Square sq : Square.ALL_SQUARES) {
-                ArrayList<Move> sqMoves = board.legalMoves().get(sq);
-                int moveAlpha = alpha;
-                int maxMoveVal = Integer.MIN_VALUE;
-                Move bestSqMove = null;
-                for (Move mv : sqMoves) {
-                    boardCopy.makeMove(mv);
-                    int eval = findMove(board, depth - 1, false, -1, alpha, beta);
-                    boardCopy.retract();
-                    maxMoveVal = Math.max(maxMoveVal, eval);
-                    moveAlpha = Math.max(moveAlpha, eval);
-                    if (eval == maxMoveVal) {
-                        bestSqMove = mv;
-                    }
-                    if (beta <= moveAlpha) {
-                        break;
-                    }
-                }
-                maxSquareVal = Math.max(maxSquareVal, maxMoveVal);
-                if (maxMoveVal == maxSquareVal) {
-                    bestMove = bestSqMove;
-                }
-                alpha = Math.max(alpha,moveAlpha);
-                if (beta <= alpha) {
-                    break;
+            int maxEval = Integer.MIN_VALUE;
+            for (Move mv : board.legalMoves()) {
+                boardCopy.makeMove(mv);
+                int eval = findMove(boardCopy, depth - 1, false, -1, alpha, beta);
+                boardCopy.retract();
+                maxEval = Math.max(maxEval, eval);
+                alpha = Math.max(alpha, eval);
+                if (eval == maxEval && saveMove) {
+                    _foundMove = mv;
                 }
             }
-            if (saveMove && bestMove != null) {
-                _foundMove = bestMove;
-
-            }
-            return maxSquareVal;
+            return maxEval;
         } else {
-            Board boardCopy = new Board(board);
-            int minSquareVal = Integer.MAX_VALUE;
-            Move worstMove = null;
-            for (Square sq : Square.ALL_SQUARES) {
-                ArrayList<Move> sqMoves = board.legalMoves().get(sq);
-                int moveBeta = beta;
-                int minMoveVal = Integer.MAX_VALUE;
-                Move worstSqMove = null;
-                for (Move mv : sqMoves) {
-                    boardCopy.makeMove(mv);
-                    int eval = findMove(board, depth - 1, false, 1, alpha, beta);
-                    boardCopy.retract();
-                    minMoveVal = Math.min(minMoveVal, eval);
-                    moveBeta = Math.min(moveBeta, eval);
-                    if (eval == minMoveVal) {
-                        worstSqMove = mv;
-                    }
-                    if (moveBeta <= alpha) {
-                        break;
-                    }
-                }
-                minSquareVal = Math.min(minSquareVal, minMoveVal);
-                if (minMoveVal == minSquareVal) {
-                    worstMove = worstSqMove;
-                }
-                beta = Math.min(beta,moveBeta);
-                if (beta <= alpha) {
-                    break;
+            int minEval = Integer.MAX_VALUE;
+            for (Move mv : board.legalMoves()) {
+                boardCopy.makeMove(mv);
+                int eval = findMove(boardCopy, depth - 1, false, 1, alpha, beta);
+                boardCopy.retract();
+                minEval = Math.min(minEval, eval);
+                beta = Math.min(beta, eval);
+                if (eval == minEval && saveMove) {
+                    _foundMove = mv;
                 }
             }
-            if (saveMove && worstMove != null) {
-                _foundMove = worstMove;
-            }
-            return minSquareVal;
+            return minEval;
         }
     }
 
     /** Return a search depth for the current position. */
     private int chooseDepth() {
-        return 3;  // FIXME
+        return 3;
     }
 
     // FIXME: Other methods, variables here.
-    private int staticValuation() {
-       int numOpponent = getBoard().getRegionSizes(side().opposite()).size();
-        int numMine = getBoard().getRegionSizes(side()).size();
-        if (getBoard().gameOver()) {
-            if (getBoard().winner() == side()) {
+    private int staticValuation(Board b) {
+       int numOpponent = b.getRegionSizes(side().opposite()).size();
+        int numMine = b.getRegionSizes(side()).size();
+        if (b.gameOver()) {
+            if (b.winner() == side()) {
                return Integer.MAX_VALUE;
-            } else if (getBoard().winner() == side().opposite()){
+            } else if (b.winner() == side().opposite()){
                 return Integer.MIN_VALUE;
             } else {
                 return 0;
