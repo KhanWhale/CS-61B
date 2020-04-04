@@ -125,7 +125,7 @@ class MachinePlayer extends Player {
         if (b.gameOver()) {
             if (b.winner() == side()) {
                 return Integer.MAX_VALUE;
-            } else if (b.winner() == side().opposite()){
+            } else if (b.winner() == side().opposite()) {
                 return Integer.MIN_VALUE;
             } else {
                 return 0;
