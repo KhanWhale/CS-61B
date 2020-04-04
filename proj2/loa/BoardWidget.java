@@ -121,7 +121,7 @@ class BoardWidget extends Pad {
     /** Handle a mouse-button push on S. */
     private void mousePressed(Square s) {
         if (_acceptingMoves && _board.get(s) == _board.turn()) {
-            _to = s;
+            _from = s;
         }
         repaint();
     }
@@ -129,8 +129,13 @@ class BoardWidget extends Pad {
     /** Handle a mouse-button release on S. */
     private void mouseReleased(Square s) {
         if (_acceptingMoves) {
-            _from = s;
-            _board.makeMove(Move.mv(_from, _to));
+            _to = s;
+            if (_from != null) {
+                Move myMove = Move.mv(_from, _to);
+                if (myMove != null) {
+                    _commands.offer(myMove.toString());
+                }
+            }
         }
         repaint();
     }

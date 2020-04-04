@@ -99,6 +99,33 @@ class Game {
         Matcher command = COMMAND_PATN.matcher(line);
         if (command.matches()) {
             switch (command.group(1).toLowerCase()) {
+            case "switchwhite":
+                if (manualWhite()) {
+                    autoCommand("white");
+                } else {
+                    manualCommand("white");
+                }
+                break;
+            case "switchblack":
+                if (manualBlack()) {
+                    autoCommand("black");
+                } else {
+                    manualCommand("black");
+                }
+                break;
+            case "retract":
+                if (_board.turn() == WP && manualWhite()) {
+                    _board.retract();
+                    if (!manualBlack()) {
+                        _board.retract();
+                    }
+                } else if (_board.turn() == BP && manualBlack()) {
+                    _board.retract();
+                    if (!manualWhite()) {
+                        _board.retract();
+                    }
+                }
+                break;
             case "#":
                 break;
             case "new":

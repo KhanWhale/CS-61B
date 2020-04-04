@@ -61,6 +61,9 @@ class Board {
         }
         _turn = side;
         _moveLimit = DEFAULT_MOVE_LIMIT;
+        _moves.clear();
+        _winnerKnown = false;
+        _winner = null;
     }
 
 
@@ -147,17 +150,18 @@ class Board {
     /** Retract (unmake) one move, returning to the state immediately before
      *  that move.  Requires that movesMade () > 0. */
     void retract() {
-        assert movesMade() > 0;
-        Move toRetract = _moves.remove(_moves.size() - 1);
-        _subsetsInitialized = false;
-        if (toRetract.isCapture()) {
-            set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
-            set(toRetract.getTo(), get(toRetract.getFrom()).opposite());
-            retractWinner();
-        } else {
-            set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
-            set(toRetract.getTo(), EMP);
-            retractWinner();
+        if (movesMade() > 0) {
+            Move toRetract = _moves.remove(_moves.size() - 1);
+            _subsetsInitialized = false;
+            if (toRetract.isCapture()) {
+                set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
+                set(toRetract.getTo(), get(toRetract.getFrom()).opposite());
+                retractWinner();
+            } else {
+                set(toRetract.getFrom(), get(toRetract.getTo()), _turn.opposite());
+                set(toRetract.getTo(), EMP);
+                retractWinner();
+            }
         }
     }
 

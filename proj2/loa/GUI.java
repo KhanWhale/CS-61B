@@ -48,6 +48,9 @@ class GUI extends TopLevel implements View, Reporter {
                 new LayoutSpec("x", 0, "y", 0, "height", 1, "width", 3));
         addMenuButton("Help->About", (s) -> displayText("About", ABOUT_TEXT));
         addMenuButton("Help->LOA", (s) -> displayText("LOA Help", HELP_TEXT));
+        addMenuButton("Options -> Undo", this::retract);
+        addMenuButton("Options -> Switch White", this::switchWhite);
+        addMenuButton("Options -> Switch Black", this::switchBlack);
     }
 
     /** Response to "Quit" button click. */
@@ -60,6 +63,20 @@ class GUI extends TopLevel implements View, Reporter {
         _pendingCommands.offer("new");
     }
 
+    /** Respond to "Undo" button click. */
+    private void retract(String dummy) {
+        _pendingCommands.offer("retract");
+    }
+
+    /** Respond to "Switch White" button click. */
+    private void switchWhite(String dummy) {
+        _pendingCommands.offer("switchWhite");
+    }
+
+    /** Respond to "Switch Black" button click. */
+    private void switchBlack(String dummy) {
+        _pendingCommands.offer("switchBlack");
+    }
     /** Return the next command from our widget, waiting for it as necessary.
      *  The BoardWidget uses _pendingCommands to queue up moves that it
      *  receives.  This class uses _pendingCommands to queue up commands that
@@ -88,7 +105,6 @@ class GUI extends TopLevel implements View, Reporter {
             setLabel("CurrentTurn",
                      String.format("To move: %s", board.turn().fullName()));
         }
-
         boolean manualWhite = controller.manualWhite(),
             manualBlack = controller.manualBlack();
     }
