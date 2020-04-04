@@ -133,9 +133,7 @@ class Game {
                 setCommand(command.group(2), command.group(3).toLowerCase(),
                            command.group(4).toLowerCase());
                 break;
-            case "limit":
-                limitCommand(command.group(2));
-                break;
+            case "limit": limitCommand(command.group(2)); break;
             case "?": case "help":
                 help();
                 break;
@@ -310,7 +308,7 @@ class Game {
             break;
         }
     }
-    /** Handle retracting */
+    /** Handle retracting. */
     private void retract() {
         if (_board.turn() == WP && manualWhite()) {
             _board.retract();
@@ -325,7 +323,7 @@ class Game {
         }
     }
 
-    /** Handle switching the Player
+    /** Handle switching the Player.
      * @param player the player */
     private void switchPlayer(String player) {
         if (player.equals("w")) {
@@ -334,7 +332,7 @@ class Game {
             } else {
                 manualCommand("white");
             }
-        }else if (player.equals("b")) {
+        } else if (player.equals("b")) {
             if (manualBlack()) {
                 autoCommand("black");
             } else {
