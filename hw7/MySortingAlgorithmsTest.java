@@ -14,7 +14,8 @@ public class MySortingAlgorithmsTest {
         // new MySortingAlgorithms.CountingSort(),
         // new MySortingAlgorithms.HeapSort(),
         //new MySortingAlgorithms.QuickSort(),
-        new MySortingAlgorithms.LSDSort()};
+        //new MySortingAlgorithms.LSDSort()
+    };
         //new MySortingAlgorithms.MSDSort()};
 
     private SortingAlgorithm javaSort = new MySortingAlgorithms.JavaSort();
