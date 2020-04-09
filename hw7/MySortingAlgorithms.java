@@ -95,12 +95,11 @@ public class MySortingAlgorithms {
         public void sort(int[] array, int k) {
             mergeSort(array, 0, k);
         }
-        private void mergeSort(int[] array, int left, int right) {
-            if (right > left) {
-                int mid = (left + right) / 2;
-                mergeSort(array, left, mid);
-                mergeSort(array, mid + 1, right);
-                merge(array, left, mid, right);
+        private int[] mergeSort(int[] array, int left, int right) {
+            if (array.length <= 1) {
+                return array;
+            } else {
+                
             }
         }
 
