@@ -131,7 +131,7 @@ public class Main {
         validateNumArgs("birthday", args, 2);
         Dog myDog = Dog.fromFile(args[1]);
         myDog.haveBirthday();
-        myDog.saveDog();
+//        myDog.saveDog();
     }
 
     /**

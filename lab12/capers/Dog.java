@@ -35,7 +35,7 @@ public class Dog implements Serializable{
     public static Dog fromFile(String name) {
         File toRead = Utils.join(DOG_FOLDER, name + ".doge");
         Dog dogObject = Utils.readObject(toRead, Dog.class);
-        return null;
+        return dogObject;
     }
 
     /**
