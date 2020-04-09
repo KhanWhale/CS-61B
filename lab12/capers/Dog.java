@@ -45,7 +45,7 @@ public class Dog implements Serializable{
         _age += 1;
         System.out.println(toString());
         System.out.println("Happy birthday! Woof! Woof!");
-	this.saveDog(); 
+        this.saveDog();
    }
 
     /**
@@ -60,6 +60,8 @@ public class Dog implements Serializable{
             } catch (IOException e) {
                 return;
             }
+        } else {
+            Utils.writeObject(dogFile, this);
         }
     }
 
