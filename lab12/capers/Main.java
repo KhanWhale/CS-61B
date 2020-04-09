@@ -3,6 +3,8 @@ package capers;
 import jdk.jshell.execution.Util;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 
 /** Canine Capers: A Gitlet Prelude.
  * @author Sean Dooher
@@ -13,6 +15,9 @@ public class Main {
 
     /** Main metadata folder. */
     static final File CAPERS_FOLDER = new File(".capers");
+
+    /** Story file. */
+    static File _story;
     /**
      * Runs one of three commands:
      * story [text] -- Appends "text" + a newline to a story file in the
@@ -80,10 +85,14 @@ public class Main {
         if (!dogsFolder.exists()) {
             dogsFolder.mkdir();
         }
-//        File story = Utils.join(CAPERS_FOLDER, "story.txt");
-//        if (!story.exists()) {
-//            story.createNewFile();
-//        }
+        _story = Utils.join(CAPERS_FOLDER, "story.txt");
+        if (!_story.exists()) {
+            try {
+                _story.createNewFile();
+            } catch (IOException e) {
+                return;
+            }
+        }
     }
 
     /**
@@ -93,6 +102,10 @@ public class Main {
      */
     public static void writeStory(String[] args) {
         validateNumArgs("story", args, 2);
+        String soFar = Utils.readContentsAsString(_story);
+        String toAppend = args[1] + "\n";
+        Utils.writeContents(_story, soFar, toAppend);
+        System.out.println(Utils.readContentsAsString(_story));
     }
 
     /**
@@ -103,7 +116,7 @@ public class Main {
      */
     public static void makeDog(String[] args) {
         validateNumArgs("dog", args, 4);
-        // FIXME
+        Dog myDog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
     }
 
     /**
