@@ -76,8 +76,14 @@ public class Main {
         if (!CAPERS_FOLDER.exists()) {
             CAPERS_FOLDER.mkdir();
         }
-        File story = Utils.join(CAPERS_FOLDER, "story.txt");
-
+        File dogsFolder = Utils.join(CAPERS_FOLDER, "dogs");
+        if (!dogsFolder.exists()) {
+            dogsFolder.mkdir();
+        }
+//        File story = Utils.join(CAPERS_FOLDER, "story.txt");
+//        if (!story.exists()) {
+//            story.createNewFile();
+//        }
     }
 
     /**
