@@ -117,6 +117,7 @@ public class Main {
     public static void makeDog(String[] args) {
         validateNumArgs("dog", args, 4);
         Dog myDog = new Dog(args[1], args[2], Integer.parseInt(args[3]));
+        myDog.saveDog();
     }
 
     /**
@@ -127,7 +128,9 @@ public class Main {
      */
     public static void celebrateBirthday(String[] args) {
         validateNumArgs("birthday", args, 2);
-        // FIXME
+        Dog myDog = Dog.fromFile(args[1]);
+        myDog.haveBirthday();
+        myDog.saveDog();
     }
 
     /**

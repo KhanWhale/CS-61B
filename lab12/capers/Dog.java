@@ -1,6 +1,9 @@
 package capers;
 
+import jdk.jshell.execution.Util;
+
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 
 /** Represents a dog that can be serialized.
@@ -30,7 +33,8 @@ public class Dog implements Serializable{
      * @return Dog read from file
      */
     public static Dog fromFile(String name) {
-        // FIXME
+        File toRead = Utils.join(DOG_FOLDER, name + ".doge");
+        Dog dogObject = Utils.readObject(toRead, Dog.class);
         return null;
     }
 
@@ -47,7 +51,15 @@ public class Dog implements Serializable{
      * Saves a dog to a file for future use.
      */
     public void saveDog() {
-        // FIXME
+        File dogFile = Utils.join(DOG_FOLDER, _name + ".doge");
+        if(!dogFile.exists()) {
+            try{
+                dogFile.createNewFile();
+                Utils.writeObject(dogFile, this);
+            } catch (IOException e) {
+                return;
+            }
+        }
     }
 
     @Override
