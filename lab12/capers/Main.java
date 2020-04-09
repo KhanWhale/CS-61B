@@ -1,5 +1,7 @@
 package capers;
 
+import jdk.jshell.execution.Util;
+
 import java.io.File;
 
 /** Canine Capers: A Gitlet Prelude.
@@ -10,8 +12,7 @@ public class Main {
     static final File CWD = new File(".");
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // FIXME
-
+    static final File CAPERS_FOLDER = new File(".capers");
     /**
      * Runs one of three commands:
      * story [text] -- Appends "text" + a newline to a story file in the
@@ -49,7 +50,12 @@ public class Main {
         case "story":
             writeStory(args);
             break;
-        // FIXME
+	    case "dog":
+	        makeDog(args);
+	        break;
+	    case "birthday":
+	        celebrateBirthday(args);
+	        break;
         default:
             exitWithError(String.format("Unknown command: %s", args[0]));
         }
@@ -67,7 +73,11 @@ public class Main {
      *
      */
     public static void setupPersistence() {
-        // FIXME
+        if (!CAPERS_FOLDER.exists()) {
+            CAPERS_FOLDER.mkdir();
+        }
+        File story = Utils.join(CAPERS_FOLDER, "story.txt");
+
     }
 
     /**
@@ -77,7 +87,6 @@ public class Main {
      */
     public static void writeStory(String[] args) {
         validateNumArgs("story", args, 2);
-        // FIXME
     }
 
     /**
