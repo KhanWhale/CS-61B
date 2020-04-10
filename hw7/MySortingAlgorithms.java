@@ -93,19 +93,9 @@ public class MySortingAlgorithms {
     public static class MergeSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-            mergeSort(array, 0, k);
-        }
-        private int[] mergeSort(int[] array, int left, int right) {
-            if (array.length <= 1) {
-                return array;
-            } else {
-                
-            }
+                        
         }
 
-        private void merge(int[] array, int left, int mid, int right) {
-
-        }
         // may want to add additional methods
 
         @Override
@@ -113,7 +103,6 @@ public class MySortingAlgorithms {
             return "Merge Sort";
         }
 
-        int[] _toSort;
     }
 
     /**
