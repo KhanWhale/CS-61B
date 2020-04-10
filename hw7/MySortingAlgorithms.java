@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -93,9 +94,50 @@ public class MySortingAlgorithms {
     public static class MergeSort implements SortingAlgorithm {
         @Override
         public void sort(int[] array, int k) {
-                        
+            int [] merged = mergeSort(Arrays.copyOfRange(array, 0, k));
+            for (int i = 0; i < merged.length; i += 1) {
+                array[i] = merged[i];
+            }
         }
-
+        public int[] mergeSort(int[] array) {
+            if (array.length <= 1) {
+                return array;
+            } else {
+                int [] L = Arrays.copyOfRange(array, 0, (array.length)/2);
+                int [] R = Arrays.copyOfRange(array, (array.length) / 2, array.length);
+                L = mergeSort(L);
+                R = mergeSort(R);
+                return merge(L, R);
+            }
+        }
+        public int[] merge(int[] arr1, int[] arr2) {
+            int[] merged = new int[arr1.length + arr2.length];
+            int mergedIndex = 0;
+            int arr1Index = 0;
+            int arr2Index = 0;
+            while(arr1Index < arr1.length && arr2Index < arr2.length) {
+                if (arr1[arr1Index] < arr2[arr2Index]) {
+                    merged[mergedIndex] = arr1[arr1Index];
+                    mergedIndex += 1;
+                    arr1Index += 1;
+                } else {
+                    merged[mergedIndex] = arr2[arr2Index];
+                    mergedIndex += 1;
+                    arr2Index += 1;
+                }
+            }
+            while (arr1Index < arr1.length) {
+                merged[mergedIndex] = arr1[arr1Index];
+                mergedIndex += 1;
+                arr1Index += 1;
+            }
+            while (arr2Index < arr2.length) {
+                merged[mergedIndex] = arr2[arr2Index];
+                mergedIndex += 1;
+                arr2Index += 1;
+            }
+            return merged;
+        }
         // may want to add additional methods
 
         @Override
