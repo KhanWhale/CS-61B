@@ -8,14 +8,19 @@ public class Sum {
 
     /** Returns true iff A[i]+B[j] = M for some i and j. */
     public static boolean sumsTo(int[] A, int[] B, int m) {
-        Arrays.sort(B);
-        for (int i = 0; i < A.length; i += 1) {
-            for (int j = 0; j < B.length; j += 1) {
-                if (A[i] + B[j] == m) {
-                    return true;
-                } else if (A[i] + B[j] > m) {
-                    break;
-                }
+        int[] combined = new int[A.length + B.length];
+        System.arraycopy(A, 0, combined, 0, A.length);
+        System.arraycopy(B, 0, combined, A.length, B.length);
+        Arrays.sort(combined);
+        int left = 0;
+        int right = combined.length - 1;
+        while (left < right) {
+            if (combined[left] + combined[right] == m) {
+                return true;
+            } else if (combined[left] + combined[right] < m) {
+                left+= 1;
+            } else {
+                right -= 1;
             }
         }
         return false;
