@@ -1,6 +1,5 @@
 import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 /**
  * Note that every sorting algorithm takes in an argument k. The sorting 
@@ -208,9 +207,33 @@ public class MySortingAlgorithms {
     public static class LSDSort implements SortingAlgorithm {
         @Override
         public void sort(int[] a, int k) {
+            LinkedList<Integer>[] buckets = new LinkedList[10];
+            for (int i = 0; i < buckets.length; i += 1) {
+                buckets[i] = new LinkedList<Integer>();
+            }
+            boolean allProcessed = false;
+            int exp = 1;
 
+            while (!allProcessed) {
+                allProcessed = true;
+                for (int i = 0; i < k; i += 1) {
+                    int bucket = (a[i]/exp) % 10;
+                    if (allProcessed && bucket > 0) {
+                        allProcessed = false;
+                    }
+                    buckets[bucket].add(a[i]);
+                }
+
+                exp *= 10;
+                int newInd = 0;
+                for (int i = 0; i < buckets.length; i += 1) {
+                    while (!buckets[i].isEmpty()) {
+                        a[newInd] = buckets[i].removeFirst();
+                        newInd += 1;
+                    }
+                }
+            }
         }
-
         @Override
         public String toString() {
             return "LSD Sort";
