@@ -20,7 +20,7 @@ public class Sum {
             } else if (sum < m) {
                 leftInd += 1;
             } else {
-                rightInd += 1;
+                rightInd -= 1;
             }
         }
         return false;
