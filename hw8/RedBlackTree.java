@@ -45,7 +45,7 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return new root of the (sub)tree.
      */
     RBTreeNode<T> rotateRight(RBTreeNode<T> node) {
-        if (node.left == null) {
+        if (node == null || node.left == null) {
             return node;
         } else {
             RBTreeNode<T> newRoot = node.left;
@@ -71,7 +71,7 @@ public class RedBlackTree<T extends Comparable<T>> {
      * @return new root of the (sub)tree.
      */
     RBTreeNode<T> rotateLeft(RBTreeNode<T> node) {
-        if (node.right == null) {
+        if (node == null || node.right == null) {
             return node;
         } else {
             RBTreeNode<T> newRoot = node.right;
