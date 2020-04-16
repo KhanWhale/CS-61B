@@ -43,4 +43,5 @@ This class extends the abstract Repository class. It contains references includi
  parent  Staging Area to the state of the Staging Area at the time of the commit, and then clearing all the data.  
 ## Persistence
 In order to implement persistence, all our data lives in the  .gitlet  directory. Commits, with their references to blobs, can be used to look up specific data. Blobs will be serialized such that they end in a .blob extension, commits such that they end in a .commit extension. We will also have a log file, which is responsible for storing the metadata of all previous logs. 
-Each kind of object will live in a subdirectory of the  .gitlet  directory, and this will  be used to access persistence. 
+Each kind of object will live in a subdirectory of the  .gitlet  directory, and this will  be used to access persistence. Persistence will be something that is quite complicated to implement. A number of objects need to be stored as persistent data. Each of them will lie in the .gitlet directory, at the top level
+rather than within subdirectories. Persistence will include a reference to the current HEAD commit. It will also need to store data relating to the Staging area.
