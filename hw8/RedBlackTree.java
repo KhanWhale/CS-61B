@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 /**
  * Simple Red-Black tree implementation, where the keys are of type T.
  @ author
@@ -7,6 +9,8 @@ public class RedBlackTree<T extends Comparable<T>> {
     /** Root of the tree. */
     private RBTreeNode<T> root;
 
+    /** Size of the tree. */
+    public int size = 0;
     /**
      * Empty constructor.
      */
@@ -36,6 +40,19 @@ public class RedBlackTree<T extends Comparable<T>> {
         return null;
     }
 
+    public String toString() {
+        Stack<T> traversal = new Stack<T>();
+        return addNode(root, traversal).toString();
+    }
+    public Stack<T> addNode(RBTreeNode<T> tree, Stack<T> traversal) {
+        if (tree == null) {
+            return null;
+        }
+        addNode(tree.left, traversal);
+        traversal.push(tree.item);
+        addNode(tree.right, traversal);
+        return traversal;
+    }
     /**
      * Rotates the (sub)tree rooted at given node to the right, and returns the
      * new root of the (sub)tree. If rotation is not possible somehow,
@@ -118,6 +135,7 @@ public class RedBlackTree<T extends Comparable<T>> {
      */
     void insert(T item) {
         root = insert(root, item);
+        size += 1;
         root.isBlack = true;
     }
 
