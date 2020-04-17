@@ -9,6 +9,7 @@ public class RedBlackTreeTest {
             myTree.insert(i);
         }
         assertEquals(40, myTree.size);
+        System.out.println(myTree);
     }
 
     public static void main(String[] args) {

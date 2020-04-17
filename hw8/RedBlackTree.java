@@ -177,7 +177,7 @@ public class RedBlackTree<T extends Comparable<T>> {
 
         // handle case B
         if (isRed(node.left) && isRed(node.left.left)) {
-            rotateRight(node);
+            node = rotateRight(node);
         }
 
         // handle case A
