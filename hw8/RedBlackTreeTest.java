@@ -11,4 +11,8 @@ public class RedBlackTreeTest {
         assertEquals(40, myTree.size);
         System.out.println(myTree);
     }
+
+    public static void main(String[] args) {
+        System.exit(ucb.junit.textui.runClasses(RedBlackTreeTest.class));
+    }
 }
