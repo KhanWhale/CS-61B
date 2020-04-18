@@ -35,35 +35,38 @@ public class Main {
 
     public static void init(String [] args){
         File gitletDir = Utils.join(CWD, ".gitlet");
-        if (gitletDir.exists()) {
-            System.out.println("A Gitlet version-control system already exists in the current directory.");
-            System.exit(0);
-        } else {
-            gitletDir.mkdir();
-            File objects = Utils.join(gitletDir, "objects");
-            objects.mkdir();
-            File logs = Utils.join(gitletDir, "logs");
-            logs.mkdir();
-            File masterLog = Utils.join(logs, "master");
-            TimeZone tz = Calendar.getInstance().getTimeZone();
-            long tzOffset = tz.getOffset(0);
-            Commit initialCommit = new Commit("initial commit", -tzOffset);
-            File serializedCommit = Utils.join(objects, initialCommit.hash);
-            File head = Utils.join(gitletDir, "HEAD");
-            try {
-                masterLog.createNewFile();
-                serializedCommit.createNewFile();
-                head.createNewFile();
-                FileWriter myWriter = new FileWriter(head);
-                myWriter.write(initialCommit.hash);
-                myWriter.close();
-            } catch (IOException e) {
-                return;
+        try{
+            if (gitletDir.exists()) {
+                throw new GitletException("A Gitlet version-control system already exists in the current directory.");
+            } else {
+                gitletDir.mkdir();
+                File objects = Utils.join(gitletDir, "objects");
+                objects.mkdir();
+                File logs = Utils.join(gitletDir, "logs");
+                logs.mkdir();
+                File masterLog = Utils.join(logs, "master");
+                TimeZone tz = Calendar.getInstance().getTimeZone();
+                long tzOffset = tz.getOffset(0);
+                Commit initialCommit = new Commit("initial commit", -tzOffset);
+                File serializedCommit = Utils.join(objects, initialCommit.hash);
+                File head = Utils.join(gitletDir, "HEAD");
+                try {
+                    masterLog.createNewFile();
+                    serializedCommit.createNewFile();
+                    head.createNewFile();
+                    FileWriter myWriter = new FileWriter(head);
+                    myWriter.write(initialCommit.hash);
+                    myWriter.close();
+                } catch (IOException e) {
+                    return;
+                }
+                Utils.writeObject(serializedCommit, initialCommit);
+                Utils.writeObject(masterLog, initialCommit);
             }
-            Utils.writeObject(serializedCommit, initialCommit);
-            Utils.writeObject(masterLog, initialCommit);
+        }catch (GitletException gitErr) {
+            System.err.print(gitErr.getMessage());
+            System.exit(0);
         }
-
     }
     public static void add(String [] args) {
 
