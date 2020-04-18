@@ -1,6 +1,5 @@
 package gitlet;
 
-import com.sun.tools.corba.se.idl.Util;
 import ucb.junit.textui;
 import org.junit.Test;
 
