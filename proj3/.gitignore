@@ -35,7 +35,7 @@ local.properties
 
 # Eclipse Core
 .project
-
+.gitlet
 # External tool builders
 .externalToolBuilders/
 

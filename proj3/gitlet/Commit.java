@@ -1,12 +1,14 @@
 package gitlet;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Commit {
+public class Commit implements Serializable{
     public Commit(String msg, long unixTime) {
         commitMessage = msg;
         commitTime = unixTime;
+        hash = Utils.sha1(commitMessage, Long.toString(commitTime));
     }
 
     public String toString() {
@@ -18,4 +20,6 @@ public class Commit {
 
     /** The commit message. **/
     String commitMessage;
+
+    String hash;
 }
