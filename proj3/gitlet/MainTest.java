@@ -1,17 +1,20 @@
 package gitlet;
 
-import ucb.junit.textui;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 
 import static org.junit.Assert.*;
 
 public class MainTest {
+
     @Test
-    public void initMain() throws IOException {
-        return;
+    public void initMain() {
+        File gitletDir = Utils.join(".", ".gitlet");
+        assertFalse(gitletDir.exists());
+        Main myMain = new Main();
+        myMain.main("init");
+        assertTrue(gitletDir.isDirectory());
     }
 
 

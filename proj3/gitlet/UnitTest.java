@@ -6,12 +6,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.Date;
-
-
-import static org.junit.Assert.*;
 
 /** The suite of all JUnit tests for the gitlet package.
  *  @author Aniruddh Khanwale
