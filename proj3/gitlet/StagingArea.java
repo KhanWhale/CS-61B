@@ -11,7 +11,7 @@ public class StagingArea implements Serializable, Dumpable {
         stagePath = Utils.join(gitDir, "stage");
         try {
             if (stagePath.isFile()) {
-                copyStaging();
+                copyStage();
             } else {
                 stagePath.createNewFile();
             }
@@ -32,16 +32,14 @@ public class StagingArea implements Serializable, Dumpable {
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
         } else {
-            blobTreeMap = new TreeMap<String, Blob>();
-            blobNames = new TreeMap<String, Blob>();
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
         }
     }
-    private void copyStaging() {
+    private void copyStage() {
         StagingArea parent = Utils.readObject(stagePath, StagingArea.class);
-        blobTreeMap = parent.blobTreeMap;
-        blobNames = parent.blobNames;
+        blobTreeMap.putAll(parent.blobTreeMap);
+        blobNames.putAll(parent.blobNames);
     }
 
 
@@ -50,11 +48,11 @@ public class StagingArea implements Serializable, Dumpable {
 
     /** Treemap containing all blobs in the staging area,
      * used to ensure lgN search time.  */
-    TreeMap<String, Blob> blobTreeMap;
+    TreeMap<String, Blob> blobTreeMap = new TreeMap<String, Blob>();
 
     /** Treemap containing all the filenames in the staging area,
      * used to overwrite files */
-     TreeMap<String, Blob> blobNames;
+     TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
 
     @Override
     public void dump() {

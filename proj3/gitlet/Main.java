@@ -103,6 +103,7 @@ public class Main {
                 if (myStage.stagePath.isFile()) {
                     Utils.writeObject(myStage.stagePath, myStage);
                 }
+                myStage.dump();
             }
         }
     }

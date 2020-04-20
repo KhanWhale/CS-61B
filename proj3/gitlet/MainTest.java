@@ -58,8 +58,7 @@ public class MainTest {
         myMain = new Main();
         myMain.main(args);
 
-        System.out.println("Restage original wug file. At this point, staging area should only be original file.");
-        final File wugFile = createWug();
+        System.out.println("Restage period wug file. At this point, staging area should be empty.");
         myMain = new Main();
         myMain.main(args);
     }
@@ -68,6 +67,7 @@ public class MainTest {
     public void testAddMultiple() {
         String[] args = new String[]{"add", wugFile.getName()};
         System.out.println("Initial addition of wug file.");
+        createWug();
         Main myMain = new Main();
         myMain.main(args);
 
@@ -79,6 +79,7 @@ public class MainTest {
         System.out.println("Stage period form of wug file.");
         updateWugPeriod();
         myMain = new Main();
+        args[1] = wugFile.getName();
         myMain.main(args);
 
 
