@@ -1,0 +1,7 @@
+1. # Check error message for removal of unstaged, untracked file.
+2. I prelude1.inc
+3. + f.txt wug.txt
+4. > rm f.txt
+5. No reason to remove the file.
+6. <<<
+7. 

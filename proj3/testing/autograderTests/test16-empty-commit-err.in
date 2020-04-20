@@ -1,0 +1,9 @@
+-------------------- test17-empty-commit-message-err.in --------------------
+1. # Commit message with blank message
+2. I prelude1.inc
+3. + f.txt wug.txt
+4. > add f.txt
+5. <<<
+6. >commit ""
+7. Please enter a commit message.
+8. <<<

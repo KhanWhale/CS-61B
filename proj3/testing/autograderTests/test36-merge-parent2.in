@@ -1,0 +1,47 @@
+1. # Create two branches and merge where second merge parents must be followed.
+ 2. I prelude1.inc
+ 3. > branch B1
+ 4. <<<
+ 5. > branch B2
+ 6. <<<
+ 7. > checkout B1
+ 8. <<<
+ 9. + h.txt wug.txt
+10. > add h.txt
+11. <<<
+12. > commit "Add h.txt"
+13. <<<
+14. > checkout B2
+15. <<<
+16. + f.txt wug.txt
+17. > add f.txt
+18. <<<
+19. > commit "f.txt added"
+20. <<<
+21. > branch C1
+22. <<<
+23. + g.txt notwug.txt
+24. > add g.txt
+25. <<<
+26. > rm f.txt
+27. <<<
+28. > commit "g.txt added, f.txt removed"
+29. <<<
+30. = g.txt notwug.txt
+31. * f.txt
+32. * h.txt
+33. > checkout B1
+34. <<<
+35. = h.txt wug.txt
+36. * f.txt
+37. * g.txt
+38. > merge C1
+39. <<<
+40. = f.txt wug.txt
+41. = h.txt wug.txt
+42. * g.txt
+43. > merge B2
+44. <<<
+45. * f.txt
+46. = g.txt notwug.txt
+47. = h.txt wug.txt

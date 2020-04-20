@@ -1,0 +1,25 @@
+1. # Test special cases of merge.
+2. I setup2.inc
+3. > branch b1
+4. <<<
+5. + h.txt wug2.txt
+6. > add h.txt
+7. <<<
+8. > commit "Add h.txt"
+9. <<<
+10. > branch b2
+11. <<<
+12. > rm f.txt
+13. <<<
+14. > commit "remove f.txt"
+15. <<<
+16. > merge b1
+17. Given branch is an ancestor of the current branch.
+18. <<<
+19. > checkout b2
+20. <<<
+21. = f.txt wug.txt
+22. > merge master
+23. Current branch fast-forwarded.
+24. <<<
+25. * f.txt
