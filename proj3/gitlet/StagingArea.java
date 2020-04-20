@@ -64,6 +64,7 @@ public class StagingArea implements Serializable, Dumpable {
            System.out.println(blobNames.toString());
            System.out.println("Blob Tree Map: ");
            System.out.println(blobTreeMap.toString());
+           System.out.println();
        }
     }
 }
