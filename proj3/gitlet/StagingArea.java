@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.TreeMap;
 
 /** Represents the Staging Area of the gitlet repository */
-public class StagingArea implements Serializable {
+public class StagingArea implements Serializable, Dumpable {
     StagingArea(File gitDir) {
         stagePath = Utils.join(gitDir, "stage");
         try {
@@ -42,6 +42,8 @@ public class StagingArea implements Serializable {
         blobTreeMap = parent.blobTreeMap;
         blobNames = parent.blobNames;
     }
+
+
     /** File object containing staging area reference */
     File stagePath;
 
@@ -53,4 +55,15 @@ public class StagingArea implements Serializable {
      * used to overwrite files */
      TreeMap<String, Blob> blobNames;
 
+    @Override
+    public void dump() {
+       if (blobNames == null && blobTreeMap == null) {
+           System.out.println("No blobs added");
+       } else {
+           System.out.println("Blob Names :");
+           System.out.println(blobNames.toString());
+           System.out.println("Blob Tree Map: ");
+           System.out.println(blobTreeMap.toString());
+       }
+    }
 }

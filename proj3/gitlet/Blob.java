@@ -1,10 +1,11 @@
 package gitlet;
 
 import java.io.File;
+import java.io.Serializable;
 
 /** The class designed to track blobs, or files.
  * @author Aniruddh Khanwale */
-public class Blob {
+public class Blob implements Serializable{
     Blob (File toBlobify) {
         if (!toBlobify.isFile()) {
             throw new GitletException("File does not exist.");

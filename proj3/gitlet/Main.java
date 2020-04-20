@@ -43,6 +43,7 @@ public class Main {
                         break;
                     case "add":
                         add(args);
+                        break;
                     default:
                        throw new GitletException("No command with that name exists.");
                 }
@@ -102,6 +103,7 @@ public class Main {
                 if (myStage.stagePath.isFile()) {
                     Utils.writeObject(myStage.stagePath, myStage);
                 }
+                myStage.dump();
             }
         }
     }
