@@ -26,8 +26,9 @@ public class StagingArea implements Serializable, Dumpable {
             blobNames.remove(toStage.getName());
             return;
         } else if (blobNames != null && blobNames.containsKey(toStage.getName())) {
+            String originalHash = blobNames.get(toStage.getName()).getHash();
             blobNames.remove(toStage.getName());
-            blobTreeMap.remove(toStage.getHash());
+            blobTreeMap.remove(originalHash);
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
         } else {

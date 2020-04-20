@@ -12,6 +12,7 @@ public class MainTest {
 
     /** Reference to wugFile, used for testing */
     final File wugFile = createWug();
+    final File wegFile = createWeg();
 
     @Test
     public void initMain() {
@@ -23,46 +24,79 @@ public class MainTest {
     }
 
     @Test
-    public void testAdd() {
+    public void testWugAdd() {
         Main myMain = new Main();
         String[] args = new String[]{"add", wugFile.getName()};
-//       Initial addition of wug file
+        System.out.println("Initial addition of wug file.");
         myMain.main(args);
 
-        //Add wug file but identical to make sure it is removed
+        System.out.println("Add wug file but identical to make sure it is removed.");
         myMain = new Main();
         myMain.main(args);
 
-//        Add wug file again to make sure it gets added when not staged
+        System.out.println("Add wug file again to make sure it gets added when not staged");
         myMain = new Main();
         myMain.main(args);
 
-//        Stage updated spelling of wug file
+        System.out.println("Stage updated spelling of wug file");
         updateWugSpelling();
         myMain = new Main();
         myMain.main(args);
 
-//        Stage period form of wug file.
+        System.out.println("Stage period form of wug file.");
         updateWugPeriod();
         myMain = new Main();
         myMain.main(args);
 
-//        Restage updated spelling form of wug file
+        System.out.println("Restage updated spelling form of wug file");
         updateWugSpelling();
         myMain = new Main();
         myMain.main(args);
 
-//        Restage period form of wug file.
+        System.out.println("Restage period form of wug file.");
         updateWugPeriod();
         myMain = new Main();
         myMain.main(args);
 
-//        Restage original wug file. At this point, staging area should only be original file.
-
+        System.out.println("Restage original wug file. At this point, staging area should only be original file.");
+        final File wugFile = createWug();
         myMain = new Main();
         myMain.main(args);
     }
 
+    @Test
+    public void testAddMultiple() {
+        String[] args = new String[]{"add", wugFile.getName()};
+        System.out.println("Initial addition of wug file.");
+        Main myMain = new Main();
+        myMain.main(args);
+
+        System.out.println("Initial addition of weg file.");
+        args[1] = wegFile.getName();
+        myMain = new Main();
+        myMain.main(args);
+
+        System.out.println("Stage period form of wug file.");
+        updateWugPeriod();
+        myMain = new Main();
+        myMain.main(args);
+
+
+    }
+
+    public File createWeg() {
+        File weg = Utils.join(".", "weg.txt");
+        if (weg.isFile()) {
+            Utils.writeObject(weg,"This is a weg");
+        } else {
+            try {
+                weg.createNewFile();
+            } catch (IOException e) {
+                return null;
+            }
+        }
+        return weg;
+    }
     public File createWug(){
         File wug = Utils.join(".", "wug.txt");
         if (wug.isFile()) {
