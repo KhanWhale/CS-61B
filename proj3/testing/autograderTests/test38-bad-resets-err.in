@@ -1,39 +1,39 @@
-1. # Various error cases for reset
- 2. # Check reset command.
- 3. I setup2.inc
- 4. > branch other
- 5. <<<
- 6. + h.txt wug2.txt
- 7. > add h.txt
- 8. <<<
- 9. > rm g.txt
-10. <<<
-11. > commit "Add h.txt and remove g.txt"
-12. <<<
-13. > log
-14. ===
-15. ${COMMIT_HEAD}
-16. Add h.txt and remove g.txt
-17. 
-18. ===
-19. ${COMMIT_HEAD}
-20. Two files
-21. 
-22. ===
-23. ${COMMIT_HEAD}
-24. initial commit
-25. <<<*
-26. D INIT "${3}"
-27. D TWO "${2}"
-28. D MASTER1 "${1}"
-29. 
-30. > checkout other
-31. <<<
-32. # Almost certain not to exist.
-33. > reset 025052f2b193d417df998517a4c539918801b430
-34. No commit with that id exists.
-35. <<<
-36. + h.txt wug3.txt
-37. > reset ${MASTER1}
-38. There is an untracked file in the way; delete it, or add and commit it first.
-39. <<<
+ # Various error cases for reset
+  # Check reset command.
+  I setup2.inc
+  > branch other
+  <<<
+  + h.txt wug2.txt
+  > add h.txt
+  <<<
+  > rm g.txt
+ <<<
+ > commit "Add h.txt and remove g.txt"
+ <<<
+ > log
+ ===
+ ${COMMIT_HEAD}
+ Add h.txt and remove g.txt
+
+ ===
+ ${COMMIT_HEAD}
+ Two files
+
+ ===
+ ${COMMIT_HEAD}
+ initial commit
+ <<<*
+ D INIT "${3}"
+ D TWO "${2}"
+ D MASTER1 "${1}"
+
+ > checkout other
+ <<<
+ # Almost certain not to exist.
+ > reset 025052f2b193d417df998517a4c539918801b430
+ No commit with that id exists.
+ <<<
+ + h.txt wug3.txt
+ > reset ${MASTER1}
+ There is an untracked file in the way; delete it, or add and commit it first.
+ <<<

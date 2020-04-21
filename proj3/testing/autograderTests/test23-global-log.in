@@ -1,30 +1,29 @@
-1. # Check that global-log prints out commits in master branch.
-2. # FIXME: kludged around problem with regular-expression pattern characters in
-3. #        log.
-4. I setup2.inc
-5. # Kludge starts.
-6. D DATE1 "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d"
-7. D COMMIT_LOG "(===[ ]*\ncommit [a-f0-9]+[ ]*\n(?:Merge:\s+[0-9a-f]{7}\s+[0-9a-f]{7}[ ]*\n)?${DATE1}) [-+](\d\d\d\d[ ]*\n(?:.|\n)*?(?=\Z|\n===))"
-8. + h.txt wug.txt
-9. > add h.txt
-10. <<<
-11. > commit "Add h"
-12. <<<
-13. > log
-14. ${COMMIT_LOG}
-15. ${COMMIT_LOG}
-16. ${COMMIT_LOG}
-17. <<<*
-18. D L1 "${1} [-+]${2}"
-19. D L2 "${3} [-+]${4}"
-20. D L3 "${5} [-+]${6}"
-21. > global-log
-22. ${ARBLINES}${L1}?${ARBLINES}
-23. <<<*
-24. > global-log
-25. ${ARBLINES}${L2}?${ARBLINES}
-26. <<<*
-27. > global-log
-28. ${ARBLINES}${L3}${ARBLINES}
-29. <<<*
-30. 
+ # Check that global-log prints out commits in master branch.
+ # FIXME: kludged around problem with regular-expression pattern characters in
+ #        log.
+ I setup2.inc
+ # Kludge starts.
+ D DATE1 "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d"
+ D COMMIT_LOG "(===[ ]*\ncommit [a-f0-9]+[ ]*\n(?:Merge:\s+[0-9a-f]{7}\s+[0-9a-f]{7}[ ]*\n)?${DATE1}) [-+](\d\d\d\d[ ]*\n(?:.|\n)*?(?=\Z|\n===))"
+ + h.txt wug.txt
+ > add h.txt
+ <<<
+ > commit "Add h"
+ <<<
+ > log
+ ${COMMIT_LOG}
+ ${COMMIT_LOG}
+ ${COMMIT_LOG}
+ <<<*
+ D L1 "${1} [-+]${2}"
+ D L2 "${3} [-+]${4}"
+ D L3 "${5} [-+]${6}"
+ > global-log
+ ${ARBLINES}${L1}?${ARBLINES}
+ <<<*
+ > global-log
+ ${ARBLINES}${L2}?${ARBLINES}
+ <<<*
+ > global-log
+ ${ARBLINES}${L3}${ARBLINES}
+ <<<*

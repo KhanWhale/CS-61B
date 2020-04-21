@@ -1,55 +1,53 @@
-1. # Check that we can check out a previous version.
- 2. I prelude1.inc
- 3. + wug.txt wug.txt
- 4. > add wug.txt
- 5. <<<
- 6. > commit "version 1 of wug.txt"
- 7. <<<
- 8. + wug.txt notwug.txt
- 9. > add wug.txt
-10. <<<
-11. > commit "version 2 of wug.txt"
-12. <<<
-13. = wug.txt notwug.txt
-14. # Each ${HEADER} captures its commit UID.
-15. D UID "[a-f0-9]+"
-16. D HEADER "commit (${UID})"
-17. D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
-18. > log
-19. ===
-20. ${HEADER}
-21. ${DATE}
-22. version 2 of wug.txt
-23. 
-24. ===
-25. ${HEADER}
-26. ${DATE}
-27. version 1 of wug.txt
-28. 
-29. ===
-30. ${HEADER}
-31. ${DATE}
-32. initial commit
-33. 
-34. <<<*
-35. # UID of second version
-36. D UID2 "${1}"
-37. # UID of current version
-38. D UID1 "${2}"
-39. > checkout ${UID1} -- wug.txt
-40. <<<
-41. > status
-42. === Branches ===
-43. \*master
-44. 
-45. === Staged Files ===
-46. 
-47. === Removed Files ===
-48. 
-49. === Modifications Not Staged For Commit ===
-50. (${ARBLINE}\n\r?)?
-51. === Untracked Files ===
-52. 
-53. <<<*
-54. 
-55. 
+ # Check that we can check out a previous version.
+  I prelude1.inc
+  + wug.txt wug.txt
+  > add wug.txt
+  <<<
+  > commit "version 1 of wug.txt"
+  <<<
+  + wug.txt notwug.txt
+  > add wug.txt
+ <<<
+ > commit "version 2 of wug.txt"
+ <<<
+ = wug.txt notwug.txt
+ # Each ${HEADER} captures its commit UID.
+ D UID "[a-f0-9]+"
+ D HEADER "commit (${UID})"
+ D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
+ > log
+ ===
+ ${HEADER}
+ ${DATE}
+ version 2 of wug.txt
+
+ ===
+ ${HEADER}
+ ${DATE}
+ version 1 of wug.txt
+
+ ===
+ ${HEADER}
+ ${DATE}
+ initial commit
+
+ <<<*
+ # UID of second version
+ D UID2 "${1}"
+ # UID of current version
+ D UID1 "${2}"
+ > checkout ${UID1} -- wug.txt
+ <<<
+ > status
+ === Branches ===
+ \*master
+
+ === Staged Files ===
+
+ === Removed Files ===
+
+ === Modifications Not Staged For Commit ===
+ (${ARBLINE}\n\r?)?
+ === Untracked Files ===
+
+ <<<*

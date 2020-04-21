@@ -1,35 +1,33 @@
- 1. # Create two branches and switch between them
- 2. I prelude1.inc
- 3. > branch other
- 4. <<<
- 5. + f.txt wug.txt
- 6. + g.txt notwug.txt
- 7. > add g.txt
- 8. <<<
- 9. > add f.txt
-10. <<<
-11. > commit "Main two files"
-12. <<<
-13. E f.txt
-14. E g.txt
-15. > checkout other
-16. <<<
-17. * f.txt
-18. * g.txt
-19. + f.txt notwug.txt
-20. > add f.txt
-21. <<<
-22. > commit "Alternative file"
-23. <<<
-24. = f.txt notwug.txt
-25. * g.txt
-26. > checkout master
-27. <<<
-28. = f.txt wug.txt
-29. = g.txt notwug.txt
-30. > checkout other
-31. <<<
-32. = f.txt notwug.txt
-33. * g.txt
-34. 
-35. 
+  # Create two branches and switch between them
+  I prelude1.inc
+  > branch other
+  <<<
+  + f.txt wug.txt
+  + g.txt notwug.txt
+  > add g.txt
+  <<<
+  > add f.txt
+ <<<
+ > commit "Main two files"
+ <<<
+ E f.txt
+ E g.txt
+ > checkout other
+ <<<
+ * f.txt
+ * g.txt
+ + f.txt notwug.txt
+ > add f.txt
+ <<<
+ > commit "Alternative file"
+ <<<
+ = f.txt notwug.txt
+ * g.txt
+ > checkout master
+ <<<
+ = f.txt wug.txt
+ = g.txt notwug.txt
+ > checkout other
+ <<<
+ = f.txt notwug.txt
+ * g.txt

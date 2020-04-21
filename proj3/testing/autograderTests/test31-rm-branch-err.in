@@ -1,18 +1,18 @@
-1. # Test attempts to remove current branch or non-existent branch.
-2. I prelude1.inc
-3. > branch other
-4. <<<
-5. > checkout other
-6. <<<
-7. + f.txt wug.txt
-8. > add f.txt
-9. <<<
-10. > commit "File f.txt"
-11. <<<
-12. > rm-branch other
-13. Cannot remove the current branch.
-14. <<<
-15. E f.txt
-16. > rm-branch foo
-17. A branch with that name does not exist.
-18. <<<
+ # Test attempts to remove current branch or non-existent branch.
+ I prelude1.inc
+ > branch other
+ <<<
+ > checkout other
+ <<<
+ + f.txt wug.txt
+ > add f.txt
+ <<<
+ > commit "File f.txt"
+ <<<
+ > rm-branch other
+ Cannot remove the current branch.
+ <<<
+ E f.txt
+ > rm-branch foo
+ A branch with that name does not exist.
+ <<<

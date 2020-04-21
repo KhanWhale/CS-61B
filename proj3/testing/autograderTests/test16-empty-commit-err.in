@@ -1,5 +1,5 @@
-1. # Commit with nothing to staged or removed.
-2. I prelude1.inc
-3. > commit "Nothing here"
-4. No changes added to the commit.
-5. <<<
+ # Commit with nothing to staged or removed.
+ I prelude1.inc
+ > commit "Nothing here"
+ No changes added to the commit.
+ <<<

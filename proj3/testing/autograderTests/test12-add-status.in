@@ -1,17 +1,17 @@
-1. # Status with two adds
-2. I setup1.inc
-3. > status
-4. === Branches ===
-5. *master
-6. 
-7. === Staged Files ===
-8. f.txt
-9. g.txt
-10. 
-11. === Removed Files ===
-12. 
-13. === Modifications Not Staged For Commit ===
-14. 
-15. === Untracked Files ===
-16. 
-17. <<<
+ # Status with two adds
+ I setup1.inc
+ > status
+ === Branches ===
+ *master
+
+ === Staged Files ===
+ f.txt
+ g.txt
+
+ === Removed Files ===
+
+ === Modifications Not Staged For Commit ===
+
+ === Untracked Files ===
+
+ <<<

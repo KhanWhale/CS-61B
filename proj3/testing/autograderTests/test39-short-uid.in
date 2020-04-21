@@ -1,46 +1,46 @@
-1. # Test of abbreviated UIDs.
- 2. # Check that we can check out a previous version.
- 3. > init
- 4. <<<
- 5. + wug.txt wug.txt
- 6. > add wug.txt
- 7. <<<
- 8. > commit "version 1 of wug.txt"
- 9. <<<
-10. + wug.txt notwug.txt
-11. > add wug.txt
-12. <<<
-13. > commit "version 2 of wug.txt"
-14. <<<
-15. = wug.txt notwug.txt
-16. # Each ${HEADER} captures an abbreviation of its full commit UID.
-17. # With high probability, it is unique.
-18. D HEADER "commit ([a-f0-9]{8})[a-f0-9]+"
-19. D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
-20. > log
-21. ===
-22. ${HEADER}
-23. ${DATE}
-24. version 2 of wug.txt
-25. 
-26. ===
-27. ${HEADER}
-28. ${DATE}
-29. version 1 of wug.txt
-30. 
-31. ===
-32. ${HEADER}
-33. ${DATE}
-34. initial commit
-35. 
-36. <<<*
-37. # UID of second version
-38. D UID2 "${1}"
-39. # UID of current version
-40. D UID1 "${2}"
-41. > checkout ${UID1} -- wug.txt
-42. <<<
-43. = wug.txt wug.txt
-44. > checkout ${UID2} -- wug.txt
-45. <<<
-46. = wug.txt notwug.txt
+ # Test of abbreviated UIDs.
+  # Check that we can check out a previous version.
+  > init
+  <<<
+  + wug.txt wug.txt
+  > add wug.txt
+  <<<
+  > commit "version 1 of wug.txt"
+  <<<
+ + wug.txt notwug.txt
+ > add wug.txt
+ <<<
+ > commit "version 2 of wug.txt"
+ <<<
+ = wug.txt notwug.txt
+ # Each ${HEADER} captures an abbreviation of its full commit UID.
+ # With high probability, it is unique.
+ D HEADER "commit ([a-f0-9]{8})[a-f0-9]+"
+ D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
+ > log
+ ===
+ ${HEADER}
+ ${DATE}
+ version 2 of wug.txt
+
+ ===
+ ${HEADER}
+ ${DATE}
+ version 1 of wug.txt
+
+ ===
+ ${HEADER}
+ ${DATE}
+ initial commit
+
+ <<<*
+ # UID of second version
+ D UID2 "${1}"
+ # UID of current version
+ D UID1 "${2}"
+ > checkout ${UID1} -- wug.txt
+ <<<
+ = wug.txt wug.txt
+ > checkout ${UID2} -- wug.txt
+ <<<
+ = wug.txt notwug.txt
