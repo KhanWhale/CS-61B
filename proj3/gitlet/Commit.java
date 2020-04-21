@@ -1,14 +1,17 @@
 package gitlet;
 
+import java.io.File;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The Commit class stores instances of commits.
  * @author Aniruddh Khanwale
  */
-public class Commit implements Serializable {
+public class Commit implements Serializable, Dumpable {
     /** The epoch time in Milliseconds at which this commit was made. **/
     private long commitTime;
 
@@ -21,6 +24,25 @@ public class Commit implements Serializable {
     /** Stores the staging area associated with this commit. */
     private StagingArea myStage;
 
+    /** The parent commit */
+    private String parentUID = null;
+
+    public Commit() {
+
+    }
+
+    public Commit(String msg, long unixTime) {
+        setCommitMessage(msg);
+        setCommitTime(unixTime);
+    }
+
+    void commit(StagingArea stage) {
+        myStage = stage;
+        myStage.stagePath.delete();
+        parentUID = Utils.readContentsAsString(myStage.headPath);
+        setHash();
+        Utils.writeContents(myStage.headPath, hash);
+    }
 
     /** Return the commit time of this commit. */
     long getCommitTime() {
@@ -49,23 +71,44 @@ public class Commit implements Serializable {
 
     /** Set the default hash value of this commit. */
     void setHash() {
-        hash = Utils.sha1(commitMessage, Long.toString(commitTime), Utils.serialize(myStage));
+        if (myStage == null) {
+            hash = Utils.sha1(commitMessage, Long.toString(commitTime), Utils.serialize(myStage));
+        } else {
+            List<Object> metadata = new ArrayList<Object>();
+            for (String key: myStage.blobTreeMap.keySet()) {
+                metadata.add(key);
+            }
+            metadata.add(commitMessage);
+            metadata.add(Long.toString(commitTime));
+            metadata.add(parentUID);
+            hash = Utils.sha1(metadata);
+        }
     }
-
     /** Return the stage of the commit. */
     StagingArea getStage() {
         return myStage;
     }
 
+
     void setStage(StagingArea stage) {
         myStage = stage;
     }
 
-    @Override
-    public String toString() {
+    public String timeToString() {
         SimpleDateFormat sdf =
                 new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z ");
         return sdf.format(new Date(getCommitTime()));
     }
 
+    @Override
+    public void dump() {
+        System.out.println(commitMessage + "at " + timeToString());
+        System.out.println("HEAD was at" + parentUID);
+        System.out.println("NEW HEAD is" + hash + ", " + Utils.readContentsAsString(myStage.headPath));
+        System.out.println("+++++");
+    }
+
+    void persist(File commitDir) {
+        Utils.writeObject(Utils.join(commitDir, hash), this);
+    }
 }

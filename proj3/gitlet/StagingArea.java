@@ -32,8 +32,8 @@ public class StagingArea implements Serializable, Dumpable {
 
 
     public void stageFile(Blob toStage) {
-        if (blobTreeMap.containsKey(toStage.getHash())) {
-            if (headStage != null && headStage.blobTreeMap.containsKey(toStage.getHash())) {
+        if (headStage != null && headStage.blobTreeMap.containsKey(toStage.getHash())) {
+            if (blobTreeMap.containsKey(toStage.getHash())) {
                 blobTreeMap.remove(toStage.getHash());
                 blobNames.remove(toStage.getName());
             }
@@ -60,7 +60,13 @@ public class StagingArea implements Serializable, Dumpable {
         blobNames.putAll(parent.blobNames);
     }
 
-
+    int size() {
+        if (blobTreeMap.size() != blobNames.size()) {
+            throw new GitletException("Incorrect blobTree/Name implementation");
+        } else {
+            return blobNames.size();
+        }
+    }
     /** File object containing staging area reference */
     File stagePath;
 

@@ -30,6 +30,8 @@ public class Main {
     /** File containing log for master branch. */
     static File masterLog = Utils.join(logs, "master");
 
+    /** Time zone offset */
+    static long tzOffset = Calendar.getInstance().getTimeZone().getOffset(0);
     /** Usage: java gitlet.Main ARGS, where ARGS contains
      *  <COMMAND> <OPERAND> .... */
     public static void main(String... args) {
@@ -43,6 +45,9 @@ public class Main {
                         break;
                     case "add":
                         add(args);
+                        break;
+                    case "commit":
+                        commit(args);
                         break;
                     default:
                        throw new GitletException("No command with that name exists.");
@@ -67,11 +72,8 @@ public class Main {
             commits.mkdir();
             logs.mkdir();
             blobs.mkdir();
-            TimeZone tz = Calendar.getInstance().getTimeZone();
-            long tzOffset = tz.getOffset(0);
-            InitialCommit initialCommit =
-                    new InitialCommit("initial commit", -tzOffset);
-            initialCommit.setStage(new StagingArea(gitletDir));
+            Commit initialCommit =
+                    new Commit("initial commit", -tzOffset);
             initialCommit.setHash();
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
@@ -106,8 +108,23 @@ public class Main {
                 if (myStage.stagePath.isFile()) {
                     Utils.writeObject(myStage.stagePath, myStage);
                 }
-                myStage.dump();
             }
+        }
+    }
+    public static void commit(String[] args) throws GitletException {
+        StagingArea currentStage = new StagingArea(gitletDir);
+        if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
+        } else if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else if (currentStage.size() == 0) {
+            throw new GitletException("No changes added to the commit.");
+        } else if (args[1].length() == 0) {
+            throw new GitletException("Please enter a commit message.");
+        } else {
+            Commit myCommit = new Commit(args[1], System.currentTimeMillis() - tzOffset);
+            myCommit.commit(currentStage);
+            myCommit.persist(commits);
         }
     }
 }

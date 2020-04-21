@@ -84,6 +84,53 @@ public class MainTest {
 
 
     }
+    @Test
+    public void trivialCommitTest() {
+        createWug();
+        //Commit wg
+        Main myMain = new Main();
+        String[] args = new String[]{"add", wugFile.getName()};
+        System.out.println("Initial addition of wg file");
+        myMain.main(args);
+
+        myMain = new Main();
+        args = new String[]{"commit", "Commiting a wg!"};
+        System.out.println("Commiting wg file");
+        myMain.main(args);
+
+        myMain = new Main();
+        args = new String[]{"add", wugFile.getName()};
+        System.out.println("Ensure re-adding same file removes it from stage");
+        myMain.main(args);
+
+//        myMain = new Main();
+//        args = new String[]{"commit", "This should fail"};
+//        System.out.println("Ensure that commit aborts when there are no files.");
+//        myMain.main(args);
+
+        //Commit wug
+        updateWugSpelling();
+        args = new String[]{"add", wugFile.getName()};
+        System.out.println("Initial addition of wug file");
+        myMain.main(args);
+
+        myMain = new Main();
+        args = new String[]{"commit", "Commiting a wug!"};
+        System.out.println("Commiting wg file");
+        myMain.main(args);
+
+        //Commit wug.
+        updateWugPeriod();
+        args = new String[]{"add", wugFile.getName()};
+        System.out.println("Initial addition of wug. file");
+        myMain.main(args);
+
+
+        myMain = new Main();
+        args = new String[]{"commit", "Commiting a wug.!"};
+        System.out.println("Commiting wg file");
+        myMain.main(args);
+    }
 
     public File createWeg() {
         File weg = Utils.join(".", "weg.txt");
