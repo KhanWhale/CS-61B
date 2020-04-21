@@ -1,81 +1,81 @@
-1. # Test case for merge adapted from Haoran Bai
- 2. > init
- 3. <<<
- 4. + A.txt a.txt
- 5. + B.txt b.txt
- 6. + C.txt c.txt
- 7. + D.txt d.txt
- 8. + E.txt e.txt
- 9. > add A.txt
-10. <<<
-11. > add B.txt
-12. <<<
-13. > add C.txt
-14. <<<
-15. > add D.txt
-16. <<<
-17. > add E.txt
-18. <<<
-19. > commit "msg1"
-20. <<<
-21. = A.txt a.txt
-22. = B.txt b.txt
-23. = C.txt c.txt
-24. = D.txt d.txt
-25. = E.txt e.txt
-26. > branch branch1
-27. <<<
-28. > rm C.txt
-29. <<<
-30. > rm D.txt
-31. <<<
-32. + F.txt notf.txt 
-33. + A.txt nota.txt 
-34. > add A.txt
-35. <<<
-36. > add F.txt
-37. <<<
-38. > commit "msg2"
-39. <<<
-40. = A.txt nota.txt
-41. = B.txt b.txt
-42. * C.txt
-43. * D.txt
-44. = E.txt e.txt
-45. = F.txt notf.txt
-46. > checkout branch1
-47. <<<
-48. = A.txt a.txt
-49. = B.txt b.txt
-50. = C.txt c.txt
-51. = D.txt d.txt
-52. = E.txt e.txt
-53. * F.txt
-54. > rm C.txt
-55. <<<
-56. > rm E.txt
-57. <<<
-58. + B.txt notb.txt
-59. + G.txt g.txt
-60. > add B.txt
-61. <<<
-62. > add G.txt
-63. <<<
-64. > commit "msg3"
-65. <<<
-66. = A.txt a.txt
-67. = B.txt notb.txt
-68. * C.txt
-69. = D.txt d.txt
-70. * E.txt
-71. * F.txt
-72. = G.txt g.txt
-73. > merge master
-74. <<<
-75. = A.txt nota.txt
-76. = B.txt notb.txt
-77. * C.txt
-78. * D.txt
-79. * E.txt
-80. = F.txt notf.txt
-81. = G.txt g.txt
+# Test case for merge adapted from Haoran Bai
+> init
+<<<
++ A.txt a.txt
++ B.txt b.txt
++ C.txt c.txt
++ D.txt d.txt
++ E.txt e.txt
+> add A.txt
+<<<
+> add B.txt
+<<<
+> add C.txt
+<<<
+> add D.txt
+<<<
+> add E.txt
+<<<
+> commit "msg
+<<<
+= A.txt a.txt
+= B.txt b.txt
+= C.txt c.txt
+= D.txt d.txt
+= E.txt e.txt
+> branch branch1
+<<<
+> rm C.txt
+<<<
+> rm D.txt
+<<<
++ F.txt notf.txt
++ A.txt nota.txt
+> add A.txt
+<<<
+> add F.txt
+<<<
+> commit "msg
+<<<
+= A.txt nota.txt
+= B.txt b.txt
+* C.txt
+* D.txt
+= E.txt e.txt
+= F.txt notf.txt
+> checkout branch1
+<<<
+= A.txt a.txt
+= B.txt b.txt
+= C.txt c.txt
+= D.txt d.txt
+= E.txt e.txt
+* F.txt
+> rm C.txt
+<<<
+> rm E.txt
+<<<
++ B.txt notb.txt
++ G.txt g.txt
+> add B.txt
+<<<
+> add G.txt
+<<<
+> commit "msg
+<<<
+= A.txt a.txt
+= B.txt notb.txt
+* C.txt
+= D.txt d.txt
+* E.txt
+* F.txt
+= G.txt g.txt
+> merge master
+<<<
+= A.txt nota.txt
+= B.txt notb.txt
+* C.txt
+* D.txt
+* E.txt
+= F.txt notf.txt
+= G.txt g.txt

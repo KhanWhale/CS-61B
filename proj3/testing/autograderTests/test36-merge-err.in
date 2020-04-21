@@ -1,44 +1,44 @@
-1. # Check various merge error cases.
- 2. I setup2.inc
- 3. > branch other
- 4. <<<
- 5. + h.txt wug2.txt
- 6. > add h.txt
- 7. <<<
- 8. > rm g.txt
- 9. <<<
-10. > commit "Add h.txt and remove g.txt"
-11. <<<
-12. > checkout other
-13. <<<
-14. > merge other
-15. Cannot merge a branch with itself.
-16. <<<
-17. > rm f.txt
-18. <<<
-19. + k.txt wug3.txt
-20. > add k.txt
-21. <<<
-22. > commit "Add k.txt and remove f.txt"
-23. <<<
-24. > checkout master
-25. <<<
-26. > merge foobar
-27. A branch with that name does not exist.
-28. <<<
-29. + k.txt wug.txt
-30. > merge other
-31. There is an untracked file in the way; delete it, or add and commit it first.
-32. <<<
-33. - k.txt
-34. I blank-status2.inc
-35. + k.txt wug.txt
-36. > add k.txt
-37. <<<
-38. > merge other
-39. You have uncommitted changes.
-40. <<<
-41. > rm k.txt
-42. <<<
-43. - k.txt
-44. I blank-status2.inc
+# Check various merge error cases.
+I setupinc
+> branch other
+<<<
++ h.txt wugtxt
+> add h.txt
+<<<
+> rm g.txt
+<<<
+> commit "Add h.txt and remove g.txt"
+<<<
+> checkout other
+<<<
+> merge other
+Cannot merge a branch with itself.
+<<<
+> rm f.txt
+<<<
++ k.txt wugtxt
+> add k.txt
+<<<
+> commit "Add k.txt and remove f.txt"
+<<<
+> checkout master
+<<<
+> merge foobar
+A branch with that name does not exist.
+<<<
++ k.txt wug.txt
+> merge other
+There is an untracked file in the way; delete it, or add and commit it first.
+<<<
+- k.txt
+I blank-statusinc
++ k.txt wug.txt
+> add k.txt
+<<<
+> merge other
+You have uncommitted changes.
+<<<
+> rm k.txt
+<<<
+- k.txt
+I blank-statusinc

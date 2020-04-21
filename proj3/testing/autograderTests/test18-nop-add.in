@@ -1,5 +1,5 @@
-1. # Check that adding a tracked, unchanged file has no effect.
-2. I setup2.inc
-3. > add f.txt
-4. <<<
-5. I blank-status.inc
+ # Check that adding a tracked, unchanged file has no effect.
+ I setupinc
+ > add f.txt
+ <<<
+ I blank-status.inc

@@ -1,46 +1,46 @@
- 1. # Test the find command when it succeeds.
- 2. I setup2.inc
- 3. > rm f.txt
- 4. <<<
- 5. > commit "Remove one file"
- 6. <<<
- 7. + f.txt notwug.txt
- 8. > add f.txt
- 9. <<<
-10. > commit "Two files"
-11. <<<
-12. > log
-13. ===
-14. ${COMMIT_HEAD}
-15. Two files
-16. 
-17. ===
-18. ${COMMIT_HEAD}
-19. Remove one file
-20. 
-21. ===
-22. ${COMMIT_HEAD}
-23. Two files
-24. 
-25. ===
-26. ${COMMIT_HEAD}
-27. initial commit
-28. 
-29. <<<*
-30. # UID of initial version
-31. D UID1 "${4}"
-32. # UID of second version
-33. D UID2 "${3}"
-34. # UID of third version
-35. D UID3 "${2}"
-36. # UID of current version
-37. D UID4 "${1}"
-38. > find "Two files"
-39. (${UID4}\n${UID2}|${UID2}\n${UID4})
-40. <<<*
-41. > find "initial commit"
-42. ${UID1}
-43. <<<
-44. > find "Remove one file"
-45. ${UID3}
-46. <<<
+  # Test the find command when it succeeds.
+  I setupinc
+  > rm f.txt
+  <<<
+  > commit "Remove one file"
+  <<<
+  + f.txt notwug.txt
+  > add f.txt
+  <<<
+ > commit "Two files"
+ <<<
+ > log
+ ===
+ ${COMMIT_HEAD}
+ Two files
+
+ ===
+ ${COMMIT_HEAD}
+ Remove one file
+
+ ===
+ ${COMMIT_HEAD}
+ Two files
+
+ ===
+ ${COMMIT_HEAD}
+ initial commit
+
+ <<<*
+ # UID of initial version
+ D UID"${"
+ # UID of second version
+ D UID"${"
+ # UID of third version
+ D UID"${"
+ # UID of current version
+ D UID"${"
+ > find "Two files"
+ (${UID\n${UID|${UID\n${UID)
+ <<<*
+ > find "initial commit"
+ ${UID
+ <<<
+ > find "Remove one file"
+ ${UID
+ <<<

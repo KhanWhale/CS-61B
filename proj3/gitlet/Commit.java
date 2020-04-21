@@ -8,7 +8,7 @@ import java.util.Date;
  * The Commit class stores instances of commits.
  * @author Aniruddh Khanwale
  */
-public class Commit implements Serializable {
+public abstract class Commit implements Serializable {
     /** The epoch time in Milliseconds at which this commit was made. **/
     private long commitTime;
 
@@ -18,35 +18,39 @@ public class Commit implements Serializable {
     /** The SHA-1 hash of this commit used for identification purposes.*/
     private String hash;
 
-    /** Default commit constructor. Takes a commit message and a commit time.
-     * @param msg The commit message.
-     * @param unixTime The commit time, in Unix epoch seconds. */
-    public Commit(String msg, long unixTime) {
-        commitMessage = msg;
-        commitTime = unixTime;
-        hash = Utils.sha1(commitMessage, Long.toString(commitTime));
+    public Commit(){
+
     }
 
-    @Override
-    public String toString() {
-        SimpleDateFormat sdf =
-                new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z ");
-        return sdf.format(new Date(commitTime));
-    }
 
     /** Return the commit time of this commit. */
-    public long getCommitTime() {
+    long getCommitTime() {
         return commitTime;
     }
 
     /** Return the commit message. */
-    public String getCommitMessage() {
+    String getCommitMessage() {
         return commitMessage;
     }
 
+    /** Set the commit time of this commit. */
+    void setCommitTime(long time) {
+        commitTime = time;
+    }
+
+    /** Set the commit message. */
+    void setCommitMessage(String msg) {
+        commitMessage = msg;
+    }
+
     /** Return the hash identifier of the commit. */
-    public String getHash() {
+    String getHash() {
         return hash;
+    }
+
+    /** Set the default hash value of this commit. */
+    void setHash() {
+        hash = Utils.sha1(commitMessage, Long.toString(commitTime));
     }
 
 }

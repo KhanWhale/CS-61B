@@ -1,19 +1,19 @@
-1. # Remove a tracked file and check status.
-2. I setup2.inc
-3. > rm f.txt
-4. <<<
-5. * f.txt
-6. > status
-7. === Branches ===
-8. *master
-9. 
-10. === Staged Files ===
-11. 
-12. === Removed Files ===
-13. f.txt
-14. 
-15. === Modifications Not Staged For Commit ===
-16. 
-17. === Untracked Files ===
-18. 
-19. <<<
+ # Remove a tracked file and check status.
+ I setupinc
+ > rm f.txt
+ <<<
+ * f.txt
+ > status
+ === Branches ===
+ *master
+
+ === Staged Files ===
+
+ === Removed Files ===
+ f.txt
+
+ === Modifications Not Staged For Commit ===
+
+ === Untracked Files ===
+
+ <<<

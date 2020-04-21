@@ -69,7 +69,8 @@ public class Main {
             blobs.mkdir();
             TimeZone tz = Calendar.getInstance().getTimeZone();
             long tzOffset = tz.getOffset(0);
-            Commit initialCommit = new Commit("initial commit", -tzOffset);
+            InitialCommit initialCommit =
+                    new InitialCommit("initial commit", -tzOffset);
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
             File head = Utils.join(gitletDir, "HEAD");

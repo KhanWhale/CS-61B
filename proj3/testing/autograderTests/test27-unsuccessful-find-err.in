@@ -1,10 +1,10 @@
-1. # Test the find command when it finds commits that are no longer
-2. # on any branch.
-3. I setup2.inc
-4. > rm f.txt
-5. <<<
-6. > commit "Remove one file"
-7. <<<
-8. > find "Add another file"
-9. Found no commit with that message.
-10. <<<
+ # Test the find command when it finds commits that are no longer
+ # on any branch.
+ I setupinc
+ > rm f.txt
+ <<<
+ > commit "Remove one file"
+ <<<
+ > find "Add another file"
+ Found no commit with that message.
+ <<<
