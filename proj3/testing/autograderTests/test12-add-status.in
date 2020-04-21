@@ -1,17 +1,17 @@
- # Status with two adds
- I setup1.inc
- > status
- === Branches ===
- *master
+# Status with two adds
+I setup1.inc
+> status
+=== Branches ===
+*master
 
- === Staged Files ===
- f.txt
- g.txt
+=== Staged Files ===
+f.txt
+g.txt
 
- === Removed Files ===
+=== Removed Files ===
 
- === Modifications Not Staged For Commit ===
+=== Modifications Not Staged For Commit ===
 
- === Untracked Files ===
+=== Untracked Files ===
 
- <<<
+<<<

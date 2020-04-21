@@ -1,6 +1,6 @@
- >
- Please enter a command.
- <<<
- > status
- Not in an initialized Gitlet directory.
- <<<
+>
+Please enter a command.
+<<<
+> status
+Not in an initialized Gitlet directory.
+<<<
