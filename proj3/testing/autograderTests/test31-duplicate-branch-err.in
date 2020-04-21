@@ -1,15 +1,15 @@
- # Check that two branches can't be given same name.
- I preludeinc
- > branch other
- <<<
- + f.txt wug.txt
- + g.txt notwug.txt
- > add g.txt
- <<<
- > add f.txt
- <<<
- > commit "Main two files"
- <<<
- > branch other
- A branch with that name already exists.
- <<<
+1. # Check that two branches can't be given same name.
+2. I prelude1.inc
+3. > branch other
+4. <<<
+5. + f.txt wug.txt
+6. + g.txt notwug.txt
+7. > add g.txt
+8. <<<
+9. > add f.txt
+10. <<<
+11. > commit "Main two files"
+12. <<<
+13. > branch other
+14. A branch with that name already exists.
+15. <<<

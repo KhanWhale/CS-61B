@@ -1,25 +1,26 @@
- # Test branch removal.
- I preludeinc
- > branch other
- <<<
- + f.txt wug.txt
- > add f.txt
- <<<
- > commit "File f.txt"
- <<<
- > checkout other
- <<<
- + g.txt notwug.txt
- > add g.txt
- <<<
- > commit "File g.txt"
- <<<
- > checkout master
- <<<
- > rm-branch other
- <<<
- > checkout other
- No such branch exists.
- <<<
- * g.txt
- = f.txt wug.txt
+1. # Test branch removal.
+2. I prelude1.inc
+3. > branch other
+4. <<<
+5. + f.txt wug.txt
+6. > add f.txt
+7. <<<
+8. > commit "File f.txt"
+9. <<<
+10. > checkout other
+11. <<<
+12. + g.txt notwug.txt
+13. > add g.txt
+14. <<<
+15. > commit "File g.txt"
+16. <<<
+17. > checkout master
+18. <<<
+19. > rm-branch other
+20. <<<
+21. > checkout other
+22. No such branch exists.
+23. <<<
+24. * g.txt
+25. = f.txt wug.txt
+26. 

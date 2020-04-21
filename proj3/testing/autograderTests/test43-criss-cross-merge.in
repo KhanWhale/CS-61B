@@ -1,53 +1,53 @@
-# Criss-cross merge.
-> init
-<<<
-> branch given
-<<<
-+ f.txt wug.txt
-> add f.txt
-<<<
-> commit "Add f.txt containing wug.txt"
-<<<
-> checkout given
-<<<
-+ f.txt notwug.txt
-> add f.txt
-<<<
-> commit "Add f.txt containing notwug.txt"
-<<<
-> branch B
-<<<
-> merge master
-Encountered a merge conflict.
-<<<
-= f.txt conflicttxt
-+ f.txt notwug.txt
-> add f.txt
-<<<
-> commit "Reset f to notwug.txt"
-<<<
-> rm f.txt
-<<<
-> commit "given now empty."
-<<<
-> checkout master
-<<<
-+ g.txt wugtxt
-> add g.txt
-<<<
-> commit "Added g.txt"
-<<<
-> merge B
-Encountered a merge conflict.
-<<<
-= f.txt conflicttxt
-+ f.txt wug.txt
-> add f.txt
-<<<
-> commit "Reset f to wug.txt"
-<<<
-> merge given
-Encountered a merge conflict.
-<<<
-= f.txt conflicttxt
-= g.txt wugtxt
+1. # Criss-cross merge.
+ 2. > init
+ 3. <<<
+ 4. > branch given
+ 5. <<<
+ 6. + f.txt wug.txt
+ 7. > add f.txt
+ 8. <<<
+ 9. > commit "Add f.txt containing wug.txt"
+10. <<<
+11. > checkout given
+12. <<<
+13. + f.txt notwug.txt
+14. > add f.txt
+15. <<<
+16. > commit "Add f.txt containing notwug.txt"
+17. <<<
+18. > branch B
+19. <<<
+20. > merge master
+21. Encountered a merge conflict.
+22. <<<
+23. = f.txt conflict3.txt
+24. + f.txt notwug.txt
+25. > add f.txt
+26. <<<
+27. > commit "Reset f to notwug.txt"
+28. <<<
+29. > rm f.txt
+30. <<<
+31. > commit "given now empty."
+32. <<<
+33. > checkout master
+34. <<<
+35. + g.txt wug2.txt
+36. > add g.txt
+37. <<<
+38. > commit "Added g.txt"
+39. <<<
+40. > merge B
+41. Encountered a merge conflict.
+42. <<<
+43. = f.txt conflict4.txt
+44. + f.txt wug.txt
+45. > add f.txt
+46. <<<
+47. > commit "Reset f to wug.txt"
+48. <<<
+49. > merge given
+50. Encountered a merge conflict.
+51. <<<
+52. = f.txt conflict5.txt
+53. = g.txt wug2.txt

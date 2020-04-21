@@ -1,61 +1,61 @@
-# As for testcriss-cross-merge.in, but we switch the roles of the parents
-# in the first two merges.
-# Criss-cross merge.
-> init
-<<<
-> branch given
-<<<
-> checkout given
-<<<
-+ f.txt wug.txt
-> add f.txt
-<<<
-> commit "Add f.txt containing wug.txt"
-<<<
-> branch B
-<<<
-> checkout master
-<<<
-+ f.txt notwug.txt
-> add f.txt
-<<<
-> commit "Add f.txt containing notwug.txt"
-<<<
-> checkout given
-<<<
-> merge master
-Encountered a merge conflict.
-<<<
-= f.txt conflicttxt
-+ f.txt notwug.txt
-> add f.txt
-<<<
-> commit "Reset f to notwug.txt"
-<<<
-> rm f.txt
-<<<
-> commit "given now empty."
-<<<
-> checkout B
-<<<
-+ g.txt wugtxt
-> add g.txt
-<<<
-> commit "Added g.txt"
-<<<
-> checkout master
-<<<
-> merge B
-Encountered a merge conflict.
-<<<
-= f.txt conflicttxt
-+ f.txt wug.txt
-> add f.txt
-<<<
-> commit "Reset f to wug.txt"
-<<<
-> merge given
-Encountered a merge conflict.
-<<<
-= f.txt conflicttxt
-= g.txt wugtxt
+1. # As for test43-criss-cross-merge.in, but we switch the roles of the parents
+ 2. # in the first two merges.
+ 3. # Criss-cross merge.
+ 4. > init
+ 5. <<<
+ 6. > branch given
+ 7. <<<
+ 8. > checkout given
+ 9. <<<
+10. + f.txt wug.txt
+11. > add f.txt
+12. <<<
+13. > commit "Add f.txt containing wug.txt"
+14. <<<
+15. > branch B
+16. <<<
+17. > checkout master
+18. <<<
+19. + f.txt notwug.txt
+20. > add f.txt
+21. <<<
+22. > commit "Add f.txt containing notwug.txt"
+23. <<<
+24. > checkout given
+25. <<<
+26. > merge master
+27. Encountered a merge conflict.
+28. <<<
+29. = f.txt conflict6.txt
+30. + f.txt notwug.txt
+31. > add f.txt
+32. <<<
+33. > commit "Reset f to notwug.txt"
+34. <<<
+35. > rm f.txt
+36. <<<
+37. > commit "given now empty."
+38. <<<
+39. > checkout B
+40. <<<
+41. + g.txt wug2.txt
+42. > add g.txt
+43. <<<
+44. > commit "Added g.txt"
+45. <<<
+46. > checkout master
+47. <<<
+48. > merge B
+49. Encountered a merge conflict.
+50. <<<
+51. = f.txt conflict3.txt
+52. + f.txt wug.txt
+53. > add f.txt
+54. <<<
+55. > commit "Reset f to wug.txt"
+56. <<<
+57. > merge given
+58. Encountered a merge conflict.
+59. <<<
+60. = f.txt conflict5.txt
+61. = g.txt wug2.txt

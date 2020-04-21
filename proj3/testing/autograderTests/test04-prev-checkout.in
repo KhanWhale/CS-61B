@@ -1,45 +1,45 @@
-  # Check that we can check out a previous version.
-  > init
-  <<<
-  + wug.txt wug.txt
-  > add wug.txt
-  <<<
-  > commit "version of wug.txt"
-  <<<
-  + wug.txt notwug.txt
- > add wug.txt
- <<<
- > commit "version of wug.txt"
- <<<
- = wug.txt notwug.txt
- # Each ${HEADER} captures its commit UID.
- D UID "[a-f+"
- D HEADER "commit (${UID})"
- D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
- > log
- ===
- ${HEADER}
- ${DATE}
- version of wug.txt
-
- ===
- ${HEADER}
- ${DATE}
- version of wug.txt
-
- ===
- ${HEADER}
- ${DATE}
- initial commit
-
- <<<*
- # UID of second version
- D UID"${"
- # UID of current version
- D UID"${"
- > checkout ${UID -- wug.txt
- <<<
- = wug.txt wug.txt
- > checkout ${UID -- wug.txt
- <<<
- = wug.txt notwug.txt
+1. # Check that we can check out a previous version.
+ 2. > init
+ 3. <<<
+ 4. + wug.txt wug.txt
+ 5. > add wug.txt
+ 6. <<<
+ 7. > commit "version 1 of wug.txt"
+ 8. <<<
+ 9. + wug.txt notwug.txt
+10. > add wug.txt
+11. <<<
+12. > commit "version 2 of wug.txt"
+13. <<<
+14. = wug.txt notwug.txt
+15. # Each ${HEADER} captures its commit UID.
+16. D UID "[a-f0-9]+"
+17. D HEADER "commit (${UID})"
+18. D DATE "Date: \w\w\w \w\w\w \d+ \d\d:\d\d:\d\d \d\d\d\d [-+]\d\d\d\d"
+19. > log
+20. ===
+21. ${HEADER}
+22. ${DATE}
+23. version 2 of wug.txt
+24. 
+25. ===
+26. ${HEADER}
+27. ${DATE}
+28. version 1 of wug.txt
+29. 
+30. ===
+31. ${HEADER}
+32. ${DATE}
+33. initial commit
+34. 
+35. <<<*
+36. # UID of second version
+37. D UID2 "${1}"
+38. # UID of current version
+39. D UID1 "${2}"
+40. > checkout ${UID1} -- wug.txt
+41. <<<
+42. = wug.txt wug.txt
+43. > checkout ${UID2} -- wug.txt
+44. <<<
+45. = wug.txt notwug.txt

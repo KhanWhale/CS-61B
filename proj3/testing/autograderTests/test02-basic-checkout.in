@@ -1,13 +1,13 @@
- # A simple test of adding, committing, modifying, and checking out.
- > init
- <<<
- + wug.txt wug.txt
- > add wug.txt
- <<<
- > commit "added wug"
- <<<
- + wug.txt notwug.txt
- # Must change
- > checkout -- wug.txt
- <<<
- = wug.txt wug.txt
+1. # A simple test of adding, committing, modifying, and checking out.
+2. > init
+3. <<<
+4. + wug.txt wug.txt
+5. > add wug.txt
+6. <<<
+7. > commit "added wug"
+8. <<<
+9. + wug.txt notwug.txt
+10. # Must change
+11. > checkout -- wug.txt
+12. <<<
+13. = wug.txt wug.txt
