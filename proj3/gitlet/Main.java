@@ -72,8 +72,8 @@ public class Main {
             commits.mkdir();
             logs.mkdir();
             blobs.mkdir();
-            Commit initialCommit =
-                    new Commit("initial commit", -tzOffset);
+            InitialCommit initialCommit =
+                    new InitialCommit("initial commit", -tzOffset);
             initialCommit.setHash();
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
