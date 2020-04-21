@@ -11,14 +11,7 @@ public class InitialCommit extends Commit implements Serializable {
     public InitialCommit(String msg, long unixTime) {
         setCommitMessage(msg);
         setCommitTime(unixTime);
-        setHash();
     }
 
-    @Override
-    public String toString() {
-        SimpleDateFormat sdf =
-                new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z ");
-        return sdf.format(new Date(getCommitTime()));
-    }
 
 }

@@ -30,7 +30,7 @@ public class MainTest {
         System.out.println("Initial addition of wug file.");
         myMain.main(args);
 
-        System.out.println("Add wug file but identical to make sure it is removed.");
+        System.out.println("Add wug file but identical to make sure nothing happens.");
         myMain = new Main();
         myMain.main(args);
 
@@ -58,7 +58,7 @@ public class MainTest {
         myMain = new Main();
         myMain.main(args);
 
-        System.out.println("Restage period wug file. At this point, staging area should be empty.");
+        System.out.println("Restage period wug file. At this point, it should only contain the period wug. ");
         myMain = new Main();
         myMain.main(args);
     }

@@ -71,6 +71,8 @@ public class Main {
             long tzOffset = tz.getOffset(0);
             InitialCommit initialCommit =
                     new InitialCommit("initial commit", -tzOffset);
+            initialCommit.setStage(new StagingArea(gitletDir));
+            initialCommit.setHash();
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
             File head = Utils.join(gitletDir, "HEAD");

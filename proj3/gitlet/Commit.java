@@ -8,7 +8,7 @@ import java.util.Date;
  * The Commit class stores instances of commits.
  * @author Aniruddh Khanwale
  */
-public abstract class Commit implements Serializable {
+public class Commit implements Serializable {
     /** The epoch time in Milliseconds at which this commit was made. **/
     private long commitTime;
 
@@ -18,9 +18,8 @@ public abstract class Commit implements Serializable {
     /** The SHA-1 hash of this commit used for identification purposes.*/
     private String hash;
 
-    public Commit(){
-
-    }
+    /** Stores the staging area associated with this commit. */
+    private StagingArea myStage;
 
 
     /** Return the commit time of this commit. */
@@ -50,7 +49,23 @@ public abstract class Commit implements Serializable {
 
     /** Set the default hash value of this commit. */
     void setHash() {
-        hash = Utils.sha1(commitMessage, Long.toString(commitTime));
+        hash = Utils.sha1(commitMessage, Long.toString(commitTime), Utils.serialize(myStage));
+    }
+
+    /** Return the stage of the commit. */
+    StagingArea getStage() {
+        return myStage;
+    }
+
+    void setStage(StagingArea stage) {
+        myStage = stage;
+    }
+
+    @Override
+    public String toString() {
+        SimpleDateFormat sdf =
+                new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z ");
+        return sdf.format(new Date(getCommitTime()));
     }
 
 }
