@@ -6,6 +6,8 @@ __pycache__
 
 ### Java ###
 *.class
+wug.txt
+weg.txt
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
