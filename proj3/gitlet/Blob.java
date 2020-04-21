@@ -6,17 +6,23 @@ import java.io.Serializable;
 /** The class designed to track blobs, or files.
  * @author Aniruddh Khanwale */
 public class Blob implements Serializable{
-    Blob (File toBlobify) {
+    Blob (File toBlobify, File blobDir) {
+        _blobDir = blobDir;
         if (!toBlobify.isFile()) {
             throw new GitletException("File does not exist.");
         } else {
             name = toBlobify.getName();
             blobFile = toBlobify;
-            hash = Utils.sha1(Utils.readContentsAsString(toBlobify));
+            hash = Utils.sha1(Utils.readContentsAsString(toBlobify), name);
+        }
+        if (!Utils.join(_blobDir, hash).exists()) {
+            persist();
         }
     }
 
-
+    void persist() {
+        Utils.writeObject(Utils.join(_blobDir, hash), this);
+    }
     String getHash() { return hash;
     }
 
@@ -31,4 +37,7 @@ public class Blob implements Serializable{
 
     /** The file this blob stores data for. */
     private File blobFile;
+
+    /** The filepath this blob will be stored in. */
+    private File _blobDir;
 }

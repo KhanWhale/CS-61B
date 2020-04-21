@@ -101,7 +101,7 @@ public class Main {
                 throw new GitletException("File does not exist.");
             } else {
                 StagingArea myStage = new StagingArea(gitletDir);
-                Blob toStage = new Blob(toAdd);
+                Blob toStage = new Blob(toAdd, blobs);
                 myStage.stageFile(toStage);
                 if (myStage.stagePath.isFile()) {
                     Utils.writeObject(myStage.stagePath, myStage);
