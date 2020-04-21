@@ -96,7 +96,7 @@ public class Commit implements Serializable, Dumpable {
 
     public String timeToString() {
         SimpleDateFormat sdf =
-                new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z ");
+                new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z");
         return sdf.format(new Date(getCommitTime()));
     }
 
@@ -110,5 +110,14 @@ public class Commit implements Serializable, Dumpable {
 
     void persist(File commitDir) {
         Utils.writeObject(Utils.join(commitDir, hash), this);
+    }
+
+    String log() {
+        System.out.println("===");
+        System.out.println("commit " + hash);
+        System.out.println("Date: " + timeToString());
+        System.out.println(commitMessage);
+        System.out.println();
+        return parentUID;
     }
 }

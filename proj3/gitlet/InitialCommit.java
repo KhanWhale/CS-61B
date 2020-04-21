@@ -13,5 +13,12 @@ public class InitialCommit extends Commit implements Serializable {
         setCommitTime(unixTime);
     }
 
-
+    @Override
+    String log() {
+        System.out.println("===");
+        System.out.println("commit " + getHash());
+        System.out.println("Date: " + timeToString());
+        System.out.println(getCommitMessage());
+        return null;
+    }
 }

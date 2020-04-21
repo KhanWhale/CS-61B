@@ -17,10 +17,12 @@ public class MainTest {
     @Test
     public void initMain() {
         File gitletDir = Utils.join(".", ".gitlet");
-        assertFalse(gitletDir.exists());
         Main myMain = new Main();
         myMain.main("init");
-        assertTrue(gitletDir.isDirectory());
+
+        myMain = new Main();
+        System.out.println("Initial log");
+        myMain.main("log");
     }
 
     @Test
@@ -99,6 +101,12 @@ public class MainTest {
         myMain.main(args);
 
         myMain = new Main();
+        args = new String[]{"log"};
+        System.out.println("wg log");
+        myMain.main(args);
+
+
+        myMain = new Main();
         args = new String[]{"add", wugFile.getName()};
         System.out.println("Ensure re-adding same file removes it from stage");
         myMain.main(args);
@@ -119,6 +127,11 @@ public class MainTest {
         System.out.println("Commiting wg file");
         myMain.main(args);
 
+        myMain = new Main();
+        args = new String[]{"log"};
+        System.out.println("wug log");
+        myMain.main(args);
+
         //Commit wug.
         updateWugPeriod();
         args = new String[]{"add", wugFile.getName()};
@@ -129,6 +142,11 @@ public class MainTest {
         myMain = new Main();
         args = new String[]{"commit", "Commiting a wug.!"};
         System.out.println("Commiting wg file");
+        myMain.main(args);
+
+        myMain = new Main();
+        args = new String[]{"log"};
+        System.out.println("wug. log");
         myMain.main(args);
     }
 

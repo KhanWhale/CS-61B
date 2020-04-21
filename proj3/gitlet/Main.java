@@ -24,14 +24,9 @@ public class Main {
     /** File object containing blobs */
     static File blobs = Utils.join(gitletDir, "blobs");
 
-    /** File object containing logs */
-    static File logs = Utils.join(gitletDir, "logs");
+    /** File object containing head reference */
+    static File head = Utils.join(gitletDir, "HEAD");
 
-    /** File containing log for master branch. */
-    static File masterLog = Utils.join(logs, "master");
-
-    /** Time zone offset */
-    static long tzOffset = Calendar.getInstance().getTimeZone().getOffset(0);
     /** Usage: java gitlet.Main ARGS, where ARGS contains
      *  <COMMAND> <OPERAND> .... */
     public static void main(String... args) {
@@ -49,6 +44,9 @@ public class Main {
                     case "commit":
                         commit(args);
                         break;
+                    case "log":
+                        log(args);
+                        break;
                     default:
                        throw new GitletException("No command with that name exists.");
                 }
@@ -60,26 +58,22 @@ public class Main {
     }
     /** Initializes a new gitlet repository. */
     public static void init(String[] args) throws GitletException{
-        if (args.length != 1) {
-            throw new GitletException("Incorrect operands.");
-        }
         if (gitletDir.exists()) {
             throw new GitletException(
                     "A Gitlet version-control system already " +
                             "exists in the current directory.");
+        } else if (args.length != 1) {
+            throw new GitletException("Incorrect operands.");
         } else {
             gitletDir.mkdir();
             commits.mkdir();
-            logs.mkdir();
             blobs.mkdir();
             InitialCommit initialCommit =
-                    new InitialCommit("initial commit", -tzOffset);
+                    new InitialCommit("initial commit", 0);
             initialCommit.setHash();
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
-            File head = Utils.join(gitletDir, "HEAD");
             try {
-                masterLog.createNewFile();
                 serializedCommit.createNewFile();
                 head.createNewFile();
                 FileWriter myWriter = new FileWriter(head);
@@ -89,14 +83,13 @@ public class Main {
                 return;
             }
             Utils.writeObject(serializedCommit, initialCommit);
-            Utils.writeObject(masterLog, initialCommit);
-            }
+        }
     }
     public static void add(String[] args) throws GitletException{
-        if (args.length != 2) {
-            throw new GitletException("Incorrect operands.");
-        } else if (!gitletDir.exists()) {
+        if (!gitletDir.exists()) {
             throw new GitletException("Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
         } else {
             File toAdd = Utils.join(CWD, args[1]);
             if (!toAdd.isFile()) {
@@ -113,18 +106,32 @@ public class Main {
     }
     public static void commit(String[] args) throws GitletException {
         StagingArea currentStage = new StagingArea(gitletDir);
-        if (args.length != 2) {
-            throw new GitletException("Incorrect operands.");
-        } else if (!gitletDir.exists()) {
+        if (!gitletDir.exists()) {
             throw new GitletException("Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
         } else if (currentStage.size() == 0) {
             throw new GitletException("No changes added to the commit.");
         } else if (args[1].length() == 0) {
             throw new GitletException("Please enter a commit message.");
         } else {
-            Commit myCommit = new Commit(args[1], System.currentTimeMillis() - tzOffset);
+            Commit myCommit = new Commit(args[1], System.currentTimeMillis());
             myCommit.commit(currentStage);
             myCommit.persist(commits);
         }
+    }
+    public static void log(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else if (args.length != 1) {
+            throw new GitletException("Incorrect operands.");
+        } else {
+            String currCommitID = Utils.readContentsAsString(head);
+            while (currCommitID != null) {
+                Commit nextCommit = Utils.readObject(Utils.join(gitletDir, "commits", currCommitID), Commit.class);
+                currCommitID = nextCommit.log();
+            }
+        }
+
     }
 }

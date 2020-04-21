@@ -145,7 +145,7 @@ tramp
 
 # cask packages
 .cask/
-
+*.sh
 
 ### Vim ###
 [._]*.s[a-w][a-z]
