@@ -44,6 +44,9 @@ public class Main {
                     case "log":
                         log(args);
                         break;
+                    case "status":
+                        status(args);
+                        break;
                     default:
                        throw new GitletException("No command with that name exists.");
                 }
@@ -129,6 +132,28 @@ public class Main {
                 currCommitID = nextCommit.log();
             }
         }
-
+    }
+    public static void status(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else if (args.length != 1) {
+            throw new GitletException("Incorrect operands.");
+        } else {
+            System.out.println("=== Branches ===");
+            System.out.println("*master");
+            System.out.println();
+            System.out.println("=== Staged Files ===");
+            StagingArea currStage = new StagingArea(gitletDir);
+            for (String name : currStage.blobNames.keySet()) {
+                System.out.println(name);
+            }
+            System.out.println();
+            System.out.println("=== Removed Files ===");
+            System.out.println();
+            System.out.println("=== Modifications Not Staged For Commit ===");
+            System.out.println();
+            System.out.println("=== Untracked Files ===");
+            System.out.println();
+        }
     }
 }
