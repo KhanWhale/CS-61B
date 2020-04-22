@@ -26,7 +26,7 @@ import java.util.HashSet;
  * expression implementations, it's just something we've chosen to add. '\d' is,
  * however, standard and that should work as you've learned from lecture.
  *
- * @author
+ * @author Aniruddh Khanwale
  *
  *
  * */
@@ -69,7 +69,6 @@ public class NFA {
 
 
     /** The internal States in an NFA. */
-    // TODO: Read this inner class, then you may delete this comment
     private class State {
 
         /**
@@ -94,15 +93,15 @@ public class NFA {
          * Returns a Set of all the States that can be reached from this
          * State by taking an edge with label C.
          *
-         * If C is EPSILON, the  it returns all the valid States that
+         * If C is EPSILON, then  it returns all the valid States that
          * can be reached using  only EPSILON edges (this may span
          * multiple consecutive EPSILON edges).
          *
          * If this State has no outgoing edges with label C, then
          * return an empty Set. */
         public Set<State> successors(char c) {
-            // TODO: Implement this method
-            return new HashSet<State>();
+            //FIXME
+              return new HashSet<State>();
         }
 
         /**
