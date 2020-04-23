@@ -133,6 +133,9 @@ public class Main {
             StagingArea currStage = new StagingArea(gitletDir);
             File toRemove = Utils.join(CWD, args[1]);
             currStage.rmFile(toRemove);
+            if (currStage.stagePath.isFile()) {
+                Utils.writeObject(currStage.stagePath, currStage);
+            }
         }
     }
     public static void log(String[] args) {
@@ -164,10 +167,10 @@ public class Main {
             }
             System.out.println();
             System.out.println("=== Removed Files ===");
-            System.out.println("f.txt");
-//            for (String name: currStage.removedFiles) {
-//                System.out.println(name);
-//            }
+//            System.out.println("f.txt");
+            for (String name: currStage.removedFiles) {
+                System.out.println(name);
+            }
             System.out.println();
             System.out.println("=== Modifications Not Staged For Commit ===");
             System.out.println();
