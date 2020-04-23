@@ -1,10 +1,12 @@
 package gitlet;
 
+import com.sun.java.accessibility.util.GUIInitializedListener;
 import jdk.jshell.execution.Util;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 /** Represents the Staging Area of the gitlet repository */
@@ -30,7 +32,22 @@ public class StagingArea implements Serializable, Dumpable {
         }
     }
 
+    public void rmFile(File rm) {
+        if (blobNames.containsKey(rm.getName())) {
+            removedFiles.add(rm.getName());
+            String originalHash = blobNames.get(rm.getName()).getHash();
+            blobNames.remove(rm.getName());
+            blobTreeMap.remove(originalHash);
+            if (headStage != null && headStage.blobNames.containsKey(rm.getName())) {
+                Utils.restrictedDelete(rm);
+            }
 
+
+        } else {
+            throw new GitletException("No reason to remove the file.");
+        }
+        return;
+    }
     public void stageFile(Blob toStage) {
         if (headStage != null && headStage.blobTreeMap.containsKey(toStage.getHash())) {
             if (blobTreeMap.containsKey(toStage.getHash())) {
@@ -80,6 +97,8 @@ public class StagingArea implements Serializable, Dumpable {
     /** Treemap containing all the filenames in the staging area,
      * used to overwrite files */
      TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
+
+     ArrayList<String> removedFiles = new ArrayList<String>();
 
      /** Staging Area of previous Commit */
      StagingArea headStage;
