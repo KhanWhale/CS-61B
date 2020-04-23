@@ -23,7 +23,9 @@ public class UnionFind {
      *  Assumes V is contained in one of the sets.  */
     public int find(int v) {
         if (array_struct[v] != v) {
-            return find(array_struct[v]);
+            int root = find(array_struct[v]);
+            array_struct[v] = root;
+            return root;
         } else {
             return v;
         }
