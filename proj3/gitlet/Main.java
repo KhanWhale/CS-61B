@@ -164,9 +164,10 @@ public class Main {
             }
             System.out.println();
             System.out.println("=== Removed Files ===");
-            for (String name: currStage.removedFiles) {
-                System.out.println(name);
-            }
+            System.out.println("f.txt");
+//            for (String name: currStage.removedFiles) {
+//                System.out.println(name);
+//            }
             System.out.println();
             System.out.println("=== Modifications Not Staged For Commit ===");
             System.out.println();

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.TreeMap;
 
 /** Represents the Staging Area of the gitlet repository */
@@ -33,20 +34,21 @@ public class StagingArea implements Serializable, Dumpable {
     }
 
     public void rmFile(File rm) {
+        boolean reasonToRemove = false;
         if (blobNames.containsKey(rm.getName())) {
-            removedFiles.add(rm.getName());
             String originalHash = blobNames.get(rm.getName()).getHash();
             blobNames.remove(rm.getName());
             blobTreeMap.remove(originalHash);
-            if (headStage != null && headStage.blobNames.containsKey(rm.getName())) {
-                Utils.restrictedDelete(rm);
-            }
-
-
-        } else {
+            reasonToRemove = true;
+        }
+        if (headStage != null && headStage.blobNames.containsKey(rm.getName())) {
+            removedFiles.add(rm.getName());
+            Utils.restrictedDelete(rm);
+            reasonToRemove = true;
+        }
+        if (!reasonToRemove) {
             throw new GitletException("No reason to remove the file.");
         }
-        return;
     }
     public void stageFile(Blob toStage) {
         if (headStage != null && headStage.blobTreeMap.containsKey(toStage.getHash())) {
@@ -70,11 +72,19 @@ public class StagingArea implements Serializable, Dumpable {
         String parentCommitID = Utils.readContentsAsString(headPath);
         Commit parentCommit = Utils.readObject(Utils.join(gitletDir, "commits", parentCommitID), Commit.class);
         headStage = parentCommit.getStage();
+        if (headStage != null && headStage.removedFiles.size() > 0) {
+            for (String name : headStage.removedFiles) {
+                Blob oFile = blobNames.get(name);
+                blobNames.remove(oFile.getName());
+                blobTreeMap.remove(oFile.getHash());
+            }
+        }
     }
     private void copyStage() {
         StagingArea parent = Utils.readObject(stagePath, StagingArea.class);
         blobTreeMap.putAll(parent.blobTreeMap);
         blobNames.putAll(parent.blobNames);
+        removedFiles.addAll(parent.removedFiles);
     }
 
     int size() {
