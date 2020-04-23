@@ -1,21 +1,27 @@
 package gitlet;
 
-import com.sun.java.accessibility.util.GUIInitializedListener;
-import jdk.jshell.execution.Util;
+
+import com.sun.xml.internal.xsom.impl.scd.Iterators;
+import org.antlr.v4.runtime.tree.Tree;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.TreeMap;
 
-/** Represents the Staging Area of the gitlet repository */
+/** Represents the Staging Area of the gitlet repository.
+ * @author Aniruddh Khanwale */
 public class StagingArea implements Serializable, Dumpable {
 
-    /** Path to HEAD file, in case a previous stage exist */
-    File headPath;
+    /** Path to HEAD file, in case a previous stage exist. */
+    private File headPath;
+
+    /** Constructs a new staging area from the content in the specified dir.
+     *
+     * @param gitDir The gitlet directory used for persistence.
+     */
     StagingArea(File gitDir) {
         gitletDir = gitDir;
         stagePath = Utils.join(gitDir, "stage");
@@ -34,6 +40,10 @@ public class StagingArea implements Serializable, Dumpable {
         }
     }
 
+    /** Removes the specified file from the staging area.
+     *
+     * @param rm The file to remove.
+     */
     public void rmFile(File rm) {
         boolean reasonToRemove = false;
         if (blobNames.containsKey(rm.getName())) {
@@ -42,7 +52,8 @@ public class StagingArea implements Serializable, Dumpable {
             blobTreeMap.remove(originalHash);
             reasonToRemove = true;
         }
-        if (headStage != null && headStage.blobNames.containsKey(rm.getName())) {
+        if (headStage != null
+                && headStage.blobNames.containsKey(rm.getName())) {
             removedFiles.add(rm.getName());
             Utils.restrictedDelete(rm);
             reasonToRemove = true;
@@ -51,13 +62,20 @@ public class StagingArea implements Serializable, Dumpable {
             throw new GitletException("No reason to remove the file.");
         }
     }
+
+    /** Adds the given blob to the Stage.
+     *
+     * @param toStage the File/Blob to stage.
+     */
     public void stageFile(Blob toStage) {
-        if (headStage != null && headStage.blobTreeMap.containsKey(toStage.getHash())) {
+        if (headStage != null
+                && headStage.blobTreeMap.containsKey(toStage.getHash())) {
             if (blobTreeMap.containsKey(toStage.getHash())) {
                 blobTreeMap.remove(toStage.getHash());
                 blobNames.remove(toStage.getName());
             }
-        } else if (blobNames != null && blobNames.containsKey(toStage.getName())) {
+        } else if (blobNames != null
+                && blobNames.containsKey(toStage.getName())) {
             String originalHash = blobNames.get(toStage.getName()).getHash();
             blobNames.remove(toStage.getName());
             blobTreeMap.remove(originalHash);
@@ -72,9 +90,11 @@ public class StagingArea implements Serializable, Dumpable {
         }
     }
 
+    /** Sets the staging area to be identical to that of the parent.*/
     private void copyHead() {
         String parentCommitID = Utils.readContentsAsString(headPath);
-        Commit parentCommit = Utils.readObject(Utils.join(gitletDir, "commits", parentCommitID), Commit.class);
+        Commit parentCommit = Utils.readObject(Utils.join(gitletDir,
+                "commits", parentCommitID), Commit.class);
         headStage = parentCommit.getStage();
         if (headStage != null && headStage.removedFiles.size() > 0) {
             for (String name : headStage.removedFiles) {
@@ -86,6 +106,8 @@ public class StagingArea implements Serializable, Dumpable {
             }
         }
     }
+
+    /** Copies the current state of the staging area.*/
     private void copyStage() {
         StagingArea parent = Utils.readObject(stagePath, StagingArea.class);
         blobTreeMap.putAll(parent.blobTreeMap);
@@ -93,43 +115,49 @@ public class StagingArea implements Serializable, Dumpable {
         removedFiles.addAll(parent.removedFiles);
     }
 
+    /** Return the modified, unstaged files.
+     *
+     * @param parentDir The directory to check
+     * @return A lexicographically sorted list of modified, not tracked files.
+     */
     TreeMap<String, String> checkModifications(File parentDir) {
         TreeMap<String, String> modified = new TreeMap<>();
         File[] allFile = parentDir.listFiles();
         ArrayList<File> allFiles = new ArrayList<File>(Arrays.asList(allFile));
-        //FILE STILL EXISTS
         for (File toCheck : allFiles) {
-            Blob toCompare = new Blob(toCheck, Utils.join(gitletDir, "blobs"));
-            //      Tracked in current commit, modified in working dir, not staged
-            if (headStage != null && headStage.blobNames.containsKey(toCheck.getName())) {
+            Blob toCompare = new Blob(toCheck, Utils.join(gitletDir,
+                    "blobs"));
+            if (headStage != null
+                    && headStage.blobNames.containsKey(toCheck.getName())) {
                 String blobHash = toCompare.getHash();
-                if (!headStage.blobTreeMap.containsKey(blobHash) && !blobTreeMap.containsKey(blobHash)) {
+                if (!headStage.blobTreeMap.containsKey(blobHash)
+                        && !blobTreeMap.containsKey(blobHash)) {
                     modified.put(toCheck.getName(), " (modified)");
                 }
             }
-//            Staged for addition but with different contents than in wd.
-            if (blobNames.containsKey(toCheck.getName()) && !blobTreeMap.containsKey(toCompare.getHash())) {
+            if (blobNames.containsKey(toCheck.getName())
+                    && !blobTreeMap.containsKey(toCompare.getHash())) {
                 modified.put(toCheck.getName(), " (modified)");
             }
         }
-//        Staged for addition, removed from pwd
         for (String fileName : blobNames.keySet()) {
             File toCheck = Utils.join(parentDir, fileName);
             if (!allFiles.contains(toCheck)) {
                 modified.put(fileName, " (deleted)");
             }
         }
-//        Tracked in curr commit, deleted from pwd, not staged for removal
         if (headStage != null) {
             for (String blobName : headStage.blobNames.keySet()) {
                 File toCheck = Utils.join(parentDir, blobName);
-                if (!allFiles.contains(toCheck) && !removedFiles.contains(blobName)) {
+                if (!allFiles.contains(toCheck)
+                        && !removedFiles.contains(blobName)) {
                     modified.put(blobName, " (deleted)");
                 }
             }
         }
         return modified;
     }
+    /** Returns the size of the staging area. */
     int size() {
         if (blobTreeMap.size() != blobNames.size()) {
             throw new GitletException("Incorrect blobTree/Name implementation");
@@ -137,24 +165,54 @@ public class StagingArea implements Serializable, Dumpable {
             return blobNames.size();
         }
     }
-    /** File object containing staging area reference */
-    File stagePath;
+
+    /** Returns the staging area path. */
+    File getStagePath() {
+        return stagePath;
+    }
+
+    /** Returns the head path. */
+    File getHeadPath() {
+        return headPath;
+    }
+
+    /** Returns the blobTreeMap of this staging area. */
+    TreeMap<String, Blob> getBlobTreeMap() {
+        return blobTreeMap;
+    }
+    /** Returns the blobNames of this staging area. */
+    TreeMap<String, Blob> getBlobNames() {
+        return blobNames;
+    }
+    /** Returns the removed files of this staging area. */
+    ArrayList<String> getRemovedFiles() {
+        return removedFiles;
+    }
+
+    /** Returns the head's staging area. */
+    StagingArea getHeadStage() {
+        return headStage;
+    }
+
+    /** File object containing staging area reference. */
+    private File stagePath;
 
     /** File object containing gitlet directory reference. */
-    File gitletDir;
+    private File gitletDir;
 
     /** Treemap containing all blobs in the staging area,
      * used to ensure lgN search time.  */
-    TreeMap<String, Blob> blobTreeMap = new TreeMap<String, Blob>();
+    private TreeMap<String, Blob> blobTreeMap = new TreeMap<String, Blob>();
 
     /** Treemap containing all the filenames in the staging area,
      * used to overwrite files */
-     TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
+     private TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
 
-     ArrayList<String> removedFiles = new ArrayList<String>();
+     /** The files which will be removed from the next commit. */
+     private ArrayList<String> removedFiles = new ArrayList<String>();
 
-     /** Staging Area of previous Commit */
-     StagingArea headStage;
+     /** Staging Area of previous Commit. */
+     private StagingArea headStage;
 
     @Override
     public void dump() {

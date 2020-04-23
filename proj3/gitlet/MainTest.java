@@ -1,12 +1,10 @@
 package gitlet;
 
-import jdk.jshell.execution.Util;
+
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 public class MainTest {
 
@@ -32,11 +30,13 @@ public class MainTest {
         System.out.println("Initial addition of wug file.");
         myMain.main(args);
 
-        System.out.println("Add wug file but identical to make sure nothing happens.");
+        System.out.println("Add wug file but identical "
+                + "to make sure nothing happens.");
         myMain = new Main();
         myMain.main(args);
 
-        System.out.println("Add wug file again to make sure it gets added when not staged");
+        System.out.println("Add wug file again to make sure"
+                + " it gets added when not staged");
         myMain = new Main();
         myMain.main(args);
 
@@ -60,7 +60,8 @@ public class MainTest {
         myMain = new Main();
         myMain.main(args);
 
-        System.out.println("Restage period wug file. At this point, it should only contain the period wug. ");
+        System.out.println("Restage period wug file."
+                 + " At this point, it should only contain the period wug. ");
         myMain = new Main();
         myMain.main(args);
     }
@@ -89,7 +90,6 @@ public class MainTest {
     @Test
     public void trivialCommitTest() {
         createWug();
-        //Commit wg
         Main myMain = new Main();
         String[] args = new String[]{"add", wugFile.getName()};
         System.out.println("Initial addition of wg file");
@@ -111,12 +111,7 @@ public class MainTest {
         System.out.println("Ensure re-adding same file removes it from stage");
         myMain.main(args);
 
-//        myMain = new Main();
-//        args = new String[]{"commit", "This should fail"};
-//        System.out.println("Ensure that commit aborts when there are no files.");
-//        myMain.main(args);
 
-        //Commit wug
         updateWugSpelling();
         args = new String[]{"add", wugFile.getName()};
         System.out.println("Initial addition of wug file");
@@ -132,7 +127,6 @@ public class MainTest {
         System.out.println("wug log");
         myMain.main(args);
 
-        //Commit wug.
         updateWugPeriod();
         args = new String[]{"add", wugFile.getName()};
         System.out.println("Initial addition of wug. file");
@@ -153,7 +147,7 @@ public class MainTest {
     public File createWeg() {
         File weg = Utils.join(".", "weg.txt");
         if (weg.isFile()) {
-            Utils.writeObject(weg,"This is a weg");
+            Utils.writeObject(weg, "This is a weg");
         } else {
             try {
                 weg.createNewFile();
@@ -163,10 +157,10 @@ public class MainTest {
         }
         return weg;
     }
-    public File createWug(){
+    public File createWug() {
         File wug = Utils.join(".", "wug.txt");
         if (wug.isFile()) {
-            Utils.writeObject(wug,"This is a wg");
+            Utils.writeObject(wug, "This is a wg");
         } else {
             try {
                 wug.createNewFile();

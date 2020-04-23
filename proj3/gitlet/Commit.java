@@ -12,6 +12,7 @@ import java.util.List;
  * @author Aniruddh Khanwale
  */
 public class Commit implements Serializable, Dumpable {
+
     /** The epoch time in Milliseconds at which this commit was made. **/
     private long commitTime;
 
@@ -24,24 +25,32 @@ public class Commit implements Serializable, Dumpable {
     /** Stores the staging area associated with this commit. */
     private StagingArea myStage;
 
-    /** The parent commit */
+    /** The parent commit. */
     private String parentUID = null;
 
+    /** Default constructor, allowing for extension. */
     public Commit() {
 
     }
 
+    /** Constructs a new Commit with a given message and time.
+     * @param msg The commit message
+     * @param unixTime The unix time at which this commit was made*/
     public Commit(String msg, long unixTime) {
         setCommitMessage(msg);
         setCommitTime(unixTime);
     }
 
+    /** Performs the commit operation.
+     *
+     * @param stage The current staging area
+     */
     void commit(StagingArea stage) {
-            myStage = stage;
-            myStage.stagePath.delete();
-            parentUID = Utils.readContentsAsString(myStage.headPath);
-            setHash();
-            Utils.writeContents(myStage.headPath, hash);
+        myStage = stage;
+        myStage.getStagePath().delete();
+        parentUID = Utils.readContentsAsString(myStage.getHeadPath());
+        setHash();
+        Utils.writeContents(myStage.getHeadPath(), hash);
     }
 
     /** Return the commit time of this commit. */
@@ -54,12 +63,14 @@ public class Commit implements Serializable, Dumpable {
         return commitMessage;
     }
 
-    /** Set the commit time of this commit. */
+    /** Set the commit time of this commit.
+     * @param time the time to set this commit to */
     void setCommitTime(long time) {
         commitTime = time;
     }
 
-    /** Set the commit message. */
+    /** Set the commit message.
+     * @param msg the message for this commit */
     void setCommitMessage(String msg) {
         commitMessage = msg;
     }
@@ -75,7 +86,7 @@ public class Commit implements Serializable, Dumpable {
             hash = Utils.sha1(Utils.serialize(this));
         } else {
             List<Object> metadata = new ArrayList<Object>();
-            for (String key: myStage.blobTreeMap.keySet()) {
+            for (String key: myStage.getBlobTreeMap().keySet()) {
                 metadata.add(key);
             }
             metadata.add(commitMessage);
@@ -89,11 +100,8 @@ public class Commit implements Serializable, Dumpable {
         return myStage;
     }
 
-
-    void setStage(StagingArea stage) {
-        myStage = stage;
-    }
-
+    /** Formats the string into the proper format for the commit.
+     * @return The formatted time string */
     public String timeToString() {
         SimpleDateFormat sdf =
                 new SimpleDateFormat("E MMM dd HH:mm:ss yyyy Z");
@@ -104,14 +112,19 @@ public class Commit implements Serializable, Dumpable {
     public void dump() {
         System.out.println(commitMessage + "at " + timeToString());
         System.out.println("HEAD was at" + parentUID);
-        System.out.println("NEW HEAD is" + hash + ", " + Utils.readContentsAsString(myStage.headPath));
+        System.out.println("NEW HEAD is" + hash + ", "
+                + Utils.readContentsAsString(myStage.getHeadPath()));
         System.out.println("+++++");
     }
 
+    /** Writes the commit to a file in the commit directory.
+     * @param commitDir The directory to which to write the commit. */
     void persist(File commitDir) {
         Utils.writeObject(Utils.join(commitDir, hash), this);
     }
 
+    /** Prints out the log of this commit.
+     * @return The parent ID of this commit, to be used for looping. */
     String log() {
         System.out.println("===");
         System.out.println("commit " + hash);

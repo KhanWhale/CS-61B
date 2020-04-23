@@ -108,8 +108,8 @@ public class Main {
                 StagingArea myStage = new StagingArea(gitletDir);
                 Blob toStage = new Blob(toAdd, blobs);
                 myStage.stageFile(toStage);
-                if (myStage.stagePath.isFile()) {
-                    Utils.writeObject(myStage.stagePath, myStage);
+                if (myStage.getStagePath().isFile()) {
+                    Utils.writeObject(myStage.getStagePath(), myStage);
                 }
             }
         }
@@ -120,7 +120,7 @@ public class Main {
             throw new GitletException("Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
-        } else if (currentStage.size() == 0 && currentStage.removedFiles.size() == 0) {
+        } else if (currentStage.size() == 0 && currentStage.getRemovedFiles().size() == 0) {
             throw new GitletException("No changes added to the commit.");
         } else if (args[1].length() == 0) {
             throw new GitletException("Please enter a commit message.");
@@ -128,7 +128,7 @@ public class Main {
             Commit myCommit = new Commit(args[1], System.currentTimeMillis());
             myCommit.commit(currentStage);
             myCommit.persist(commits);
-            currentStage.stagePath.delete();
+            currentStage.getStagePath().delete();
         }
     }
     public static void rm(String[] args) {
@@ -140,8 +140,8 @@ public class Main {
             StagingArea currStage = new StagingArea(gitletDir);
             File toRemove = Utils.join(CWD, args[1]);
             currStage.rmFile(toRemove);
-            if (currStage.stagePath.isFile()) {
-                Utils.writeObject(currStage.stagePath, currStage);
+            if (currStage.getStagePath().isFile()) {
+                Utils.writeObject(currStage.getStagePath(), currStage);
             }
         }
     }
@@ -169,12 +169,12 @@ public class Main {
             System.out.println();
             System.out.println("=== Staged Files ===");
             StagingArea currStage = new StagingArea(gitletDir);
-            for (String name : currStage.blobNames.keySet()) {
+            for (String name : currStage.getBlobNames().keySet()) {
                 System.out.println(name);
             }
             System.out.println();
             System.out.println("=== Removed Files ===");
-            for (String name: currStage.removedFiles) {
+            for (String name: currStage.getRemovedFiles()) {
                 System.out.println(name);
             }
             System.out.println();
@@ -195,8 +195,8 @@ public class Main {
             String headCommitID = Utils.readContentsAsString(head);
             Commit headCommit = Utils.readObject(Utils.join(commits, headCommitID), Commit.class);
             File checkoutFile = Utils.join(CWD, args[2]);
-            if (headCommit.getStage().blobNames.containsKey(checkoutFile.getName())) {
-                Blob checkoutBlob = headCommit.getStage().blobNames.get(checkoutFile.getName());
+            if (headCommit.getStage().getBlobNames().containsKey(checkoutFile.getName())) {
+                Blob checkoutBlob = headCommit.getStage().getBlobNames().get(checkoutFile.getName());
                 String newData = checkoutBlob.getBlobString();
                 try {
                     if (!checkoutFile.exists()) {
@@ -218,8 +218,8 @@ public class Main {
             }
             Commit chCommit = Utils.readObject(readCommit, Commit.class);
             File checkoutFile = Utils.join(CWD, args[3]);
-            if (chCommit.getStage().blobNames.containsKey(checkoutFile.getName())) {
-                Blob checkoutBlob = chCommit.getStage().blobNames.get(checkoutFile.getName());
+            if (chCommit.getStage().getBlobNames().containsKey(checkoutFile.getName())) {
+                Blob checkoutBlob = chCommit.getStage().getBlobNames().get(checkoutFile.getName());
                 String newData = checkoutBlob.getBlobString();
                 try {
                     if (!checkoutFile.exists()) {
