@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.TreeMap;
 
@@ -66,6 +67,9 @@ public class StagingArea implements Serializable, Dumpable {
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
         }
+        if (removedFiles.contains(toStage.getName())) {
+            removedFiles.remove(toStage.getName());
+        }
     }
 
     private void copyHead() {
@@ -74,9 +78,11 @@ public class StagingArea implements Serializable, Dumpable {
         headStage = parentCommit.getStage();
         if (headStage != null && headStage.removedFiles.size() > 0) {
             for (String name : headStage.removedFiles) {
-                Blob oFile = blobNames.get(name);
-                blobNames.remove(oFile.getName());
-                blobTreeMap.remove(oFile.getHash());
+                if (size() > 0) {
+                    Blob oFile = blobNames.get(name);
+                    blobNames.remove(oFile.getName());
+                    blobTreeMap.remove(oFile.getHash());
+                }
             }
         }
     }
@@ -87,6 +93,43 @@ public class StagingArea implements Serializable, Dumpable {
         removedFiles.addAll(parent.removedFiles);
     }
 
+    TreeMap<String, String> checkModifications(File parentDir) {
+        TreeMap<String, String> modified = new TreeMap<>();
+        File[] allFile = parentDir.listFiles();
+        ArrayList<File> allFiles = new ArrayList<File>(Arrays.asList(allFile));
+        //FILE STILL EXISTS
+        for (File toCheck : allFiles) {
+            Blob toCompare = new Blob(toCheck, Utils.join(gitletDir, "blobs"));
+            //      Tracked in current commit, modified in working dir, not staged
+            if (headStage != null && headStage.blobNames.containsKey(toCheck.getName())) {
+                String blobHash = toCompare.getHash();
+                if (!headStage.blobTreeMap.containsKey(blobHash) && !blobTreeMap.containsKey(blobHash)) {
+                    modified.put(toCheck.getName(), " (modified)");
+                }
+            }
+//            Staged for addition but with different contents than in wd.
+            if (blobNames.containsKey(toCheck.getName()) && !blobTreeMap.containsKey(toCompare.getHash())) {
+                modified.put(toCheck.getName(), " (modified)");
+            }
+        }
+//        Staged for addition, removed from pwd
+        for (String fileName : blobNames.keySet()) {
+            File toCheck = Utils.join(parentDir, fileName);
+            if (!allFiles.contains(toCheck)) {
+                modified.put(fileName, " (deleted)");
+            }
+        }
+//        Tracked in curr commit, deleted from pwd, not staged for removal
+        if (headStage != null) {
+            for (String blobName : headStage.blobNames.keySet()) {
+                File toCheck = Utils.join(parentDir, blobName);
+                if (!allFiles.contains(toCheck) && !removedFiles.contains(blobName)) {
+                    modified.put(blobName, " (deleted)");
+                }
+            }
+        }
+        return modified;
+    }
     int size() {
         if (blobTreeMap.size() != blobNames.size()) {
             throw new GitletException("Incorrect blobTree/Name implementation");

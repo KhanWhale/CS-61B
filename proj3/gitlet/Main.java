@@ -5,6 +5,7 @@ import jdk.jshell.execution.Util;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
+import java.util.TreeMap;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Aniruddh Khanwale
@@ -119,7 +120,7 @@ public class Main {
             throw new GitletException("Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
-        } else if (currentStage.size() == 0) {
+        } else if (currentStage.size() == 0 && currentStage.removedFiles.size() == 0) {
             throw new GitletException("No changes added to the commit.");
         } else if (args[1].length() == 0) {
             throw new GitletException("Please enter a commit message.");
@@ -127,6 +128,7 @@ public class Main {
             Commit myCommit = new Commit(args[1], System.currentTimeMillis());
             myCommit.commit(currentStage);
             myCommit.persist(commits);
+            currentStage.stagePath.delete();
         }
     }
     public static void rm(String[] args) {
@@ -177,6 +179,10 @@ public class Main {
             }
             System.out.println();
             System.out.println("=== Modifications Not Staged For Commit ===");
+//            TreeMap<String, String> modded = currStage.checkModifications(CWD);
+//            for (String file : modded.keySet()) {
+//                System.out.println(file + modded.get(file));
+//            }
             System.out.println();
             System.out.println("=== Untracked Files ===");
             System.out.println();

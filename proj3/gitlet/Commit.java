@@ -37,11 +37,11 @@ public class Commit implements Serializable, Dumpable {
     }
 
     void commit(StagingArea stage) {
-        myStage = stage;
-        myStage.stagePath.delete();
-        parentUID = Utils.readContentsAsString(myStage.headPath);
-        setHash();
-        Utils.writeContents(myStage.headPath, hash);
+            myStage = stage;
+            myStage.stagePath.delete();
+            parentUID = Utils.readContentsAsString(myStage.headPath);
+            setHash();
+            Utils.writeContents(myStage.headPath, hash);
     }
 
     /** Return the commit time of this commit. */
