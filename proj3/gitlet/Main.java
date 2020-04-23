@@ -24,6 +24,11 @@ public class Main {
     /** File object containing head reference. */
     private static File head = Utils.join(gitletDir, "HEAD");
 
+    /** File object containing ref to current branch. */
+    private static File workingBranch = Utils.join(gitletDir,
+            "current-branch");
+    /** File object containing branch data. */
+    private static File branches = Utils.join(gitletDir, "branches");
 
     /** Usage: java gitlet.Main ARGS, where ARGS contains
      *  <COMMAND> <OPERAND> .... */
@@ -54,6 +59,9 @@ public class Main {
                 case "checkout":
                     checkout(args);
                     break;
+                case "branch":
+                    branch(args);
+                    break;
                 default:
                     throw new GitletException(
                             "No command with that name exists.");
@@ -78,12 +86,15 @@ public class Main {
             gitletDir.mkdir();
             commits.mkdir();
             blobs.mkdir();
+//            branches.mkdir();
             InitialCommit initialCommit =
                     new InitialCommit("initial commit", 0);
             initialCommit.setHash();
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
+//            File masterRef = Utils.join(branches, "master");
             try {
+//                workingBranch.createNewFile();
                 serializedCommit.createNewFile();
                 head.createNewFile();
                 FileWriter myWriter = new FileWriter(head);
@@ -278,6 +289,30 @@ public class Main {
             return;
         } else {
             throw new GitletException("Incorrect operands.");
+        }
+    }
+
+    /** Creates a new branch in the gitlet repo.
+     *
+     * @param args The branch name.
+     */
+    public static void branch(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
+        } else if (Utils.join(branches, args[1]).exists()) {
+            throw new GitletException(
+                    "A branch with that name already exists.");
+        } else {
+            File branchHead = Utils.join(branches, args[1]);
+            try {
+                branchHead.createNewFile();
+
+            } catch (IOException io) {
+                return;
+            }
         }
     }
 }
