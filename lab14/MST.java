@@ -1,8 +1,9 @@
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 
 /** Minimal spanning tree utility.
- *  @author
+ *  @author Aniruddh Khanwale
  */
 public class MST {
 
@@ -18,10 +19,20 @@ public class MST {
      *  original edges, just the original edges themselves.) */
     public static int[][] mst(int V, int[][] E) {
         E = Arrays.copyOf(E, E.length);
-        int numEdgesInResult = 0; // FIXME: how many edges should there be in our MST?
+        int numEdgesInResult = V - 1; // FIXME: how many edges should there be in our MST?
         int[][] result = new int[numEdgesInResult][];
-        // FIXME: what other data structures do I need?
-        // FIXME: do Kruskal's Algorithm
+        Arrays.sort(E, EDGE_WEIGHT_COMPARATOR);
+        UnionFind graph = new UnionFind(V);
+        int resultIndex = 0;
+        for (int[] edge : E) {
+            int u = edge[0];
+            int v = edge[1];
+            if (!graph.samePartition(u, v)) {
+                result[resultIndex] = edge;
+                graph.union(u, v);
+                resultIndex += 1;
+            }
+        }
         return result;
     }
 

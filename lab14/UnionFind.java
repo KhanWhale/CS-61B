@@ -47,18 +47,18 @@ public class UnionFind {
     public int union(int u, int v) {
         int uRoot = find(u);
         int vRoot = find(v);
-        if (uRoot == vRoot) {
+        if (samePartition(u, v)) {
             return uRoot;
         } else {
             int uSize = sizes[uRoot];
             int vSize = sizes[vRoot];
             if (vSize > uSize) {
                 array_struct[uRoot] = vRoot;
-                computeSizes();
+                sizes[vRoot] += sizes[uRoot];
                 return vRoot;
             } else {
                 array_struct[vRoot] = uRoot;
-                computeSizes();
+                sizes[uRoot] += sizes[vRoot];
                 return uRoot;
             }
 
