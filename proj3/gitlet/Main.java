@@ -1,11 +1,8 @@
 package gitlet;
 
-import jdk.jshell.execution.Util;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
-import java.util.TreeMap;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Aniruddh Khanwale
@@ -16,16 +13,16 @@ public class Main {
     static final File CWD = new File(".");
 
     /** File object of gitlet subdirectory. */
-    static File gitletDir = Utils.join(CWD, ".gitlet");
+    private static File gitletDir = Utils.join(CWD, ".gitlet");
 
-    /** File object containing commits */
-    static File commits = Utils.join(gitletDir, "commits");
+    /** File object containing commits. */
+    private static File commits = Utils.join(gitletDir, "commits");
 
-    /** File object containing blobs */
-    static File blobs = Utils.join(gitletDir, "blobs");
+    /** File object containing blobs. */
+    private static File blobs = Utils.join(gitletDir, "blobs");
 
-    /** File object containing head reference */
-    static File head = Utils.join(gitletDir, "HEAD");
+    /** File object containing head reference. */
+    private static File head = Utils.join(gitletDir, "HEAD");
 
 
     /** Usage: java gitlet.Main ARGS, where ARGS contains
@@ -36,29 +33,30 @@ public class Main {
                 throw new GitletException("Please enter a command.");
             } else {
                 switch (args[0]) {
-                    case "init":
-                        init(args);
-                        break;
-                    case "add":
-                        add(args);
-                        break;
-                    case "commit":
-                        commit(args);
-                        break;
-                    case "log":
-                        log(args);
-                        break;
-                    case "status":
-                        status(args);
-                        break;
-                    case "rm":
-                        rm(args);
-                        break;
-                    case "checkout":
-                        checkout(args);
-                        break;
-                    default:
-                       throw new GitletException("No command with that name exists.");
+                case "init":
+                    init(args);
+                    break;
+                case "add":
+                    add(args);
+                    break;
+                case "commit":
+                    commit(args);
+                    break;
+                case "log":
+                    log(args);
+                    break;
+                case "status":
+                    status(args);
+                    break;
+                case "rm":
+                    rm(args);
+                    break;
+                case "checkout":
+                    checkout(args);
+                    break;
+                default:
+                    throw new GitletException(
+                            "No command with that name exists.");
                 }
             }
         } catch (GitletException gitletErr) {
@@ -66,12 +64,14 @@ public class Main {
             System.exit(0);
         }
     }
-    /** Initializes a new gitlet repository. */
-    public static void init(String[] args) throws GitletException{
+
+    /** Initializes a new gitlet repository.
+     * @param args Not used. */
+    public static void init(String[] args) throws GitletException {
         if (gitletDir.exists()) {
             throw new GitletException(
-                    "A Gitlet version-control system already " +
-                            "exists in the current directory.");
+                    "A Gitlet version-control system already "
+                            + "exists in the current directory.");
         } else if (args.length != 1) {
             throw new GitletException("Incorrect operands.");
         } else {
@@ -95,9 +95,16 @@ public class Main {
             Utils.writeObject(serializedCommit, initialCommit);
         }
     }
-    public static void add(String[] args) throws GitletException{
+
+    /** Adds the specified file to the repository.
+     *
+     * @param args The file to add.
+     * @throws GitletException
+     */
+    public static void add(String[] args) throws GitletException {
         if (!gitletDir.exists()) {
-            throw new GitletException("Not in an initialized Gitlet directory.");
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
         } else {
@@ -114,13 +121,21 @@ public class Main {
             }
         }
     }
+
+    /** Commits the current state of the repository.
+     *
+     * @param args The commit message
+     * @throws GitletException
+     */
     public static void commit(String[] args) throws GitletException {
         StagingArea currentStage = new StagingArea(gitletDir);
         if (!gitletDir.exists()) {
-            throw new GitletException("Not in an initialized Gitlet directory.");
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
-        } else if (currentStage.size() == 0 && currentStage.getRemovedFiles().size() == 0) {
+        } else if (currentStage.size() == 0
+                && currentStage.getRemovedFiles().size() == 0) {
             throw new GitletException("No changes added to the commit.");
         } else if (args[1].length() == 0) {
             throw new GitletException("Please enter a commit message.");
@@ -131,9 +146,15 @@ public class Main {
             currentStage.getStagePath().delete();
         }
     }
+
+    /** Removes the specified file from the gitlet repo.
+     *
+     * @param args The file to remove.
+     */
     public static void rm(String[] args) {
         if (!gitletDir.exists()) {
-            throw new GitletException("Not in an initialized Gitlet directory.");
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
         } else {
@@ -145,22 +166,35 @@ public class Main {
             }
         }
     }
+
+    /** Prints out a log of this branches commits. *
+     *
+     * @param args Not used
+     */
     public static void log(String[] args) {
         if (!gitletDir.exists()) {
-            throw new GitletException("Not in an initialized Gitlet directory.");
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
         } else if (args.length != 1) {
             throw new GitletException("Incorrect operands.");
         } else {
             String currCommitID = Utils.readContentsAsString(head);
             while (currCommitID != null) {
-                Commit nextCommit = Utils.readObject(Utils.join(commits, currCommitID), Commit.class);
+                Commit nextCommit = Utils.readObject(
+                        Utils.join(commits, currCommitID), Commit.class);
                 currCommitID = nextCommit.log();
             }
         }
     }
+
+    /** Prints the current status of the gitlet repo.
+     *
+     * @param args Not used
+     */
     public static void status(String[] args) {
         if (!gitletDir.exists()) {
-            throw new GitletException("Not in an initialized Gitlet directory.");
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
         } else if (args.length != 1) {
             throw new GitletException("Incorrect operands.");
         } else {
@@ -179,24 +213,29 @@ public class Main {
             }
             System.out.println();
             System.out.println("=== Modifications Not Staged For Commit ===");
-//            TreeMap<String, String> modded = currStage.checkModifications(CWD);
-//            for (String file : modded.keySet()) {
-//                System.out.println(file + modded.get(file));
-//            }
             System.out.println();
             System.out.println("=== Untracked Files ===");
             System.out.println();
         }
     }
-    public static void checkout(String[] args){
+
+    /** Resets either a file or the repo to a specified commit/branch.
+     *
+     * @param args Specifies what to checkout
+     */
+    public static void checkout(String[] args) {
         if (!gitletDir.exists()) {
-            throw new GitletException("Not in an initialized Gitlet directory.");
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
         } else if (args[1].equals("--")) {
             String headCommitID = Utils.readContentsAsString(head);
-            Commit headCommit = Utils.readObject(Utils.join(commits, headCommitID), Commit.class);
+            Commit headCommit = Utils.readObject(
+                    Utils.join(commits, headCommitID), Commit.class);
             File checkoutFile = Utils.join(CWD, args[2]);
-            if (headCommit.getStage().getBlobNames().containsKey(checkoutFile.getName())) {
-                Blob checkoutBlob = headCommit.getStage().getBlobNames().get(checkoutFile.getName());
+            if (headCommit.getStage().getBlobNames().containsKey(
+                    checkoutFile.getName())) {
+                Blob checkoutBlob = headCommit.getStage().getBlobNames().get(
+                        checkoutFile.getName());
                 String newData = checkoutBlob.getBlobString();
                 try {
                     if (!checkoutFile.exists()) {
@@ -209,7 +248,8 @@ public class Main {
                     return;
                 }
             } else {
-                throw new GitletException("File does not exist in that commit.");
+                throw new GitletException(
+                        "File does not exist in that commit.");
             }
         } else if (args[2].equals("--")) {
             File readCommit = Utils.join(commits, args[1]);
@@ -218,8 +258,10 @@ public class Main {
             }
             Commit chCommit = Utils.readObject(readCommit, Commit.class);
             File checkoutFile = Utils.join(CWD, args[3]);
-            if (chCommit.getStage().getBlobNames().containsKey(checkoutFile.getName())) {
-                Blob checkoutBlob = chCommit.getStage().getBlobNames().get(checkoutFile.getName());
+            if (chCommit.getStage().getBlobNames().containsKey(
+                    checkoutFile.getName())) {
+                Blob checkoutBlob = chCommit.getStage().getBlobNames().get(
+                        checkoutFile.getName());
                 String newData = checkoutBlob.getBlobString();
                 try {
                     if (!checkoutFile.exists()) {

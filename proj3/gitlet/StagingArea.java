@@ -1,9 +1,5 @@
 package gitlet;
 
-
-import com.sun.xml.internal.xsom.impl.scd.Iterators;
-import org.antlr.v4.runtime.tree.Tree;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -205,25 +201,25 @@ public class StagingArea implements Serializable, Dumpable {
     private TreeMap<String, Blob> blobTreeMap = new TreeMap<String, Blob>();
 
     /** Treemap containing all the filenames in the staging area,
-     * used to overwrite files */
-     private TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
+     * used to overwrite files. */
+    private TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
 
-     /** The files which will be removed from the next commit. */
-     private ArrayList<String> removedFiles = new ArrayList<String>();
+    /** The files which will be removed from the next commit. */
+    private ArrayList<String> removedFiles = new ArrayList<String>();
 
-     /** Staging Area of previous Commit. */
-     private StagingArea headStage;
+    /** Staging Area of previous Commit. */
+    private StagingArea headStage;
 
     @Override
     public void dump() {
-       if (blobNames == null && blobTreeMap == null) {
-           System.out.println("No blobs added");
-       } else {
-           System.out.println("Blob Names :");
-           System.out.println(blobNames.toString());
-           System.out.println("Blob Tree Map: ");
-           System.out.println(blobTreeMap.toString());
-           System.out.println();
-       }
+        if (blobNames == null && blobTreeMap == null) {
+            System.out.println("No blobs added");
+        } else {
+            System.out.println("Blob Names :");
+            System.out.println(blobNames.toString());
+            System.out.println("Blob Tree Map: ");
+            System.out.println(blobTreeMap.toString());
+            System.out.println();
+        }
     }
 }
