@@ -12,8 +12,9 @@ public class Blob implements Serializable{
             throw new GitletException("File does not exist.");
         } else {
             name = toBlobify.getName();
-            blobFile = toBlobify;
-            hash = Utils.sha1(Utils.readContentsAsString(toBlobify), name);
+            File blobFile = toBlobify;
+            blobString = Utils.readContentsAsString(toBlobify);
+            hash = Utils.sha1(Utils.serialize(this));
         }
         if (!Utils.join(_blobDir, hash).exists()) {
             persist();
@@ -30,13 +31,18 @@ public class Blob implements Serializable{
         return name;
     }
     /** SHA-1 hashcode of the blob object. */
+
+    String getBlobString() {
+        return blobString;
+    }
     private String hash;
 
     /** The filename of this blob object. */
     private String name;
 
-    /** The file this blob stores data for. */
-    private File blobFile;
+
+    /** The string within the blobFile */
+    private String blobString;
 
     /** The filepath this blob will be stored in. */
     private File _blobDir;

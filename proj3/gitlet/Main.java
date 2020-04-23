@@ -1,5 +1,7 @@
 package gitlet;
 
+import jdk.jshell.execution.Util;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
@@ -50,6 +52,9 @@ public class Main {
                         break;
                     case "rm":
                         rm(args);
+                        break;
+                    case "checkout":
+                        checkout(args);
                         break;
                     default:
                        throw new GitletException("No command with that name exists.");
@@ -146,7 +151,7 @@ public class Main {
         } else {
             String currCommitID = Utils.readContentsAsString(head);
             while (currCommitID != null) {
-                Commit nextCommit = Utils.readObject(Utils.join(gitletDir, "commits", currCommitID), Commit.class);
+                Commit nextCommit = Utils.readObject(Utils.join(commits, currCommitID), Commit.class);
                 currCommitID = nextCommit.log();
             }
         }
@@ -167,7 +172,6 @@ public class Main {
             }
             System.out.println();
             System.out.println("=== Removed Files ===");
-//            System.out.println("f.txt");
             for (String name: currStage.removedFiles) {
                 System.out.println(name);
             }
@@ -176,6 +180,56 @@ public class Main {
             System.out.println();
             System.out.println("=== Untracked Files ===");
             System.out.println();
+        }
+    }
+    public static void checkout(String[] args){
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else if (args[1].equals("--")) {
+            String headCommitID = Utils.readContentsAsString(head);
+            Commit headCommit = Utils.readObject(Utils.join(commits, headCommitID), Commit.class);
+            File checkoutFile = Utils.join(CWD, args[2]);
+            if (headCommit.getStage().blobNames.containsKey(checkoutFile.getName())) {
+                Blob checkoutBlob = headCommit.getStage().blobNames.get(checkoutFile.getName());
+                String newData = checkoutBlob.getBlobString();
+                try {
+                    if (!checkoutFile.exists()) {
+                        checkoutFile.createNewFile();
+                    }
+                    FileWriter myWriter = new FileWriter(checkoutFile);
+                    myWriter.write(newData);
+                    myWriter.close();
+                } catch (IOException e) {
+                    return;
+                }
+            } else {
+                throw new GitletException("File does not exist in that commit.");
+            }
+        } else if (args[2].equals("--")) {
+            File readCommit = Utils.join(commits, args[1]);
+            if (!readCommit.exists()) {
+                throw new GitletException("No commit with that id exists.");
+            }
+            Commit chCommit = Utils.readObject(readCommit, Commit.class);
+            File checkoutFile = Utils.join(CWD, args[3]);
+            if (chCommit.getStage().blobNames.containsKey(checkoutFile.getName())) {
+                Blob checkoutBlob = chCommit.getStage().blobNames.get(checkoutFile.getName());
+                String newData = checkoutBlob.getBlobString();
+                try {
+                    if (!checkoutFile.exists()) {
+                        checkoutFile.createNewFile();
+                    }
+                    FileWriter myWriter = new FileWriter(checkoutFile);
+                    myWriter.write(newData);
+                    myWriter.close();
+                } catch (IOException e) {
+                    return;
+                }
+            }
+        } else if (args.length == 2) {
+            return;
+        } else {
+            throw new GitletException("Incorrect operands.");
         }
     }
 }
