@@ -201,8 +201,7 @@ public class Main {
         } else if (args.length != 1) {
             throw new GitletException("Incorrect operands.");
         } else {
-            File branch = Utils.join(branches, Utils.readContentsAsString(workingBranch));
-            String currCommitID = Utils.readContentsAsString(branch);
+            String currCommitID = Utils.readContentsAsString(head);
             while (currCommitID != null) {
                 Commit prevCommit = Utils.readObject(
                         Utils.join(commits, currCommitID), Commit.class);

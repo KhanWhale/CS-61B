@@ -95,13 +95,13 @@ public class StagingArea implements Serializable, Dumpable {
         headStage = parentCommit.getStage();
         if (headStage != null) {
             trackedFiles.addAll(headStage.getTrackedFiles());
-            if (headStage.removedFiles.size() > 0) {
-                for (String name : headStage.removedFiles) {
-                    if (size() > 0) {
-                        Blob oFile = blobNames.get(name);
-                        blobNames.remove(oFile.getName());
-                        blobTreeMap.remove(oFile.getHash());
-                    }
+        }
+        if (headStage != null && headStage.removedFiles.size() > 0) {
+            for (String name : headStage.removedFiles) {
+                if (size() > 0) {
+                    Blob oFile = blobNames.get(name);
+                    blobNames.remove(oFile.getName());
+                    blobTreeMap.remove(oFile.getHash());
                 }
             }
         }
