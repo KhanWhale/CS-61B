@@ -373,13 +373,24 @@ public class Main {
                     "Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
-        } else if (!Utils.join(commits, args[1]).exists()){
-            throw new GitletException("No commit with that id exists.");
         } else {
+            String commitID = args[1];
+            if (commitID.length() < 40) {
+                for (File possible : commits.listFiles()) {
+                    if (possible.getName().contains(commitID)) {
+                        commitID = possible.getName();
+                        break;
+                    }
+                }
+            }
+            File readCommit = Utils.join(commits, commitID);
+            if (!readCommit.exists()) {
+                throw new GitletException("No commit with that id exists.");
+            }
             Commit repoHead = Utils.readObject(Utils.join(
                     commits, Utils.readContentsAsString(head)), Commit.class);
             Commit setHead = Utils.readObject(Utils.join(
-                    commits, args[1]), Commit.class);
+                    commits, commitID), Commit.class);
             if (setHead.getStage() != null) {
                 for (String name : setHead.getStage().
                         getBlobNames().keySet()) {
@@ -414,8 +425,8 @@ public class Main {
                 }
             }
             new StagingArea(gitletDir).getStagePath().delete();
-            Utils.writeContents(Utils.join(branches, Utils.readContentsAsString(workingBranch)), args[1]);
-            Utils.writeContents(head, args[1]);
+            Utils.writeContents(Utils.join(branches, Utils.readContentsAsString(workingBranch)), commitID);
+            Utils.writeContents(head, commitID);
         }
 
     }
