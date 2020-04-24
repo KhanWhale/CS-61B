@@ -450,7 +450,8 @@ public class Main {
                     getBlobNames().keySet()) {
                 File toWrite = Utils.join(CWD, name);
                 if (toWrite.exists()) {
-                    if (!repoHead.getStage().getBlobNames().keySet().
+                    if (repoHead.getStage() == null ||
+                            !repoHead.getStage().getBlobNames().keySet().
                             contains(name)) {
                         throw new GitletException("There is an untracked "
                                 + "file in the way; delete it,"
