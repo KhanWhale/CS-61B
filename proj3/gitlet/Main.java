@@ -1,5 +1,8 @@
 package gitlet;
 
+import jdk.jshell.execution.Util;
+import net.sf.saxon.lib.SchemaURIResolver;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
@@ -212,8 +215,14 @@ public class Main {
         } else if (args.length != 1) {
             throw new GitletException("Incorrect operands.");
         } else {
+            String currBranch = Utils.readContentsAsString(workingBranch);
             System.out.println("=== Branches ===");
-            System.out.println("*master");
+            System.out.println("*" + currBranch);
+            for (File branch : branches.listFiles()) {
+                if (!branch.getName().equals(currBranch)) {
+                    System.out.println(branch.getName());
+                }
+            }
             System.out.println();
             System.out.println("=== Staged Files ===");
             StagingArea currStage = new StagingArea(gitletDir);
@@ -265,6 +274,32 @@ public class Main {
                 throw new GitletException(
                         "File does not exist in that commit.");
             }
+        }  else if (args.length == 2) {
+            if (!Utils.join(branches, args[1]).exists()) {
+                throw new GitletException("No such branch exists.");
+            } else if (args[1].equals(Utils.readContentsAsString(workingBranch))) {
+                throw new GitletException("No need to checkout the current branch.");
+            }
+            Commit repoHead = Utils.readObject(Utils.join(commits, Utils.readContentsAsString(head)), Commit.class);
+            Commit branchHead = Utils.readObject(Utils.join(branches, args[1]), Commit.class);
+            for (String fName : branchHead.getStage().getBlobNames().keySet()) {
+                File toWrite = Utils.join(CWD, fName);
+                if (toWrite.exists()) {
+                    if (!repoHead.getStage().getBlobNames().keySet().contains(fName)) {
+                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                    }
+                    Utils.writeContents(toWrite, branchHead.getStage().getBlobNames().get(fName).getBlobString());
+                }
+            }
+            for (String fName : repoHead.getStage().getBlobNames().keySet()) {
+                File toDelete = Utils.join(CWD, fName);
+                if (!branchHead.getStage().getBlobNames().keySet().contains(fName)) {
+                    Utils.restrictedDelete(toDelete);
+                }
+            }
+            new StagingArea(gitletDir).getStagePath().delete();
+            Utils.writeContents(workingBranch, args[1]);
+            Utils.writeContents(head, Utils.readContentsAsString(Utils.join(branches, args[1])));
         } else if (args[2].equals("--")) {
             File readCommit = Utils.join(commits, args[1]);
             if (!readCommit.exists()) {
@@ -287,10 +322,9 @@ public class Main {
                 } catch (IOException e) {
                     return;
                 }
+            } else {
+                throw new GitletException("File does not exist in that commit.");
             }
-        } else if (args.length == 2) {
-            Utils.writeContents(workingBranch, args[1]);
-            Utils.writeContents(head, Utils.readContentsAsString(Utils.join(branches, args[1])));
         } else {
             throw new GitletException("Incorrect operands.");
         }

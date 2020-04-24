@@ -17,7 +17,7 @@ public class Blob implements Serializable {
             throw new GitletException("File does not exist.");
         } else {
             name = toBlobify.getName();
-            File blobFile = toBlobify;
+            blobFile = toBlobify;
             blobString = Utils.readContentsAsString(toBlobify);
             hash = Utils.sha1(Utils.serialize(this));
         }
@@ -50,6 +50,11 @@ public class Blob implements Serializable {
         return blobString;
     }
 
+    File getBlobFile() {
+        return blobFile;
+    }
+    /** The file being turned into a blob */
+    private File blobFile;
     /** The hash of this blob. */
     private String hash;
 
