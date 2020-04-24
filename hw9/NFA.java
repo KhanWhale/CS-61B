@@ -98,21 +98,24 @@ public class NFA {
          * If this State has no outgoing edges with label C, then
          * return an empty Set. */
         public Set<State> successors(char c) {
-            if (_edges.containsKey(c)) {
-                if (c == EPSILON) {
-                    Set<State> epsilonStates = _edges.get(EPSILON);
-                    Set<State> toAdd = new HashSet<>();
-                    for (State eState : epsilonStates) {
-                        toAdd.addAll(eState.successors(EPSILON));
-                    }
-                    epsilonStates.addAll(toAdd);
-                    return epsilonStates;
-                } else {
-                    return _edges.get(c);
-                }
-            } else {
-                return new HashSet<>();
+            Set<State> children = new HashSet<>();
+            if (c == EPSILON) {
+                children.add(this);
             }
+            Set<State> edge = _edges.get(c);
+            if (edge != null) {
+                if (c != EPSILON) {
+                    for (State s : edge) {
+                        children.add(s);
+                    }
+                } else {
+                    for (State s : edge) {
+                        children.add(s);
+                        children.addAll(s.successors(EPSILON));
+                    }
+                }
+            }
+            return children;
         }
 
         /**
@@ -372,7 +375,7 @@ public class NFA {
         Set<State> S = new HashSet<>();
         S.add(_startState);
         S.addAll(_startState.successors(EPSILON));
-        for (int i = 0; i < s.length(); i += 1) {
+        for (int i = 0; i < s.length() && !S.isEmpty(); i += 1) {
             Set<State> SetCopy = new HashSet<>();
             for (State q : S) {
                 SetCopy.addAll(q.successors(s.charAt(i)));
@@ -384,7 +387,12 @@ public class NFA {
             }
             S.addAll(SetCopy);
         }
-        return S.contains(_acceptState);
+        for (State st : S) {
+            if (st.isAccepting()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Returns the pattern used to make this NFA. */
