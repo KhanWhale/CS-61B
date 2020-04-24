@@ -162,6 +162,9 @@ public class StagingArea implements Serializable, Dumpable {
         }
     }
 
+    File getGitletDir() {
+        return gitletDir;
+    }
     /** Returns the staging area path. */
     File getStagePath() {
         return stagePath;

@@ -194,9 +194,9 @@ public class Main {
         } else {
             String currCommitID = Utils.readContentsAsString(head);
             while (currCommitID != null) {
-                Commit nextCommit = Utils.readObject(
+                Commit prevCommit = Utils.readObject(
                         Utils.join(commits, currCommitID), Commit.class);
-                currCommitID = nextCommit.log();
+                currCommitID = prevCommit.log();
             }
         }
     }

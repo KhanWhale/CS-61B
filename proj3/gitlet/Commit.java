@@ -1,5 +1,7 @@
 package gitlet;
 
+import jdk.jshell.execution.Util;
+
 import java.io.File;
 import java.io.Serializable;
 import java.lang.ref.SoftReference;
@@ -32,6 +34,9 @@ public class Commit implements Serializable, Dumpable {
     /** The branch this commit was made on. */
     private String branch = "master";
 
+    /** The directory in which to persist the commit object. */
+    private File commitDir;
+
     /** Default constructor, allowing for extension. */
     public Commit() {
 
@@ -52,6 +57,7 @@ public class Commit implements Serializable, Dumpable {
     void commit(StagingArea stage, String _branch) {
         branch = _branch;
         myStage = stage;
+        commitDir = Utils.join(myStage.getGitletDir(), "commits");
         myStage.getStagePath().delete();
         parentUID = Utils.readContentsAsString(myStage.getHeadPath());
         setHash();
@@ -115,9 +121,9 @@ public class Commit implements Serializable, Dumpable {
     }
 
     /** Writes the commit to a file in the commit directory.
-     * @param commitDir The directory to which to write the commit. */
-    void persist(File commitDir) {
-        Utils.writeObject(Utils.join(commitDir, hash), this);
+     * @param _commitDir The directory to which to write the commit. */
+    void persist(File _commitDir) {
+        Utils.writeObject(Utils.join(_commitDir, hash), this);
     }
 
     /** Prints out the log of this commit.
@@ -128,6 +134,11 @@ public class Commit implements Serializable, Dumpable {
         System.out.println("Date: " + timeToString());
         System.out.println(commitMessage);
         System.out.println();
-        return parentUID;
+        Commit parentCommit = Utils.readObject(Utils.join(commitDir, parentUID), Commit.class);
+        if (!parentCommit.getBranch().equals(branch)) {
+            return null;
+        } else {
+            return parentUID;
+        }
     }
 }
