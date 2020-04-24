@@ -1,6 +1,5 @@
 package gitlet;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 
@@ -50,6 +49,9 @@ public class Main {
                 case "log":
                     log(args);
                     break;
+                case "global-log":
+                    globalLog(args);
+                    break;
                 case "status":
                     status(args);
                     break;
@@ -61,6 +63,15 @@ public class Main {
                     break;
                 case "branch":
                     branch(args);
+                    break;
+                case "reset":
+                    reset(args);
+                    break;
+                case "find":
+                    find(args);
+                    break;
+                case "rm-branch":
+                    rmBranch(args);
                     break;
                 default:
                     throw new GitletException(
@@ -251,42 +262,7 @@ public class Main {
                 return;
             }
         }  else if (args.length == 2) {
-            if (!Utils.join(branches, args[1]).exists()) {
-                throw new GitletException("No such branch exists.");
-            } else if (args[1].equals(
-                    Utils.readContentsAsString(workingBranch))) {
-                throw new GitletException(
-                        "No need to checkout the current branch.");
-            }
-            Commit repoHead = Utils.readObject(Utils.join(
-                    commits, Utils.readContentsAsString(head)), Commit.class);
-            Commit branchHead = Utils.readObject(
-                    Utils.join(branches, args[1]), Commit.class);
-            for (String name : branchHead.getStage().getBlobNames().keySet()) {
-                File toWrite = Utils.join(CWD, name);
-                if (toWrite.exists()) {
-                    if (!repoHead.getStage().getBlobNames().keySet().contains(
-                            name)) {
-                        throw new GitletException("There is an untracked file"
-                                + " in the way; delete it,"
-                                + " or add and commit it first.");
-                    }
-                    Utils.writeContents(
-                            toWrite, branchHead.getStage().getBlobNames().get(
-                                    name).getBlobString());
-                }
-            }
-            for (String fName : repoHead.getStage().getBlobNames().keySet()) {
-                File toDelete = Utils.join(CWD, fName);
-                if (!branchHead.getStage().getBlobNames().keySet().contains(
-                        fName)) {
-                    Utils.restrictedDelete(toDelete);
-                }
-            }
-            new StagingArea(gitletDir).getStagePath().delete();
-            Utils.writeContents(workingBranch, args[1]);
-            Utils.writeContents(head, Utils.readContentsAsString(
-                    Utils.join(branches, args[1])));
+            checkoutBranch(args[1]);
         } else if (args[2].equals("--")) {
             try {
                 checkoutCommitFile(args[1], args[3]);
@@ -315,17 +291,92 @@ public class Main {
             File branchHead = Utils.join(branches, args[1]);
             try {
                 branchHead.createNewFile();
-                FileWriter setHead = new FileWriter(branchHead);
-                setHead.write(Utils.readContentsAsString(head));
+                Utils.writeContents(branchHead,
+                        Utils.readContentsAsString(head));
             } catch (IOException io) {
                 return;
             }
         }
     }
 
+    /** Finds all commits with the message specified.
+     *
+     * @param args the message to check for
+     */
+    public static void find(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
+        } else {
+            boolean found = false;
+            for (File toFind : commits.listFiles()) {
+                Commit toCheck = Utils.readObject(toFind, Commit.class);
+                if (toCheck.getCommitMessage().equals(args[1])) {
+                    System.out.println(toCheck.getHash());
+                    found = true;
+                }
+            }
+            if (!found) {
+                throw new GitletException("Found no commit with that message.");
+            }
+        }
+    }
+
+    /** Prints a log of all commits ever made.
+     *
+     * @param args Not used
+     */
+    public static void globalLog(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
+        } else if (args.length != 1) {
+            throw new GitletException("Incorrect operands.");
+        } else {
+            for (File commit : commits.listFiles()) {
+                Commit obj = Utils.readObject(commit, Commit.class);
+                obj.log();
+            }
+        }
+    }
+
+    /** Removes the specified branch.
+     *
+     * @param args The branch to remove.
+     */
+    public static void rmBranch(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
+        } else if (args[1].equals(Utils.readContentsAsString(workingBranch))) {
+            throw new GitletException("Cannot remove the current branch.");
+        } else if (!Utils.join(branches, args[1]).exists()) {
+            throw new GitletException(
+                    "A branch with that name does not exist.");
+        } else {
+            Utils.join(branches, args[1]).delete();
+        }
+    }
+
+    /** Resets the state of the repository to that of the commit specified.
+     * @param args contains the commit to reset to. */
+    public static void reset(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
+        } else {
+            return;
+        }
+    }
     /** Checks out the given file from the HEAD commit.
      *
-     * @param fileName The file to checkout
+     * @param fileName The file to checkout.
      * @throws IOException
      */
     private static void checkoutHeadFile(String fileName) throws IOException {
@@ -374,5 +425,63 @@ public class Main {
             throw new GitletException(
                     "File does not exist in that commit.");
         }
+    }
+
+    /** Checks out the specified branch.
+     *
+     * @param branch The branch to checkout
+     */
+    private static void checkoutBranch(String branch) {
+        if (!Utils.join(branches, branch).exists()) {
+            throw new GitletException("No such branch exists.");
+        } else if (branch.equals(
+                Utils.readContentsAsString(workingBranch))) {
+            throw new GitletException(
+                    "No need to checkout the current branch.");
+        }
+        Commit repoHead = Utils.readObject(Utils.join(
+                commits, Utils.readContentsAsString(head)), Commit.class);
+        File branchHeadPath = Utils.join(branches, branch);
+        String branchHeadHash = Utils.readContentsAsString(branchHeadPath);
+        Commit branchHead = Utils.readObject(Utils.join(
+                commits, branchHeadHash), Commit.class);
+        if (branchHead.getStage() != null) {
+            for (String name : branchHead.getStage().
+                    getBlobNames().keySet()) {
+                File toWrite = Utils.join(CWD, name);
+                if (toWrite.exists()) {
+                    if (!repoHead.getStage().getBlobNames().keySet().
+                            contains(name)) {
+                        throw new GitletException("There is an untracked "
+                                + "file in the way; delete it,"
+                                + " or add and commit it first.");
+                    }
+                } else {
+                    try {
+                        toWrite.createNewFile();
+                    } catch (IOException dummy) {
+                        return;
+                    }
+                }
+                Utils.writeContents(
+                        toWrite, branchHead.getStage().getBlobNames().
+                                get(name).getBlobString());
+            }
+        }
+        if (repoHead.getStage() != null) {
+            for (String fName : repoHead.getStage().getBlobNames().keySet()) {
+                File toDelete = Utils.join(CWD, fName);
+                if (branchHead.getStage() == null) {
+                    Utils.restrictedDelete(toDelete);
+                } else if (!branchHead.getStage().getBlobNames().
+                        keySet().contains(fName)) {
+                    Utils.restrictedDelete(toDelete);
+                }
+            }
+        }
+        new StagingArea(gitletDir).getStagePath().delete();
+        Utils.writeContents(workingBranch, branch);
+        Utils.writeContents(head, Utils.readContentsAsString(
+                Utils.join(branches, branch)));
     }
 }
