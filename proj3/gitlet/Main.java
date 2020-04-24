@@ -451,6 +451,14 @@ public class Main {
      */
     private static void checkoutCommitFile(String commitID, String fileName)
             throws IOException {
+        if (commitID.length() < 40) {
+            for (File possible : commits.listFiles()) {
+                if (possible.getName().contains(commitID)) {
+                    commitID = possible.getName();
+                    break;
+                }
+            }
+        }
         File readCommit = Utils.join(commits, commitID);
         if (!readCommit.exists()) {
             throw new GitletException("No commit with that id exists.");
