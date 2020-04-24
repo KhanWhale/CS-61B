@@ -1,7 +1,5 @@
-import java.util.Map;
-import java.util.Set;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.sql.Statement;
+import java.util.*;
 
 /**
  * An implementation of a Non-deterministic Finite Automaton (NFA).
@@ -100,8 +98,21 @@ public class NFA {
          * If this State has no outgoing edges with label C, then
          * return an empty Set. */
         public Set<State> successors(char c) {
-            //FIXME
-              return new HashSet<State>();
+            if (_edges.containsKey(c)) {
+                if (c == EPSILON) {
+                    Set<State> epsilonStates = _edges.get(EPSILON);
+                    Set<State> toAdd = new HashSet<>();
+                    for (State eState : epsilonStates) {
+                        toAdd.addAll(eState.successors(EPSILON));
+                    }
+                    epsilonStates.addAll(toAdd);
+                    return epsilonStates;
+                } else {
+                    return _edges.get(c);
+                }
+            } else {
+                return new HashSet<>();
+            }
         }
 
         /**
@@ -358,8 +369,22 @@ public class NFA {
      * @param s the query String
      * @return whether or not the string S is accepted by this NFA. */
     public boolean matches(String s) {
-        // TODO: write the matching algorithm
-        return true;
+        Set<State> S = new HashSet<>();
+        S.add(_startState);
+        S.addAll(_startState.successors(EPSILON));
+        for (int i = 0; i < s.length(); i += 1) {
+            Set<State> SetCopy = new HashSet<>();
+            for (State q : S) {
+                SetCopy.addAll(q.successors(s.charAt(i)));
+            }
+            S = SetCopy;
+            SetCopy = new HashSet<>();
+            for (State qnew : S) {
+                SetCopy.addAll(qnew.successors(EPSILON));
+            }
+            S.addAll(SetCopy);
+        }
+        return S.contains(_acceptState);
     }
 
     /** Returns the pattern used to make this NFA. */
