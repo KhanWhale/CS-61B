@@ -86,18 +86,25 @@ public class Main {
             gitletDir.mkdir();
             commits.mkdir();
             blobs.mkdir();
-//            branches.mkdir();
+            branches.mkdir();
             InitialCommit initialCommit =
                     new InitialCommit("initial commit", 0);
             initialCommit.setHash();
             File serializedCommit =
                     Utils.join(commits, initialCommit.getHash());
-//            File masterRef = Utils.join(branches, "master");
+            File masterHead = Utils.join(branches, "master");
             try {
-//                workingBranch.createNewFile();
+                workingBranch.createNewFile();
+                masterHead.createNewFile();
                 serializedCommit.createNewFile();
                 head.createNewFile();
                 FileWriter myWriter = new FileWriter(head);
+                myWriter.write(initialCommit.getHash());
+                myWriter.close();
+                myWriter = new FileWriter(workingBranch);
+                myWriter.write("master");
+                myWriter.close();
+                myWriter = new FileWriter(masterHead);
                 myWriter.write(initialCommit.getHash());
                 myWriter.close();
             } catch (IOException e) {

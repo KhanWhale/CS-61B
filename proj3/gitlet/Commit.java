@@ -82,18 +82,7 @@ public class Commit implements Serializable, Dumpable {
 
     /** Set the default hash value of this commit. */
     void setHash() {
-        if (myStage == null) {
-            hash = Utils.sha1(Utils.serialize(this));
-        } else {
-            List<Object> metadata = new ArrayList<Object>();
-            for (String key: myStage.getBlobTreeMap().keySet()) {
-                metadata.add(key);
-            }
-            metadata.add(commitMessage);
-            metadata.add(Long.toString(commitTime));
-            metadata.add(parentUID);
-            hash = Utils.sha1(metadata);
-        }
+        hash = Utils.sha1(Utils.serialize(this));
     }
     /** Return the stage of the commit. */
     StagingArea getStage() {
