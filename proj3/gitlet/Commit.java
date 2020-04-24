@@ -55,8 +55,8 @@ public class Commit implements Serializable, Dumpable {
         branch = branch1;
         myStage = stage;
         commitDir = Utils.join(myStage.getGitletDir(), "commits");
+        parentUID = Utils.readContentsAsString(Utils.join(myStage.getGitletDir(), "branches", branch1));
         myStage.getStagePath().delete();
-        parentUID = Utils.readContentsAsString(myStage.getHeadPath());
         setHash();
         Utils.writeContents(myStage.getHeadPath(), hash);
     }
@@ -132,12 +132,6 @@ public class Commit implements Serializable, Dumpable {
         System.out.println("Date: " + timeToString());
         System.out.println(commitMessage);
         System.out.println();
-        Commit parentCommit = Utils.readObject(
-                Utils.join(commitDir, parentUID), Commit.class);
-        if (!parentCommit.getBranch().equals(branch)) {
-            return null;
-        } else {
-            return parentUID;
-        }
+        return parentUID;
     }
 }

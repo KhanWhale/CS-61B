@@ -3,9 +3,7 @@ package gitlet;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.TreeMap;
+import java.util.*;
 
 /** Represents the Staging Area of the gitlet repository.
  * @author Aniruddh Khanwale */
@@ -46,6 +44,7 @@ public class StagingArea implements Serializable, Dumpable {
             String originalHash = blobNames.get(rm.getName()).getHash();
             blobNames.remove(rm.getName());
             blobTreeMap.remove(originalHash);
+            trackedFiles.remove(rm.getName());
             reasonToRemove = true;
         }
         if (headStage != null
@@ -77,9 +76,11 @@ public class StagingArea implements Serializable, Dumpable {
             blobTreeMap.remove(originalHash);
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
+            trackedFiles.add(toStage.getName());
         } else {
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
+            trackedFiles.add(toStage.getName());
         }
         if (removedFiles.contains(toStage.getName())) {
             removedFiles.remove(toStage.getName());
@@ -92,12 +93,15 @@ public class StagingArea implements Serializable, Dumpable {
         Commit parentCommit = Utils.readObject(Utils.join(gitletDir,
                 "commits", parentCommitID), Commit.class);
         headStage = parentCommit.getStage();
-        if (headStage != null && headStage.removedFiles.size() > 0) {
-            for (String name : headStage.removedFiles) {
-                if (size() > 0) {
-                    Blob oFile = blobNames.get(name);
-                    blobNames.remove(oFile.getName());
-                    blobTreeMap.remove(oFile.getHash());
+        if (headStage != null) {
+            trackedFiles.addAll(headStage.getTrackedFiles());
+            if (headStage.removedFiles.size() > 0) {
+                for (String name : headStage.removedFiles) {
+                    if (size() > 0) {
+                        Blob oFile = blobNames.get(name);
+                        blobNames.remove(oFile.getName());
+                        blobTreeMap.remove(oFile.getHash());
+                    }
                 }
             }
         }
@@ -109,6 +113,7 @@ public class StagingArea implements Serializable, Dumpable {
         blobTreeMap.putAll(parent.blobTreeMap);
         blobNames.putAll(parent.blobNames);
         removedFiles.addAll(parent.removedFiles);
+        trackedFiles.addAll(parent.trackedFiles);
     }
 
     /** Return the modified, unstaged files.
@@ -194,6 +199,10 @@ public class StagingArea implements Serializable, Dumpable {
         return headStage;
     }
 
+    /** Returns the tracked files. */
+    Set<String> getTrackedFiles() {
+        return trackedFiles;
+    }
     /** File object containing staging area reference. */
     private File stagePath;
 
@@ -207,6 +216,8 @@ public class StagingArea implements Serializable, Dumpable {
     /** Treemap containing all the filenames in the staging area,
      * used to overwrite files. */
     private TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
+
+    private Set<String> trackedFiles = new HashSet<>();
 
     /** The files which will be removed from the next commit. */
     private ArrayList<String> removedFiles = new ArrayList<String>();
