@@ -2,6 +2,7 @@ package gitlet;
 
 import java.io.File;
 import java.io.Serializable;
+import java.lang.ref.SoftReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +29,9 @@ public class Commit implements Serializable, Dumpable {
     /** The parent commit. */
     private String parentUID = null;
 
+    /** The branch this commit was made on. */
+    private String branch = "master";
+
     /** Default constructor, allowing for extension. */
     public Commit() {
 
@@ -45,7 +49,8 @@ public class Commit implements Serializable, Dumpable {
      *
      * @param stage The current staging area
      */
-    void commit(StagingArea stage) {
+    void commit(StagingArea stage, String _branch) {
+        branch = _branch;
         myStage = stage;
         myStage.getStagePath().delete();
         parentUID = Utils.readContentsAsString(myStage.getHeadPath());
@@ -89,6 +94,9 @@ public class Commit implements Serializable, Dumpable {
         return myStage;
     }
 
+    String getBranch() {
+        return branch;
+    }
     /** Formats the string into the proper format for the commit.
      * @return The formatted time string */
     public String timeToString() {

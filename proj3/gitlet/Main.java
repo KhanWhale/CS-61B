@@ -89,19 +89,13 @@ public class Main {
             branches.mkdir();
             InitialCommit initialCommit =
                     new InitialCommit("initial commit", 0);
-            initialCommit.setHash();
-            File serializedCommit =
-                    Utils.join(commits, initialCommit.getHash());
+            initialCommit.commit(head);
+            initialCommit.persist(commits);
             File masterHead = Utils.join(branches, "master");
             try {
                 workingBranch.createNewFile();
                 masterHead.createNewFile();
-                serializedCommit.createNewFile();
-                head.createNewFile();
-                FileWriter myWriter = new FileWriter(head);
-                myWriter.write(initialCommit.getHash());
-                myWriter.close();
-                myWriter = new FileWriter(workingBranch);
+                FileWriter myWriter = new FileWriter(workingBranch);
                 myWriter.write("master");
                 myWriter.close();
                 myWriter = new FileWriter(masterHead);
@@ -110,7 +104,6 @@ public class Main {
             } catch (IOException e) {
                 return;
             }
-            Utils.writeObject(serializedCommit, initialCommit);
         }
     }
 
@@ -158,9 +151,12 @@ public class Main {
         } else if (args[1].length() == 0) {
             throw new GitletException("Please enter a commit message.");
         } else {
+            String currentBranch = Utils.readContentsAsString(workingBranch);
             Commit myCommit = new Commit(args[1], System.currentTimeMillis());
-            myCommit.commit(currentStage);
+            myCommit.commit(currentStage, currentBranch);
             myCommit.persist(commits);
+            File currBranch = Utils.join(branches, currentBranch);
+            Utils.writeContents(currBranch, myCommit.getHash());
             currentStage.getStagePath().delete();
         }
     }
@@ -293,7 +289,8 @@ public class Main {
                 }
             }
         } else if (args.length == 2) {
-            return;
+            Utils.writeContents(workingBranch, args[1]);
+            Utils.writeContents(head, Utils.readContentsAsString(Utils.join(branches, args[1])));
         } else {
             throw new GitletException("Incorrect operands.");
         }
@@ -316,7 +313,8 @@ public class Main {
             File branchHead = Utils.join(branches, args[1]);
             try {
                 branchHead.createNewFile();
-
+                FileWriter setHead = new FileWriter(branchHead);
+                setHead.write(Utils.readContentsAsString(head));
             } catch (IOException io) {
                 return;
             }
