@@ -1,8 +1,5 @@
 package gitlet;
 
-import jdk.jshell.execution.Util;
-import net.sf.saxon.lib.SchemaURIResolver;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
@@ -264,9 +261,7 @@ public class Main {
                     if (!checkoutFile.exists()) {
                         checkoutFile.createNewFile();
                     }
-                    FileWriter myWriter = new FileWriter(checkoutFile);
-                    myWriter.write(newData);
-                    myWriter.close();
+                    Utils.writeContents(checkoutFile, newData);
                 } catch (IOException e) {
                     return;
                 }
@@ -280,15 +275,18 @@ public class Main {
             } else if (args[1].equals(Utils.readContentsAsString(workingBranch))) {
                 throw new GitletException("No need to checkout the current branch.");
             }
-            Commit repoHead = Utils.readObject(Utils.join(commits, Utils.readContentsAsString(head)), Commit.class);
-            Commit branchHead = Utils.readObject(Utils.join(branches, args[1]), Commit.class);
-            for (String fName : branchHead.getStage().getBlobNames().keySet()) {
-                File toWrite = Utils.join(CWD, fName);
+            Commit repoHead = Utils.readObject(Utils.join(
+                    commits, Utils.readContentsAsString(head)), Commit.class);
+            Commit branchHead = Utils.readObject(
+                    Utils.join(branches, args[1]), Commit.class);
+            for (String name : branchHead.getStage().getBlobNames().keySet()) {
+                File toWrite = Utils.join(CWD, name);
                 if (toWrite.exists()) {
-                    if (!repoHead.getStage().getBlobNames().keySet().contains(fName)) {
-                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                    if (!repoHead.getStage().getBlobNames().keySet().contains(name)) {
+                        throw new GitletException("There is an untracked file in the way;"
+                                + " delete it, or add and commit it first.");
                     }
-                    Utils.writeContents(toWrite, branchHead.getStage().getBlobNames().get(fName).getBlobString());
+                    Utils.writeContents(toWrite, branchHead.getStage().getBlobNames().get(name).getBlobString());
                 }
             }
             for (String fName : repoHead.getStage().getBlobNames().keySet()) {

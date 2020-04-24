@@ -1,14 +1,10 @@
 package gitlet;
 
-import jdk.jshell.execution.Util;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.ref.SoftReference;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * The Commit class stores instances of commits.
@@ -53,9 +49,10 @@ public class Commit implements Serializable, Dumpable {
     /** Performs the commit operation.
      *
      * @param stage The current staging area
+     * @param branch1 The branch to which this commit is being made.
      */
-    void commit(StagingArea stage, String _branch) {
-        branch = _branch;
+    void commit(StagingArea stage, String branch1) {
+        branch = branch1;
         myStage = stage;
         commitDir = Utils.join(myStage.getGitletDir(), "commits");
         myStage.getStagePath().delete();
@@ -100,6 +97,7 @@ public class Commit implements Serializable, Dumpable {
         return myStage;
     }
 
+    /** Returns the branch on which this commit was made. */
     String getBranch() {
         return branch;
     }
@@ -121,9 +119,9 @@ public class Commit implements Serializable, Dumpable {
     }
 
     /** Writes the commit to a file in the commit directory.
-     * @param _commitDir The directory to which to write the commit. */
-    void persist(File _commitDir) {
-        Utils.writeObject(Utils.join(_commitDir, hash), this);
+     * @param commitDir1 The directory to which to write the commit. */
+    void persist(File commitDir1) {
+        Utils.writeObject(Utils.join(commitDir1, hash), this);
     }
 
     /** Prints out the log of this commit.
@@ -134,7 +132,8 @@ public class Commit implements Serializable, Dumpable {
         System.out.println("Date: " + timeToString());
         System.out.println(commitMessage);
         System.out.println();
-        Commit parentCommit = Utils.readObject(Utils.join(commitDir, parentUID), Commit.class);
+        Commit parentCommit = Utils.readObject(
+                Utils.join(commitDir, parentUID), Commit.class);
         if (!parentCommit.getBranch().equals(branch)) {
             return null;
         } else {

@@ -45,15 +45,13 @@ public class Blob implements Serializable {
     }
 
     /** SHA-1 hashcode of the blob object.
-     * @return the String contents of the file*/
+     * @return the String contents of the file. */
     String getBlobString() {
         return blobString;
     }
 
-    File getBlobFile() {
-        return blobFile;
-    }
-    /** The file being turned into a blob */
+
+    /** The file being turned into a blob. */
     private File blobFile;
     /** The hash of this blob. */
     private String hash;
