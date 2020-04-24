@@ -133,12 +133,6 @@ public class Commit implements Serializable, Dumpable {
         System.out.println("Date: " + timeToString());
         System.out.println(commitMessage);
         System.out.println();
-        Commit parentCommit = Utils.readObject(
-                Utils.join(commitDir, parentUID), Commit.class);
-        if (!parentCommit.getBranch().equals(branch)) {
-            return null;
-        } else {
-            return parentUID;
-        }
+        return parentUID;
     }
 }
