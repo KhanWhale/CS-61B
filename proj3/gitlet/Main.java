@@ -95,12 +95,8 @@ public class Main {
             try {
                 workingBranch.createNewFile();
                 masterHead.createNewFile();
-                FileWriter myWriter = new FileWriter(workingBranch);
-                myWriter.write("master");
-                myWriter.close();
-                myWriter = new FileWriter(masterHead);
-                myWriter.write(initialCommit.getHash());
-                myWriter.close();
+                Utils.writeContents(workingBranch, "master");
+                Utils.writeContents(masterHead, initialCommit.getHash());
             } catch (IOException e) {
                 return;
             }
@@ -243,37 +239,24 @@ public class Main {
      *
      * @param args Specifies what to checkout
      */
-    public static void checkout(String[] args) {
+    public static void checkout(String[] args) throws GitletException {
         if (!gitletDir.exists()) {
             throw new GitletException(
                     "Not in an initialized Gitlet directory.");
-        } else if (args[1].equals("--")) {
-            String headCommitID = Utils.readContentsAsString(head);
-            Commit headCommit = Utils.readObject(
-                    Utils.join(commits, headCommitID), Commit.class);
-            File checkoutFile = Utils.join(CWD, args[2]);
-            if (headCommit.getStage().getBlobNames().containsKey(
-                    checkoutFile.getName())) {
-                Blob checkoutBlob = headCommit.getStage().getBlobNames().get(
-                        checkoutFile.getName());
-                String newData = checkoutBlob.getBlobString();
-                try {
-                    if (!checkoutFile.exists()) {
-                        checkoutFile.createNewFile();
-                    }
-                    Utils.writeContents(checkoutFile, newData);
-                } catch (IOException e) {
-                    return;
-                }
-            } else {
-                throw new GitletException(
-                        "File does not exist in that commit.");
+        }
+        if (args[1].equals("--")) {
+            try {
+                checkoutHeadFile(args[2]);
+            } catch (IOException dummy) {
+                return;
             }
         }  else if (args.length == 2) {
             if (!Utils.join(branches, args[1]).exists()) {
                 throw new GitletException("No such branch exists.");
-            } else if (args[1].equals(Utils.readContentsAsString(workingBranch))) {
-                throw new GitletException("No need to checkout the current branch.");
+            } else if (args[1].equals(
+                    Utils.readContentsAsString(workingBranch))) {
+                throw new GitletException(
+                        "No need to checkout the current branch.");
             }
             Commit repoHead = Utils.readObject(Utils.join(
                     commits, Utils.readContentsAsString(head)), Commit.class);
@@ -282,46 +265,33 @@ public class Main {
             for (String name : branchHead.getStage().getBlobNames().keySet()) {
                 File toWrite = Utils.join(CWD, name);
                 if (toWrite.exists()) {
-                    if (!repoHead.getStage().getBlobNames().keySet().contains(name)) {
-                        throw new GitletException("There is an untracked file in the way;"
-                                + " delete it, or add and commit it first.");
+                    if (!repoHead.getStage().getBlobNames().keySet().contains(
+                            name)) {
+                        throw new GitletException("There is an untracked file"
+                                + " in the way; delete it,"
+                                + " or add and commit it first.");
                     }
-                    Utils.writeContents(toWrite, branchHead.getStage().getBlobNames().get(name).getBlobString());
+                    Utils.writeContents(
+                            toWrite, branchHead.getStage().getBlobNames().get(
+                                    name).getBlobString());
                 }
             }
             for (String fName : repoHead.getStage().getBlobNames().keySet()) {
                 File toDelete = Utils.join(CWD, fName);
-                if (!branchHead.getStage().getBlobNames().keySet().contains(fName)) {
+                if (!branchHead.getStage().getBlobNames().keySet().contains(
+                        fName)) {
                     Utils.restrictedDelete(toDelete);
                 }
             }
             new StagingArea(gitletDir).getStagePath().delete();
             Utils.writeContents(workingBranch, args[1]);
-            Utils.writeContents(head, Utils.readContentsAsString(Utils.join(branches, args[1])));
+            Utils.writeContents(head, Utils.readContentsAsString(
+                    Utils.join(branches, args[1])));
         } else if (args[2].equals("--")) {
-            File readCommit = Utils.join(commits, args[1]);
-            if (!readCommit.exists()) {
-                throw new GitletException("No commit with that id exists.");
-            }
-            Commit chCommit = Utils.readObject(readCommit, Commit.class);
-            File checkoutFile = Utils.join(CWD, args[3]);
-            if (chCommit.getStage().getBlobNames().containsKey(
-                    checkoutFile.getName())) {
-                Blob checkoutBlob = chCommit.getStage().getBlobNames().get(
-                        checkoutFile.getName());
-                String newData = checkoutBlob.getBlobString();
-                try {
-                    if (!checkoutFile.exists()) {
-                        checkoutFile.createNewFile();
-                    }
-                    FileWriter myWriter = new FileWriter(checkoutFile);
-                    myWriter.write(newData);
-                    myWriter.close();
-                } catch (IOException e) {
-                    return;
-                }
-            } else {
-                throw new GitletException("File does not exist in that commit.");
+            try {
+                checkoutCommitFile(args[1], args[3]);
+            } catch (IOException dummy) {
+                return;
             }
         } else {
             throw new GitletException("Incorrect operands.");
@@ -350,6 +320,59 @@ public class Main {
             } catch (IOException io) {
                 return;
             }
+        }
+    }
+
+    /** Checks out the given file from the HEAD commit.
+     *
+     * @param fileName The file to checkout
+     * @throws IOException
+     */
+    private static void checkoutHeadFile(String fileName) throws IOException {
+        String headCommitID = Utils.readContentsAsString(head);
+        Commit headCommit = Utils.readObject(
+                Utils.join(commits, headCommitID), Commit.class);
+        if (headCommit.getStage().getBlobNames().containsKey(
+                Utils.join(CWD, fileName).getName())) {
+            Blob checkoutBlob = headCommit.getStage().getBlobNames().get(
+                    Utils.join(CWD, fileName).getName());
+            String newData = checkoutBlob.getBlobString();
+            if (!Utils.join(CWD, fileName).exists()) {
+                Utils.join(CWD, fileName).createNewFile();
+            }
+            Utils.writeContents(Utils.join(CWD, fileName), newData);
+        } else {
+            throw new GitletException(
+                    "File does not exist in that commit.");
+        }
+    }
+
+    /** Checks out the specified file from the specified commit.
+     *
+     * @param commitID The commit from which to checkout
+     * @param fileName The file to checkout
+     * @throws IOException Not used
+     */
+    private static void checkoutCommitFile(String commitID, String fileName)
+            throws IOException {
+        File readCommit = Utils.join(commits, commitID);
+        if (!readCommit.exists()) {
+            throw new GitletException("No commit with that id exists.");
+        }
+        Commit chCommit = Utils.readObject(readCommit, Commit.class);
+        File checkoutFile = Utils.join(CWD, fileName);
+        if (chCommit.getStage().getBlobNames().containsKey(
+                checkoutFile.getName())) {
+            Blob checkoutBlob = chCommit.getStage().getBlobNames().get(
+                    checkoutFile.getName());
+            String newData = checkoutBlob.getBlobString();
+            if (!checkoutFile.exists()) {
+                checkoutFile.createNewFile();
+            }
+            Utils.writeContents(checkoutFile, newData);
+        } else {
+            throw new GitletException(
+                    "File does not exist in that commit.");
         }
     }
 }
