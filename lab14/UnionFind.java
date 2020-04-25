@@ -1,7 +1,7 @@
 
 /** Disjoint sets of contiguous integers that allows (a) finding whether
- *  two integers are in the same set and (b) unioning two sets together.  
- *  At any given time, for a structure partitioning the integers 1 to N, 
+ *  two integers are in the same set and (b) unioning two sets together.
+ *  At any given time, for a structure partitioning the integers 1 to N,
  *  into sets, each set is represented by a unique member of that
  *  set, called its representative.
  *  @author Aniruddh Khanwale
@@ -16,7 +16,6 @@ public class UnionFind {
         for (int i = 1; i <= N; i += 1) {
             array_struct[i] = i;
         }
-        computeSizes();
     }
 
     /** Return the representative of the set currently containing V.
@@ -31,13 +30,6 @@ public class UnionFind {
         }
     }
 
-    void computeSizes() {
-        sizes = new int[array_struct.length];
-        for (int i = 1; i < array_struct.length; i += 1) {
-            int root = find(i);
-            sizes[root] += 1;
-        }
-    }
     /** Return true iff U and V are in the same set. */
     public boolean samePartition(int u, int v) {
         return find(u) == find(v);
@@ -47,7 +39,7 @@ public class UnionFind {
     public int union(int u, int v) {
         int uRoot = find(u);
         int vRoot = find(v);
-        if (samePartition(u, v)) {
+        if (uRoot == vRoot) {
             return uRoot;
         } else {
             int uSize = sizes[uRoot];
@@ -65,7 +57,6 @@ public class UnionFind {
         }
     }
 
-    // FIXME
     int[] array_struct;
 
     int[] sizes;

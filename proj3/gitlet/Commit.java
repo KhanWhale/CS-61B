@@ -54,7 +54,8 @@ public class Commit implements Serializable, Dumpable {
     void commit(StagingArea stage, String branch1) {
         branch = branch1;
         myStage = stage;
-        File branchPath = Utils.join(myStage.getGitletDir(), "branches", branch1);
+        File branchPath = Utils.join(myStage.getGitletDir(),
+                "branches", branch1);
         commitDir = Utils.join(myStage.getGitletDir(), "commits");
         myStage.getStagePath().delete();
         parentUID = Utils.readContentsAsString(branchPath);

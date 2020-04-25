@@ -1,6 +1,5 @@
 package gitlet;
 
-import jdk.jshell.execution.Util;
 
 import java.io.IOException;
 import java.io.File;
@@ -201,7 +200,8 @@ public class Main {
         } else if (args.length != 1) {
             throw new GitletException("Incorrect operands.");
         } else {
-            File branchPath = Utils.join(branches, Utils.readContentsAsString(workingBranch));
+            File branchPath = Utils.join(branches, Utils.readContentsAsString(
+                    workingBranch));
             String currCommitID = Utils.readContentsAsString(branchPath);
             while (currCommitID != null) {
                 Commit prevCommit = Utils.readObject(
@@ -375,14 +375,6 @@ public class Main {
             throw new GitletException("Incorrect operands.");
         } else {
             String commitID = args[1];
-            if (commitID.length() < 40) {
-                for (File possible : commits.listFiles()) {
-                    if (possible.getName().contains(commitID)) {
-                        commitID = possible.getName();
-                        break;
-                    }
-                }
-            }
             File readCommit = Utils.join(commits, commitID);
             if (!readCommit.exists()) {
                 throw new GitletException("No commit with that id exists.");
@@ -396,10 +388,12 @@ public class Main {
                         getBlobNames().keySet()) {
                     File toWrite = Utils.join(CWD, name);
                     if (toWrite.exists()) {
-                        if (repoHead.getStage() == null ||
-                                !repoHead.getStage().getTrackedFiles().
+                        if (repoHead.getStage() == null
+                                || !repoHead.getStage().getTrackedFiles().
                                         contains(name)) {
-                            throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                            throw new GitletException("There is an untracked"
+                                     + " file in the way; delete it, or add and"
+                                    + " commit it first.");
                         }
                     } else {
                         try {
@@ -414,18 +408,19 @@ public class Main {
                 }
             }
             if (repoHead.getStage() != null) {
-                for (String fName : repoHead.getStage().getBlobNames().keySet()) {
-                    File toDelete = Utils.join(CWD, fName);
+                for (String fN : repoHead.getStage().getBlobNames().keySet()) {
+                    File toDelete = Utils.join(CWD, fN);
                     if (setHead.getStage() == null) {
                         Utils.restrictedDelete(toDelete);
                     } else if (!setHead.getStage().getBlobNames().
-                            keySet().contains(fName)) {
+                            keySet().contains(fN)) {
                         Utils.restrictedDelete(toDelete);
                     }
                 }
             }
             new StagingArea(gitletDir).getStagePath().delete();
-            Utils.writeContents(Utils.join(branches, Utils.readContentsAsString(workingBranch)), commitID);
+            Utils.writeContents(Utils.join(branches, Utils.readContentsAsString(
+                    workingBranch)), commitID);
             Utils.writeContents(head, commitID);
         }
 
@@ -462,7 +457,7 @@ public class Main {
      */
     private static void checkoutCommitFile(String commitID, String fileName)
             throws IOException {
-        if (commitID.length() < 40) {
+        if (commitID.length() < idLength) {
             for (File possible : commits.listFiles()) {
                 if (possible.getName().contains(commitID)) {
                     commitID = possible.getName();
@@ -514,10 +509,12 @@ public class Main {
                     getBlobNames().keySet()) {
                 File toWrite = Utils.join(CWD, name);
                 if (toWrite.exists()) {
-                    if (repoHead.getStage() == null ||
-                            !repoHead.getStage().getTrackedFiles().
+                    if (repoHead.getStage() == null
+                            || !repoHead.getStage().getTrackedFiles().
                             contains(name)) {
-                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                        throw new GitletException("There is an untracked file"
+                                + " in the way; delete it, "
+                                + "or add and commit it first.");
                     }
                 } else {
                     try {
@@ -547,4 +544,7 @@ public class Main {
         Utils.writeContents(head, Utils.readContentsAsString(
                 Utils.join(branches, branch)));
     }
+
+    /** Commit ID Length. */
+    static final int idLength = 40;
 }

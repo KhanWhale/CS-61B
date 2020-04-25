@@ -3,7 +3,11 @@ package gitlet;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.*;
+import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;
 
 /** Represents the Staging Area of the gitlet repository.
  * @author Aniruddh Khanwale */
@@ -217,6 +221,7 @@ public class StagingArea implements Serializable, Dumpable {
      * used to overwrite files. */
     private TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
 
+    /** The files currently tracked. */
     private Set<String> trackedFiles = new HashSet<>();
 
     /** The files which will be removed from the next commit. */
