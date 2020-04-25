@@ -74,6 +74,9 @@ public class Main {
                 case "rm-branch":
                     rmBranch(args);
                     break;
+                case "merge":
+                    merge(args);
+                    break;
                 default:
                     throw new GitletException(
                             "No command with that name exists.");
@@ -425,6 +428,28 @@ public class Main {
         }
 
     }
+
+    public static void merge(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException(
+                    "Not in an initialized Gitlet directory.");
+        } else if (args.length != 2) {
+            throw new GitletException("Incorrect operands.");
+        } else if (!Utils.join(branches,
+                Utils.readContentsAsString(workingBranch)).exists()) {
+            throw new
+                    GitletException("A branch with that name does not exist.");
+        } else if (args[1].equals(Utils.readContentsAsString(workingBranch))) {
+            throw new GitletException("Cannot merge a branch with itself.");
+        } else {
+            StagingArea currStage = new StagingArea(gitletDir);
+            if (currStage.size() != 0) {
+                throw new GitletException("You have uncommitted changes.");
+            }
+        }
+    }
+
+
     /** Checks out the given file from the HEAD commit.
      *
      * @param fileName The file to checkout.

@@ -164,11 +164,8 @@ public class StagingArea implements Serializable, Dumpable {
     }
     /** Returns the size of the staging area. */
     int size() {
-        if (blobTreeMap.size() != blobNames.size()) {
-            throw new GitletException("Incorrect blobTree/Name implementation");
-        } else {
-            return blobNames.size();
-        }
+        return Math.max(Math.max(blobNames.size(), blobTreeMap.size()),
+                removedFiles.size());
     }
 
     /** Return the gitlet directory for this staging area. */
