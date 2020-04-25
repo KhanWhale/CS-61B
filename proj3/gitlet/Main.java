@@ -505,7 +505,7 @@ public class Main {
                     currStage = new StagingArea(gitletDir);
                 }
             }
-            MergeCommit myMerge = new MergeCommit("Merged " + args[1] + "into " + Utils.readContentsAsString(workingBranch), System.currentTimeMillis(), givenBranchHead);
+            MergeCommit myMerge = new MergeCommit("Merged " + args[1] + " into " + Utils.readContentsAsString(workingBranch) + ".", System.currentTimeMillis(), givenBranchHead);
             String currentBranch = Utils.readContentsAsString(workingBranch);
             myMerge.commit(currStage, currentBranch);
             myMerge.persist(commits);

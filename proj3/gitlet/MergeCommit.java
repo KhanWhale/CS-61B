@@ -17,7 +17,7 @@ public class MergeCommit extends Commit {
     String log() {
         System.out.println("===");
         System.out.println("commit " + getHash());
-        System.out.println("Merge: " + getParentUID().substring(0, 8) + " " + mergeParentUID.substring(0, 8));
+        System.out.println("Merge: " + getParentUID().substring(0, 7) + " " + mergeParentUID.substring(0, 7));
         System.out.println("Date: " + timeToString());
         System.out.println(getCommitMessage());
         System.out.println();
