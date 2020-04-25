@@ -3,6 +3,11 @@ package gitlet;
 
 import java.io.IOException;
 import java.io.File;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 /** Driver class for Gitlet, the tiny stupid version-control system.
  *  @author Aniruddh Khanwale
@@ -429,22 +434,84 @@ public class Main {
 
     }
 
-    public static void merge(String[] args) {
+    /** Merges the given branch into the working branch.
+     *
+     * @param args The given branch to merge into the current branch.
+     */
+    public static void merge(String[] args) throws GitletException{
         if (!gitletDir.exists()) {
             throw new GitletException(
                     "Not in an initialized Gitlet directory.");
         } else if (args.length != 2) {
             throw new GitletException("Incorrect operands.");
         } else if (!Utils.join(branches,
-                Utils.readContentsAsString(workingBranch)).exists()) {
+                args[1]).exists()) {
             throw new
                     GitletException("A branch with that name does not exist.");
         } else if (args[1].equals(Utils.readContentsAsString(workingBranch))) {
             throw new GitletException("Cannot merge a branch with itself.");
         } else {
+            boolean mergeConflict = false;
             StagingArea currStage = new StagingArea(gitletDir);
             if (currStage.size() != 0) {
                 throw new GitletException("You have uncommitted changes.");
+            }
+            String currentBranchHead = Utils.readContentsAsString(Utils.join(branches, Utils.readContentsAsString(workingBranch)));
+            String givenBranchHead = Utils.readContentsAsString(Utils.join(branches, args[1]));
+            String splitPointHash = findSplitPoint(givenBranchHead, currentBranchHead);
+            if (splitPointHash.equals("checkout")) {
+                checkout(new String[]{"checkout", args[1]});
+                System.out.println("Current branch fast-forwarded.");
+                return;
+            }
+            StagingArea branchStage = Utils.readObject(
+                    Utils.join(commits, givenBranchHead),
+                    Commit.class).getStage();
+            StagingArea splitStage = Utils.readObject(
+                    Utils.join(commits, splitPointHash),
+                    Commit.class).getStage();
+            HashMap<String, Blob> modifiedInBranch = getModifiedFiles(splitStage, branchStage);
+            HashMap<String, Blob> modifiedInHead = getModifiedFiles(splitStage, currStage);
+//            for (String fName : modifiedInBranch.keySet()) {
+//                if (!modifiedInHead.containsKey(fName)) {
+//                    if (!currStage.getTrackedFiles().contains(fName)) {
+//                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+//                    }
+//                }
+//            }
+//            for (String fName : branchStage.getBlobNames().keySet()) {
+//                if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
+//                    if (!currStage.getTrackedFiles().contains(fName)) {
+//                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+//                    }
+//                }
+//            }
+            for (String fName : modifiedInBranch.keySet()) {
+                if (!modifiedInHead.containsKey(fName)) {
+                    checkout(new String[]{"checkout", givenBranchHead, "--", fName});
+                    add(new String[]{"add", fName});
+                }
+            }
+            for (String fName : branchStage.getBlobNames().keySet()) {
+                if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
+                    checkout(new String[]{"checkout", givenBranchHead, "--", fName});
+                    add(new String[]{"add", fName});
+                }
+            }
+            for (String fName : splitStage.getBlobNames().keySet()) {
+                if (!modifiedInHead.containsKey(fName) && !branchStage.getBlobNames().containsKey(fName)) {
+                    rm(new String[]{"rm", fName});
+                }
+            }
+            MergeCommit myMerge = new MergeCommit("Merged " + args[1] + "into " + Utils.readContentsAsString(workingBranch), System.currentTimeMillis(), givenBranchHead);
+            String currentBranch = Utils.readContentsAsString(workingBranch);
+            myMerge.commit(currStage, currentBranch);
+            myMerge.persist(commits);
+            File currBranch = Utils.join(branches, currentBranch);
+            Utils.writeContents(currBranch, myMerge.getHash());
+            currStage.getStagePath().delete();
+            if (mergeConflict) {
+                System.out.println("Encountered a merge conflict.");
             }
         }
     }
@@ -482,7 +549,7 @@ public class Main {
      */
     private static void checkoutCommitFile(String commitID, String fileName)
             throws IOException {
-        if (commitID.length() < idLength) {
+        if (commitID.length() < ID_LENGTH) {
             for (File possible : commits.listFiles()) {
                 if (possible.getName().contains(commitID)) {
                     commitID = possible.getName();
@@ -570,6 +637,73 @@ public class Main {
                 Utils.join(branches, branch)));
     }
 
+    /** Finds the split point of the two commits. Used in the merge command
+     *
+     * @param givenBranch The head hash of the given branch.
+     * @param currentBranch The head hash of the current branch.
+     * @return The commit ID of the split Point
+     */
+    private static String findSplitPoint(String givenBranch, String currentBranch) {
+        HashMap<String, Commit> givenBranchCommits = new HashMap<>();
+        HashMap<String, Commit> currentBranchCommits = new HashMap<>();
+        Commit givenBranchHead = Utils.readObject(Utils.join(commits, givenBranch),
+                Commit.class);
+        Commit currentBranchHead = Utils.readObject(Utils.join(commits, currentBranch),
+                Commit.class);
+        givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
+        currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
+        while (!(givenBranchHead instanceof InitialCommit)) {
+            givenBranchHead = Utils.readObject(Utils.join(commits, givenBranchHead.getParentUID()), Commit.class);
+            givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
+        }
+        while (!(currentBranchHead instanceof InitialCommit)) {
+            currentBranchHead = Utils.readObject(Utils.join(commits, currentBranchHead.getParentUID()), Commit.class);
+            currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
+        }
+        Set<String> commonAncestorKeys = new HashSet<String>(givenBranchCommits.keySet());
+        commonAncestorKeys.retainAll(currentBranchCommits.keySet());
+        Set<String> commonAncestorCopy = new HashSet<>(commonAncestorKeys);
+        for (String ancestorHash : commonAncestorCopy) {
+            Commit ancestorCommit = currentBranchCommits.get(ancestorHash);
+            if (commonAncestorKeys.contains(ancestorCommit.getParentUID())) {
+                Commit toRemove = currentBranchCommits.get(ancestorCommit.getParentUID());
+                while (commonAncestorKeys.contains(toRemove.getParentUID())) {
+                    commonAncestorKeys.remove(toRemove.getHash());
+                    toRemove = currentBranchCommits.get(toRemove.getParentUID());
+                }
+                commonAncestorKeys.remove(toRemove.getHash());
+            }
+        }
+        if (commonAncestorKeys.size() > 1) {
+            Commit iterate = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
+            while (!commonAncestorKeys.contains(iterate.getHash()) || (iterate instanceof InitialCommit)) {
+                iterate = Utils.readObject(Utils.join(commits, iterate.getParentUID()), Commit.class);
+            }
+        }
+        if (commonAncestorKeys.contains(givenBranch)) {
+            System.out.println("Given branch is an ancestor of the current branch.");
+            System.exit(0);
+        } else if (commonAncestorKeys.contains(currentBranch)) {
+            return "checkout";
+        } else {
+            List<String> temp = new ArrayList<String>();
+            temp.addAll(commonAncestorKeys);
+            return temp.get(0);
+        }
+        return null;
+    }
+
+    private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
+        HashMap<String, Blob> modifiedFiles = new HashMap<>();
+        for (String bName : branchStage.getBlobNames().keySet()) {
+            if (splitStage.getBlobNames().containsKey(bName)) {
+                if(!splitStage.getBlobNames().get(bName).equals(branchStage.getBlobNames().get(bName))) {
+                    modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
+                }
+            }
+        }
+        return modifiedFiles;
+    }
     /** Commit ID Length. */
-    static final int idLength = 40;
+    static final int ID_LENGTH = 40;
 }

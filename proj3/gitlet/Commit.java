@@ -73,6 +73,11 @@ public class Commit implements Serializable, Dumpable {
         return commitMessage;
     }
 
+    /** Return the parent UID. */
+    String getParentUID() {
+        return parentUID;
+    }
+
     /** Set the commit time of this commit.
      * @param time the time to set this commit to */
     void setCommitTime(long time) {
@@ -136,4 +141,6 @@ public class Commit implements Serializable, Dumpable {
         System.out.println();
         return parentUID;
     }
+
+
 }
