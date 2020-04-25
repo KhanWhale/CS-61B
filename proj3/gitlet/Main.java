@@ -471,20 +471,26 @@ public class Main {
             StagingArea splitStage = splitPointCommit.getStage();
             HashMap<String, Blob> modifiedInBranch = getModifiedFiles(splitStage, branchStage);
             HashMap<String, Blob> modifiedInHead = getModifiedFiles(splitStage, currStage);
-//            for (String fName : modifiedInBranch.keySet()) {
-//                if (!modifiedInHead.containsKey(fName)) {
-//                    if (!currStage.getTrackedFiles().contains(fName)) {
-//                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-//                    }
-//                }
-//            }
-//            for (String fName : branchStage.getBlobNames().keySet()) {
-//                if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
-//                    if (!currStage.getTrackedFiles().contains(fName)) {
-//                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-//                    }
-//                }
-//            }
+            HashMap<String, File> filesInDir = new HashMap<>();
+            for (File f : CWD.listFiles()) {
+                filesInDir.put(f.getName(), f);
+            }
+
+            for (String fName : modifiedInBranch.keySet()) {
+                if (!modifiedInHead.containsKey(fName)) {
+                    if (!currStage.getTrackedFiles().contains(fName) && filesInDir.containsKey(fName)) {
+                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                    }
+                }
+            }
+
+            for (String fName : branchStage.getBlobNames().keySet()) {
+                if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
+                    if (!currStage.getTrackedFiles().contains(fName) && filesInDir.containsKey(fName)) {
+                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
+                    }
+                }
+            }
             for (String fName : modifiedInBranch.keySet()) {
                 if (!modifiedInHead.containsKey(fName)) {
                     checkout(new String[]{"checkout", givenBranchHead, "--", fName});
