@@ -464,12 +464,11 @@ public class Main {
                 System.out.println("Current branch fast-forwarded.");
                 return;
             }
+            Commit splitPointCommit = Utils.readObject(Utils.join(commits, splitPointHash), Commit.class);
             StagingArea branchStage = Utils.readObject(
                     Utils.join(commits, givenBranchHead),
                     Commit.class).getStage();
-            StagingArea splitStage = Utils.readObject(
-                    Utils.join(commits, splitPointHash),
-                    Commit.class).getStage();
+            StagingArea splitStage = splitPointCommit.getStage();
             HashMap<String, Blob> modifiedInBranch = getModifiedFiles(splitStage, branchStage);
             HashMap<String, Blob> modifiedInHead = getModifiedFiles(splitStage, currStage);
 //            for (String fName : modifiedInBranch.keySet()) {
@@ -490,17 +489,20 @@ public class Main {
                 if (!modifiedInHead.containsKey(fName)) {
                     checkout(new String[]{"checkout", givenBranchHead, "--", fName});
                     add(new String[]{"add", fName});
+                    currStage = new StagingArea(gitletDir);
                 }
             }
             for (String fName : branchStage.getBlobNames().keySet()) {
                 if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
                     checkout(new String[]{"checkout", givenBranchHead, "--", fName});
                     add(new String[]{"add", fName});
+                    currStage = new StagingArea(gitletDir);
                 }
             }
             for (String fName : splitStage.getBlobNames().keySet()) {
                 if (!modifiedInHead.containsKey(fName) && !branchStage.getBlobNames().containsKey(fName)) {
                     rm(new String[]{"rm", fName});
+                    currStage = new StagingArea(gitletDir);
                 }
             }
             MergeCommit myMerge = new MergeCommit("Merged " + args[1] + "into " + Utils.readContentsAsString(workingBranch), System.currentTimeMillis(), givenBranchHead);
@@ -526,7 +528,7 @@ public class Main {
         String headCommitID = Utils.readContentsAsString(head);
         Commit headCommit = Utils.readObject(
                 Utils.join(commits, headCommitID), Commit.class);
-        if (headCommit.getStage().getBlobNames().containsKey(
+        if (headCommit.getStage() != null && headCommit.getStage().getBlobNames().containsKey(
                 Utils.join(CWD, fileName).getName())) {
             Blob checkoutBlob = headCommit.getStage().getBlobNames().get(
                     Utils.join(CWD, fileName).getName());

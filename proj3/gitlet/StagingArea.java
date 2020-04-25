@@ -52,7 +52,7 @@ public class StagingArea implements Serializable, Dumpable {
             reasonToRemove = true;
         }
         if (headStage != null
-                && headStage.blobNames.containsKey(rm.getName())) {
+                && headStage.trackedFiles.contains(rm.getName())) {
             removedFiles.add(rm.getName());
             Utils.restrictedDelete(rm);
             reasonToRemove = true;
