@@ -23,6 +23,10 @@ public class MergeCommit extends Commit {
         System.out.println();
         return getParentUID();
     }
+
+    public String getSecondaryParentUID() {
+        return mergeParentUID;
+    }
     /** The merged-in parent */
     private String mergeParentUID;
 }

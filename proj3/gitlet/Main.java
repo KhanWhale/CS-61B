@@ -676,14 +676,16 @@ public class Main {
                 Commit.class);
         givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
         currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
-        while (!(givenBranchHead instanceof InitialCommit)) {
-            givenBranchHead = Utils.readObject(Utils.join(commits, givenBranchHead.getParentUID()), Commit.class);
-            givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
-        }
-        while (!(currentBranchHead instanceof InitialCommit)) {
-            currentBranchHead = Utils.readObject(Utils.join(commits, currentBranchHead.getParentUID()), Commit.class);
-            currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
-        }
+        addAncestors(givenBranchHead, givenBranchCommits);
+        addAncestors(currentBranchHead, currentBranchCommits);
+//        while (!(givenBranchHead instanceof InitialCommit)) {
+//            givenBranchHead = Utils.readObject(Utils.join(commits, givenBranchHead.getParentUID()), Commit.class);
+//            givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
+//        }
+//        while (!(currentBranchHead instanceof InitialCommit)) {
+//            currentBranchHead = Utils.readObject(Utils.join(commits, currentBranchHead.getParentUID()), Commit.class);
+//            currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
+//        }
         Set<String> commonAncestorKeys = new HashSet<String>(givenBranchCommits.keySet());
         commonAncestorKeys.retainAll(currentBranchCommits.keySet());
         Set<String> commonAncestorCopy = new HashSet<>(commonAncestorKeys);
@@ -715,6 +717,15 @@ public class Main {
             return temp.get(0);
         }
         return null;
+    }
+    private static void addAncestors(Commit head, HashMap<String, Commit> branchAncestors) {
+        if (head instanceof InitialCommit) {
+            return;
+        } else {
+            branchAncestors.put(head.getHash(), head);
+            addAncestors(Utils.readObject(Utils.join(commits, head.getParentUID()), Commit.class), branchAncestors);
+            return;
+        }
     }
 
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
