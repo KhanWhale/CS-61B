@@ -709,10 +709,14 @@ public class Main {
                 if(!splitStage.getBlobNames().get(bName).equals(branchStage.getBlobNames().get(bName))) {
                     modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
                 }
+            } else {
+                modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
             }
         }
         return modifiedFiles;
     }
+
+
     /** Commit ID Length. */
     static final int ID_LENGTH = 40;
 }
