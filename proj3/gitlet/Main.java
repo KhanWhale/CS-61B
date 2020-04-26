@@ -701,10 +701,34 @@ public class Main {
             }
         }
         if (commonAncestorKeys.size() > 1) {
-            Commit iterate = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
-            while (!commonAncestorKeys.contains(iterate.getHash()) || (iterate instanceof InitialCommit)) {
-                iterate = Utils.readObject(Utils.join(commits, iterate.getParentUID()), Commit.class);
+            int minDist = Integer.MAX_VALUE;
+            String splitPoint = "";
+            for (String key : commonAncestorKeys) {
+                Commit checkCommit = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
+                int dist = 0;
+                while (!checkCommit.getHash().equals(key)) {
+                    if ((checkCommit instanceof InitialCommit)) {
+                        dist = Integer.MAX_VALUE;
+                        break;
+                    } else {
+                        checkCommit = Utils.readObject(Utils.join(commits, checkCommit.getParentUID()), Commit.class);
+                        dist += 1;
+                    }
+                }
+                if (checkCommit instanceof InitialCommit) {
+                    if (minDist == Integer.MAX_VALUE) {
+                        splitPoint = key;
+                    }
+                } else if (Math.min(dist, minDist) == dist) {
+                    minDist = dist;
+                    splitPoint = key;
+                }
             }
+            commonAncestorKeys = new HashSet<>();
+            commonAncestorKeys.add(splitPoint);
+//            Commit iterate = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
+//            while (!commonAncestorKeys.contains(iterate.getHash()) || (iterate instanceof InitialCommit)) {
+//                iterate = Utils.readObject(Utils.join(commits, iterate.getParentUID()), Commit.class);
         }
         if (commonAncestorKeys.contains(givenBranch)) {
             System.out.println("Given branch is an ancestor of the current branch.");
