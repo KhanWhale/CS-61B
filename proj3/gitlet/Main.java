@@ -504,6 +504,8 @@ public class Main {
                     conflict += "=======\n";
                     conflict += modifiedInBranch.get(fName).getBlobString();
                     conflict += ">>>>>>>";
+                } else if (modifiedInHead.get(fName) == null && modifiedInBranch.get(fName) == null) {
+                    conflict = "<<<<<<< HEAD\n";
                 } else if (modifiedInHead.get(fName) == null) {
                     conflict += "=======\n";
                     conflict += modifiedInBranch.get(fName).getBlobString();

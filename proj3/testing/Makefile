@@ -19,8 +19,7 @@ TESTER = CLASSPATH="$$(pwd)/..:$(CLASSPATH):;$$(pwd)/..;$(CLASSPATH)" $(PYTHON) 
 
 TESTER_FLAGS =
 
-TESTS = mergeTests/*.in
-# TESTS = samples/*.in workingTests/*.in
+TESTS = samples/*.in workingTests/*.in mergeTests/*.in
 
 .PHONY: default check clean std
 
