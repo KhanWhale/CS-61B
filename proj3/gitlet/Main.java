@@ -483,7 +483,7 @@ public class Main {
                     }
                 }
             }
-
+/*
             for (String fName : branchStage.getBlobNames().keySet()) {
                 if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
                     if (!currStage.getTrackedFiles().contains(fName) && filesInDir.containsKey(fName)) {
@@ -505,13 +505,25 @@ public class Main {
                     currStage = new StagingArea(gitletDir);
                 }
             }
+
+ */
+
+            for (String fName : modifiedInBranch.keySet()) {
+                if (modifiedInBranch.get(fName) != null && !modifiedInHead.containsKey(fName)) {
+                    checkout(new String[]{"checkout", givenBranchHead, "--", fName});
+                    add(new String[]{"add", fName});
+                    currStage = new StagingArea(gitletDir);
+//                } else if (modifiedInBranch.get(fName) == null && !modifiedInHead.containsKey(fName)) {
+//                    rm(new String[]{"rm", fName});
+//                    currStage = new StagingArea(gitletDir);
+                }
+            }
             for (String fName : splitStage.getBlobNames().keySet()) {
                 if (!modifiedInHead.containsKey(fName) && !branchStage.getBlobNames().containsKey(fName)) {
                     rm(new String[]{"rm", fName});
                     currStage = new StagingArea(gitletDir);
                 }
             }
-
             MergeCommit myMerge = new MergeCommit("Merged " + args[1] + " into " + Utils.readContentsAsString(workingBranch) + ".", System.currentTimeMillis(), givenBranchHead);
             String currentBranch = Utils.readContentsAsString(workingBranch);
             myMerge.commit(currStage, currentBranch);
@@ -711,6 +723,11 @@ public class Main {
                 }
             } else {
                 modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
+            }
+        }
+        for (String bName : splitStage.getBlobNames().keySet()) {
+            if (!branchStage.getBlobNames().containsKey(bName) && branchStage.getRemovedFiles().contains(bName)) {
+                modifiedFiles.put(bName, null);
             }
         }
         return modifiedFiles;
