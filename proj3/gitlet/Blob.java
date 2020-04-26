@@ -50,7 +50,10 @@ public class Blob implements Serializable {
         return blobString;
     }
 
-
+    @Override
+    public boolean equals(Object o) {
+        return hash.equals(((Blob) o).getHash());
+    }
     /** The file being turned into a blob. */
     private File blobFile;
     /** The hash of this blob. */

@@ -478,7 +478,6 @@ public class Main {
             for (File f : CWD.listFiles()) {
                 filesInDir.put(f.getName(), f);
             }
-
             for (String fName : modifiedInBranch.keySet()) {
                 if (!modifiedInHead.containsKey(fName)) {
                     if (!currStage.getTrackedFiles().containsKey(fName) && filesInDir.containsKey(fName)) {
@@ -486,31 +485,6 @@ public class Main {
                     }
                 }
             }
-/*
-            for (String fName : branchStage.getBlobNames().keySet()) {
-                if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
-                    if (!currStage.getTrackedFiles().contains(fName) && filesInDir.containsKey(fName)) {
-                        throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
-                    }
-                }
-            }
-            for (String fName : modifiedInBranch.keySet()) {
-                if (!modifiedInHead.containsKey(fName)) {
-                    checkout(new String[]{"checkout", givenBranchHead, "--", fName});
-                    add(new String[]{"add", fName});
-                    currStage = new StagingArea(gitletDir);
-                }
-            }
-            for (String fName : branchStage.getBlobNames().keySet()) {
-                if (!splitStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
-                    checkout(new String[]{"checkout", givenBranchHead, "--", fName});
-                    add(new String[]{"add", fName});
-                    currStage = new StagingArea(gitletDir);
-                }
-            }
-
- */
-
             for (String fName : modifiedInBranch.keySet()) {
                 if (modifiedInBranch.get(fName) != null && !modifiedInHead.containsKey(fName)) {
                     checkout(new String[]{"checkout", givenBranchHead, "--", fName});
@@ -521,12 +495,38 @@ public class Main {
                     currStage = new StagingArea(gitletDir);
                 }
             }
-//            for (String fName : splitStage.getBlobNames().keySet()) {
-//                if (!modifiedInHead.containsKey(fName) && !branchStage.getBlobNames().containsKey(fName)) {
-//                    rm(new String[]{"rm", fName});
-//                    currStage = new StagingArea(gitletDir);
-//                }
-//            }
+            Set<String> modifiedInBoth = new HashSet<>(modifiedInHead.keySet());
+            modifiedInBoth.retainAll(modifiedInBranch.keySet());
+            for (String fName : modifiedInBoth) {
+                String conflict = "<<<<<<< HEAD\n";
+                if (modifiedInHead.get(fName) != null && modifiedInBranch != null && !modifiedInHead.get(fName).equals(modifiedInBranch.get(fName))) {
+                    conflict += modifiedInHead.get(fName).getBlobString();
+                    conflict += "=======\n";
+                    conflict += modifiedInBranch.get(fName).getBlobString();
+                    conflict += ">>>>>>>";
+                } else if (modifiedInHead.get(fName) == null) {
+                    conflict += "=======\n";
+                    conflict += modifiedInBranch.get(fName).getBlobString();
+                    conflict += ">>>>>>>";
+                } else if (modifiedInBranch.get(fName) == null) {
+                    conflict += modifiedInHead.get(fName).getBlobString();
+                    conflict += "=======\n";
+                    conflict += ">>>>>>>";
+                }
+                if (!conflict.equals("<<<<<<< HEAD\n")) {
+                    mergeConflict = true;
+                    try {
+                        File conflictFile = Utils.join(CWD, fName);
+                        if (!conflictFile.exists()) {
+                            conflictFile.createNewFile();
+                        }
+                        Utils.writeContents(conflictFile, conflict);
+                        add(new String[]{"add", conflictFile.getName()});
+                    } catch (IOException dummy) {
+                        return;
+                    }
+                }
+            }
             MergeCommit myMerge = new MergeCommit("Merged " + args[1] + " into " + Utils.readContentsAsString(workingBranch) + ".", System.currentTimeMillis(), givenBranchHead);
             String currentBranch = Utils.readContentsAsString(workingBranch);
             myMerge.commit(currStage, currentBranch);
