@@ -127,48 +127,6 @@ public class StagingArea implements Serializable, Dumpable {
 
     }
 
-    /** Return the modified, unstaged files.
-     *
-     * @param parentDir The directory to check
-     * @return A lexicographically sorted list of modified, not tracked files.
-     */
-    TreeMap<String, String> checkModifications(File parentDir) {
-        TreeMap<String, String> modified = new TreeMap<>();
-        File[] allFile = parentDir.listFiles();
-        ArrayList<File> allFiles = new ArrayList<File>(Arrays.asList(allFile));
-        for (File toCheck : allFiles) {
-            Blob toCompare = new Blob(toCheck, Utils.join(gitletDir,
-                    "blobs"));
-            if (headStage != null
-                    && headStage.blobNames.containsKey(toCheck.getName())) {
-                String blobHash = toCompare.getHash();
-                if (!headStage.blobTreeMap.containsKey(blobHash)
-                        && !blobTreeMap.containsKey(blobHash)) {
-                    modified.put(toCheck.getName(), " (modified)");
-                }
-            }
-            if (blobNames.containsKey(toCheck.getName())
-                    && !blobTreeMap.containsKey(toCompare.getHash())) {
-                modified.put(toCheck.getName(), " (modified)");
-            }
-        }
-        for (String fileName : blobNames.keySet()) {
-            File toCheck = Utils.join(parentDir, fileName);
-            if (!allFiles.contains(toCheck)) {
-                modified.put(fileName, " (deleted)");
-            }
-        }
-        if (headStage != null) {
-            for (String blobName : headStage.blobNames.keySet()) {
-                File toCheck = Utils.join(parentDir, blobName);
-                if (!allFiles.contains(toCheck)
-                        && !removedFiles.contains(blobName)) {
-                    modified.put(blobName, " (deleted)");
-                }
-            }
-        }
-        return modified;
-    }
     /** Returns the size of the staging area. */
     int size() {
         return Math.max(Math.max(blobNames.size(), blobTreeMap.size()),

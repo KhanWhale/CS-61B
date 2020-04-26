@@ -250,9 +250,41 @@ public class Main {
                 System.out.println(name);
             }
             System.out.println();
+            HashMap<String, File> filesInDir = new HashMap<>();
+            for (File f : CWD.listFiles()) {
+                if (f.isFile()) {
+                    filesInDir.put(f.getName(), f);
+                }
+            }
+
             System.out.println("=== Modifications Not Staged For Commit ===");
+            for (String fName : filesInDir.keySet()) {
+                String currFileData = Utils.readContentsAsString(filesInDir.get(fName));
+                if (currStage.getTrackedFiles().containsKey(fName)) {
+                    if (!currStage.getTrackedFiles().get(fName).getBlobString().equals(currFileData)) {
+                        System.out.println(fName + " (modified)");
+                    }
+                } else if (currStage.getBlobNames().containsKey(fName) && !currStage.getBlobNames().get(fName).getBlobString().equals(currFileData)) {
+                    System.out.println(fName + " (modified)");
+                }
+            }
+            for (String fName : currStage.getBlobNames().keySet()) {
+                if (!filesInDir.containsKey(fName)) {
+                    System.out.println(fName + " (deleted)");
+                }
+            }
+            for (String fName : currStage.getTrackedFiles().keySet()) {
+                if (!filesInDir.containsKey(fName) && !currStage.getRemovedFiles().contains(fName)) {
+                    System.out.println(fName + " (deleted)");
+                }
+            }
             System.out.println();
             System.out.println("=== Untracked Files ===");
+            for (String fName : filesInDir.keySet()) {
+                if (!currStage.getTrackedFiles().containsKey(fName) && !currStage.getBlobNames().containsKey(fName)) {
+                    System.out.println(fName);
+                }
+            }
             System.out.println();
         }
     }
@@ -524,11 +556,13 @@ public class Main {
                         }
                         Utils.writeContents(conflictFile, conflict);
                         add(new String[]{"add", conflictFile.getName()});
+                        currStage = new StagingArea(gitletDir);
                     } catch (IOException dummy) {
                         return;
                     }
                 }
             }
+
             MergeCommit myMerge = new MergeCommit("Merged " + args[1] + " into " + Utils.readContentsAsString(workingBranch) + ".", System.currentTimeMillis(), givenBranchHead);
             String currentBranch = Utils.readContentsAsString(workingBranch);
             myMerge.commit(currStage, currentBranch);
