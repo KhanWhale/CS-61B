@@ -704,7 +704,7 @@ public class Main {
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
         HashMap<String, Blob> modifiedFiles = new HashMap<>();
         for (String bName : branchStage.getBlobNames().keySet()) {
-            if (splitStage.getBlobNames().containsKey(bName)) {
+            if (splitStage.getTrackedFiles().contains(bName)) {
                 if(!splitStage.getBlobNames().get(bName).equals(branchStage.getBlobNames().get(bName))) {
                     modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
                 }
