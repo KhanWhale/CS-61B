@@ -1,0 +1,51 @@
+ 1. # Extra-credit status lines.
+ 2. I prelude1.inc
+ 3. + f.txt wug.txt
+ 4. > status
+ 5. === Branches ===
+ 6. *master
+ 7. 
+ 8. === Staged Files ===
+ 9. 
+10. === Removed Files ===
+11. 
+12. === Modifications Not Staged For Commit ===
+13. 
+14. === Untracked Files ===
+15. f.txt
+16. 
+17. <<<
+18. > add f.txt
+19. <<<
+20. > commit "Add f"
+21. <<<
+22. + f.txt notwug.txt
+23. > status
+24. === Branches ===
+25. *master
+26. 
+27. === Staged Files ===
+28. 
+29. === Removed Files ===
+30. 
+31. === Modifications Not Staged For Commit ===
+32. f.txt (modified)
+33. 
+34. === Untracked Files ===
+35. 
+36. <<<
+37. - f.txt
+38. > status
+39. === Branches ===
+40. *master
+41. 
+42. === Staged Files ===
+43. 
+44. === Removed Files ===
+45. 
+46. === Modifications Not Staged For Commit ===
+47. f.txt (deleted)
+48. 
+49. === Untracked Files ===
+50. 
+51. <<<

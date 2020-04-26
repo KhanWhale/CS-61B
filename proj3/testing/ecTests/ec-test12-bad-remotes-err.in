@@ -1,0 +1,65 @@
+1. # Test error conditions for remote commands
+ 2. C D1
+ 3. I setup2.inc
+ 4. > log
+ 5. ===
+ 6. ${COMMIT_HEAD}
+ 7. Two files
+ 8. 
+ 9. ===
+10. ${COMMIT_HEAD}
+11. initial commit
+12. 
+13. <<<*
+14. D R1_TWO "${1}"
+15. D R1_INIT "${2}"
+16. 
+17. # Set up second repository with one commit + inita.
+18. 
+19. C D2
+20. > init
+21. <<<
+22. + k.txt wug2.txt
+23. > add k.txt
+24. <<<
+25. > commit "Add k in repo 2"
+26. <<<
+27. > log
+28. ===
+29. ${COMMIT_HEAD}
+30. Add k in repo 2
+31. 
+32. ===
+33. ${COMMIT_HEAD}
+34. initial commit
+35. 
+36. <<<*
+37. D R2_K "${1}"
+38. D R2_INIT "${2}"
+39. 
+40. # Fetch remote master and reset our master to it.
+41. # Then add another commit and push.
+42. > add-remote R1 ../Dx/.gitlet
+43. <<<
+44. > add-remote R1 ../D1/.gitlet
+45. A remote with that name already exists.
+46. <<<
+47. > fetch R1 master
+48. Remote directory not found.
+49. <<<
+50. > push R1 master
+51. Remote directory not found.
+52. <<<
+53. > rm-remote R1
+54. <<<
+55. > rm-remote glorp
+56. A remote with that name does not exist.
+57. <<<
+58. > add-remote R1 ../D1/.gitlet
+59. <<<
+60. > fetch R1 glorp
+61. That remote does not have that branch.
+62. <<<
+63. > push R1 master
+64. Please pull down remote changes before pushing.
+65. <<<
