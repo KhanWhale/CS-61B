@@ -516,17 +516,17 @@ public class Main {
                     checkout(new String[]{"checkout", givenBranchHead, "--", fName});
                     add(new String[]{"add", fName});
                     currStage = new StagingArea(gitletDir);
-//                } else if (modifiedInBranch.get(fName) == null && !modifiedInHead.containsKey(fName)) {
-//                    rm(new String[]{"rm", fName});
-//                    currStage = new StagingArea(gitletDir);
-                }
-            }
-            for (String fName : splitStage.getBlobNames().keySet()) {
-                if (!modifiedInHead.containsKey(fName) && !branchStage.getBlobNames().containsKey(fName)) {
+                } else if (modifiedInBranch.get(fName) == null && !modifiedInHead.containsKey(fName)) {
                     rm(new String[]{"rm", fName});
                     currStage = new StagingArea(gitletDir);
                 }
             }
+//            for (String fName : splitStage.getBlobNames().keySet()) {
+//                if (!modifiedInHead.containsKey(fName) && !branchStage.getBlobNames().containsKey(fName)) {
+//                    rm(new String[]{"rm", fName});
+//                    currStage = new StagingArea(gitletDir);
+//                }
+//            }
             MergeCommit myMerge = new MergeCommit("Merged " + args[1] + " into " + Utils.readContentsAsString(workingBranch) + ".", System.currentTimeMillis(), givenBranchHead);
             String currentBranch = Utils.readContentsAsString(workingBranch);
             myMerge.commit(currStage, currentBranch);
@@ -720,7 +720,7 @@ public class Main {
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
         HashMap<String, Blob> modifiedFiles = new HashMap<>();
         for (String bName : branchStage.getTrackedFiles().keySet()) {
-            if (splitStage.getTrackedFiles().containsKey(bName) && !branchStage.getRemovedFiles().contains(bName)) {
+            if (splitStage.getTrackedFiles().containsKey(bName)) {
                 if(!splitStage.getTrackedFiles().get(bName).getHash().equals(branchStage.getTrackedFiles().get(bName).getHash())) {
                     modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
                 }
@@ -729,7 +729,7 @@ public class Main {
             }
         }
         for (String bName : splitStage.getTrackedFiles().keySet()) {
-            if (!branchStage.getTrackedFiles().containsKey(bName) && branchStage.getRemovedFiles().contains(bName)) {
+            if (!branchStage.getTrackedFiles().containsKey(bName)) {
                 modifiedFiles.put(bName, null);
             }
         }
