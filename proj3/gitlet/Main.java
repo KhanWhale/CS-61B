@@ -719,17 +719,17 @@ public class Main {
 
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
         HashMap<String, Blob> modifiedFiles = new HashMap<>();
-        for (String bName : branchStage.getBlobNames().keySet()) {
-            if (splitStage.getTrackedFiles().containsKey(bName)) {
-                if(!splitStage.getBlobNames().get(bName).equals(branchStage.getBlobNames().get(bName))) {
+        for (String bName : branchStage.getTrackedFiles().keySet()) {
+            if (splitStage.getTrackedFiles().containsKey(bName) && !branchStage.getRemovedFiles().contains(bName)) {
+                if(!splitStage.getTrackedFiles().get(bName).getHash().equals(branchStage.getTrackedFiles().get(bName).getHash())) {
                     modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
                 }
             } else {
                 modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
             }
         }
-        for (String bName : splitStage.getBlobNames().keySet()) {
-            if (!branchStage.getBlobNames().containsKey(bName) && branchStage.getRemovedFiles().contains(bName)) {
+        for (String bName : splitStage.getTrackedFiles().keySet()) {
+            if (!branchStage.getTrackedFiles().containsKey(bName) && branchStage.getRemovedFiles().contains(bName)) {
                 modifiedFiles.put(bName, null);
             }
         }

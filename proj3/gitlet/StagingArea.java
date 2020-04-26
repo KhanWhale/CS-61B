@@ -117,8 +117,14 @@ public class StagingArea implements Serializable, Dumpable {
         StagingArea parent = Utils.readObject(stagePath, StagingArea.class);
         blobTreeMap.putAll(parent.blobTreeMap);
         blobNames.putAll(parent.blobNames);
-        removedFiles.addAll(parent.removedFiles);
-        trackedFiles.putAll(parent.trackedFiles);
+        removedFiles.addAll(parent.getRemovedFiles());
+        trackedFiles.putAll(parent.getTrackedFiles());
+        for (String fName : removedFiles) {
+            if (trackedFiles.containsKey(fName)) {
+                trackedFiles.remove(fName);
+            }
+        }
+
     }
 
     /** Return the modified, unstaged files.
