@@ -764,14 +764,14 @@ public class Main {
             for (String bName : branchStage.getTrackedFiles().keySet()) {
                 if (splitStage.getTrackedFiles().containsKey(bName)) {
                     if (!splitStage.getTrackedFiles().get(bName).getHash().equals(branchStage.getTrackedFiles().get(bName).getHash())) {
-                        modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
+                        modifiedFiles.put(bName, branchStage.getTrackedFiles().get(bName));
                     }
                 } else {
-                    modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
+                    modifiedFiles.put(bName, branchStage.getTrackedFiles().get(bName));
                 }
             }
             for (String bName : splitStage.getTrackedFiles().keySet()) {
-                if (!branchStage.getTrackedFiles().containsKey(bName)) {
+                if (branchStage.getRemovedFiles().contains(bName)) {
                     modifiedFiles.put(bName, null);
                 }
             }
