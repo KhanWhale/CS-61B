@@ -499,7 +499,7 @@ public class Main {
             modifiedInBoth.retainAll(modifiedInBranch.keySet());
             for (String fName : modifiedInBoth) {
                 String conflict = "<<<<<<< HEAD\n";
-                if (modifiedInHead.get(fName) != null && modifiedInBranch != null && !modifiedInHead.get(fName).equals(modifiedInBranch.get(fName))) {
+                if (modifiedInHead.get(fName) != null && modifiedInBranch.get(fName) != null && !modifiedInHead.get(fName).equals(modifiedInBranch.get(fName))) {
                     conflict += modifiedInHead.get(fName).getBlobString();
                     conflict += "=======\n";
                     conflict += modifiedInBranch.get(fName).getBlobString();
@@ -719,18 +719,27 @@ public class Main {
 
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
         HashMap<String, Blob> modifiedFiles = new HashMap<>();
-        for (String bName : branchStage.getTrackedFiles().keySet()) {
-            if (splitStage.getTrackedFiles().containsKey(bName)) {
-                if(!splitStage.getTrackedFiles().get(bName).getHash().equals(branchStage.getTrackedFiles().get(bName).getHash())) {
+        if (splitStage != null) {
+            for (String bName : branchStage.getTrackedFiles().keySet()) {
+                if (splitStage.getTrackedFiles().containsKey(bName)) {
+                    if (!splitStage.getTrackedFiles().get(bName).getHash().equals(branchStage.getTrackedFiles().get(bName).getHash())) {
+                        modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
+                    }
+                } else {
                     modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
                 }
-            } else {
-                modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
             }
-        }
-        for (String bName : splitStage.getTrackedFiles().keySet()) {
-            if (!branchStage.getTrackedFiles().containsKey(bName)) {
-                modifiedFiles.put(bName, null);
+            for (String bName : splitStage.getTrackedFiles().keySet()) {
+                if (!branchStage.getTrackedFiles().containsKey(bName)) {
+                    modifiedFiles.put(bName, null);
+                }
+            }
+        } else {
+            for (String tFile : branchStage.getTrackedFiles().keySet()) {
+                modifiedFiles.put(tFile, branchStage.getTrackedFiles().get(tFile));
+            }
+            for (String rFile : branchStage.getRemovedFiles()) {
+                modifiedFiles.put(rFile, null);
             }
         }
         return modifiedFiles;

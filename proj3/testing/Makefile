@@ -19,9 +19,9 @@ TESTER = CLASSPATH="$$(pwd)/..:$(CLASSPATH):;$$(pwd)/..;$(CLASSPATH)" $(PYTHON) 
 
 TESTER_FLAGS =
 
-# TESTS = autograderTests/*.in
+TESTS = mergeTests/*.in
 # TESTS = samples/*.in workingTests/*.in
-TESTS = workingTests/test33-merge-no-conflicts.in workingTests/test36-merge-err.in autograderTests/test34-merge-conflicts.in
+
 .PHONY: default check clean std
 
 # First, and therefore default, target.
