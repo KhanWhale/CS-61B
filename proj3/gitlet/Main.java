@@ -1,6 +1,8 @@
 package gitlet;
 
 
+import jdk.jshell.execution.Util;
+
 import java.io.IOException;
 import java.io.File;
 import java.util.List;
@@ -20,6 +22,8 @@ public class Main {
     /** File object of gitlet subdirectory. */
     private static File gitletDir = Utils.join(CWD, ".gitlet");
 
+    /** Remotes directory **/
+    static File remotesDir = Utils.join(gitletDir, "remotes");
     /** File object containing commits. */
     private static File commits = Utils.join(gitletDir, "commits");
 
@@ -81,6 +85,20 @@ public class Main {
                     break;
                 case "merge":
                     merge(args);
+                    break;
+                case "add-remote":
+                    addRemote(args);
+                    break;
+                case "rm-remote":
+                    rmRemote(args);
+                case "fetch":
+                    fetch(args);
+                    break;
+                case "push":
+//                    push(args);
+                    break;
+                case "pull":
+//                    pull(args);
                     break;
                 default:
                     throw new GitletException(
@@ -822,7 +840,81 @@ public class Main {
         return modifiedFiles;
     }
 
+    public static void addRemote(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else {
+            if (!remotesDir.exists()) {
+                remotesDir.mkdir();
+            }
+            File remote = Utils.join(remotesDir, args[1]);
+            if (remote.exists()) {
+                throw new GitletException("A remote with that name already exists.");
+            } else {
+                try {
+                    remote.createNewFile();
+                } catch (IOException dummy) {
+                    return;
+                }
+                String remotePath = args[2].replace('/', File.separatorChar);
+                Utils.writeContents(remote, remotePath);
+            }
+        }
+    }
 
+    public static void rmRemote(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else {
+            File remote = Utils.join(remotesDir, args[1]);
+            if (!remote.exists()) {
+                throw new GitletException("A remote with that name does not exist.");
+            } else {
+                remote.delete();
+            }
+        }
+    }
+
+    public static void push(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else {
+            File remote = Utils.join(remotesDir, args[1]);
+            if (!remote.exists()) {
+                throw new GitletException("A remote with that name does not exist.");
+            } else {
+                remote.delete();
+            }
+        }
+    }
+
+    public static void fetch(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else {
+            File remote = Utils.join(remotesDir, args[1]);
+            if (!remote.exists()) {
+                throw new GitletException("A remote with that name does not exist.");
+            } else {
+                remote.delete();
+            }
+        }
+    }
+
+    public static void pull(String[] args) {
+        if (!gitletDir.exists()) {
+            throw new GitletException("Not in an initialized Gitlet directory.");
+        } else {
+            File remote = Utils.join(remotesDir, args[1]);
+            if (!remote.exists()) {
+                throw new GitletException("A remote with that name does not exist.");
+            }
+            String remoteDir = Utils.readContentsAsString(remote);
+            if (!new File(remoteDir).exists()) {
+                throw new GitletException("Remote directory not found.");
+            }
+        }
+    }
     /** Commit ID Length. */
     static final int ID_LENGTH = 40;
 }
