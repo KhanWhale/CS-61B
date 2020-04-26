@@ -393,7 +393,7 @@ public class Main {
                     commits, commitID), Commit.class);
             if (setHead.getStage() != null) {
                 for (String name : setHead.getStage().
-                        getBlobNames().keySet()) {
+                        getTrackedFiles().keySet()) {
                     File toWrite = Utils.join(CWD, name);
                     if (toWrite.exists()) {
                         if (repoHead.getStage() == null
@@ -411,7 +411,7 @@ public class Main {
                         }
                     }
                     Utils.writeContents(
-                            toWrite, setHead.getStage().getBlobNames().
+                            toWrite, setHead.getStage().getTrackedFiles().
                                     get(name).getBlobString());
                 }
             }
@@ -645,11 +645,11 @@ public class Main {
             }
         }
         if (repoHead.getStage() != null) {
-            for (String fName : repoHead.getStage().getBlobNames().keySet()) {
+            for (String fName : repoHead.getStage().getTrackedFiles().keySet()) {
                 File toDelete = Utils.join(CWD, fName);
                 if (branchHead.getStage() == null) {
                     Utils.restrictedDelete(toDelete);
-                } else if (!branchHead.getStage().getBlobNames().
+                } else if (!branchHead.getStage().getTrackedFiles().
                         keySet().contains(fName)) {
                     Utils.restrictedDelete(toDelete);
                 }
