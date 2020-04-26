@@ -273,7 +273,7 @@ public class Main {
                 return;
             }
         }  else if (args.length == 2) {
-            checkoutBranch(args[1]);
+                checkoutBranch(args[1]);
         } else if (args[2].equals("--")) {
             try {
                 checkoutCommitFile(args[1], args[3]);
@@ -676,8 +676,6 @@ public class Main {
                 Commit.class);
         givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
         currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
-        addAncestors(givenBranchHead, givenBranchCommits);
-        addAncestors(currentBranchHead, currentBranchCommits);
 //        while (!(givenBranchHead instanceof InitialCommit)) {
 //            givenBranchHead = Utils.readObject(Utils.join(commits, givenBranchHead.getParentUID()), Commit.class);
 //            givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
@@ -686,6 +684,8 @@ public class Main {
 //            currentBranchHead = Utils.readObject(Utils.join(commits, currentBranchHead.getParentUID()), Commit.class);
 //            currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
 //        }
+        addAncestors(givenBranchHead, givenBranchCommits);
+        addAncestors(currentBranchHead, currentBranchCommits);
         Set<String> commonAncestorKeys = new HashSet<String>(givenBranchCommits.keySet());
         commonAncestorKeys.retainAll(currentBranchCommits.keySet());
         Set<String> commonAncestorCopy = new HashSet<>(commonAncestorKeys);
@@ -720,7 +720,12 @@ public class Main {
     }
     private static void addAncestors(Commit head, HashMap<String, Commit> branchAncestors) {
         if (head instanceof InitialCommit) {
+            branchAncestors.put(head.getHash(), head);
             return;
+        } else if (head instanceof MergeCommit) {
+            branchAncestors.put(head.getHash(), head);
+            addAncestors(Utils.readObject(Utils.join(commits, head.getParentUID()), Commit.class), branchAncestors);
+            addAncestors(Utils.readObject(Utils.join(commits, ((MergeCommit) head).getSecondaryParentUID()), Commit.class), branchAncestors);
         } else {
             branchAncestors.put(head.getHash(), head);
             addAncestors(Utils.readObject(Utils.join(commits, head.getParentUID()), Commit.class), branchAncestors);
