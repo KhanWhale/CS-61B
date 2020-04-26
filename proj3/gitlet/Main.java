@@ -622,7 +622,7 @@ public class Main {
                 commits, branchHeadHash), Commit.class);
         if (branchHead.getStage() != null) {
             for (String name : branchHead.getStage().
-                    getBlobNames().keySet()) {
+                    getTrackedFiles().keySet()) {
                 File toWrite = Utils.join(CWD, name);
                 if (toWrite.exists()) {
                     if (repoHead.getStage() == null
@@ -640,7 +640,7 @@ public class Main {
                     }
                 }
                 Utils.writeContents(
-                        toWrite, branchHead.getStage().getBlobNames().
+                        toWrite, branchHead.getStage().getTrackedFiles().
                                 get(name).getBlobString());
             }
         }
