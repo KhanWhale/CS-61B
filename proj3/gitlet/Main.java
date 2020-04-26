@@ -676,14 +676,6 @@ public class Main {
                 Commit.class);
         givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
         currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
-//        while (!(givenBranchHead instanceof InitialCommit)) {
-//            givenBranchHead = Utils.readObject(Utils.join(commits, givenBranchHead.getParentUID()), Commit.class);
-//            givenBranchCommits.put(givenBranchHead.getHash(), givenBranchHead);
-//        }
-//        while (!(currentBranchHead instanceof InitialCommit)) {
-//            currentBranchHead = Utils.readObject(Utils.join(commits, currentBranchHead.getParentUID()), Commit.class);
-//            currentBranchCommits.put(currentBranchHead.getHash(), currentBranchHead);
-//        }
         addAncestors(givenBranchHead, givenBranchCommits);
         addAncestors(currentBranchHead, currentBranchCommits);
         Set<String> commonAncestorKeys = new HashSet<String>(givenBranchCommits.keySet());
@@ -704,21 +696,10 @@ public class Main {
             int minDist = Integer.MAX_VALUE;
             String splitPoint = "";
             for (String key : commonAncestorKeys) {
-                Commit checkCommit = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
-                int dist = 0;
-                while (!checkCommit.getHash().equals(key)) {
-                    if ((checkCommit instanceof InitialCommit)) {
-                        dist = Integer.MAX_VALUE;
-                        break;
-                    } else {
-                        checkCommit = Utils.readObject(Utils.join(commits, checkCommit.getParentUID()), Commit.class);
-                        dist += 1;
-                    }
-                }
-                if (checkCommit instanceof InitialCommit) {
-                    if (minDist == Integer.MAX_VALUE) {
-                        splitPoint = key;
-                    }
+                Commit headCommit = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
+                int dist = getDistance(headCommit, key);
+                if (minDist == Integer.MAX_VALUE && dist == minDist) {
+                    splitPoint = key;
                 } else if (Math.min(dist, minDist) == dist) {
                     minDist = dist;
                     splitPoint = key;
@@ -726,9 +707,6 @@ public class Main {
             }
             commonAncestorKeys = new HashSet<>();
             commonAncestorKeys.add(splitPoint);
-//            Commit iterate = Utils.readObject(Utils.join(commits, currentBranch), Commit.class);
-//            while (!commonAncestorKeys.contains(iterate.getHash()) || (iterate instanceof InitialCommit)) {
-//                iterate = Utils.readObject(Utils.join(commits, iterate.getParentUID()), Commit.class);
         }
         if (commonAncestorKeys.contains(givenBranch)) {
             System.out.println("Given branch is an ancestor of the current branch.");
@@ -757,6 +735,29 @@ public class Main {
         }
     }
 
+    private static int getDistance(Commit head, String key) {
+        if (head.getHash().equals(key)) {
+            return 0;
+        } else if (head instanceof InitialCommit) {
+            return Integer.MAX_VALUE;
+        } else if (head instanceof MergeCommit) {
+           Commit firstParent = Utils.readObject(Utils.join(commits, head.getParentUID()), Commit.class);
+           Commit secondParent = Utils.readObject(Utils.join(commits, ((MergeCommit) head).getSecondaryParentUID()), Commit.class);
+           int childDist = Math.min(getDistance(firstParent, key), getDistance(secondParent, key));
+           if (childDist == Integer.MAX_VALUE) {
+               return Integer.MAX_VALUE;
+           } else {
+               return 1 + childDist;
+           }
+        } else {
+            int childDist = getDistance(Utils.readObject(Utils.join(commits, head.getParentUID()), Commit.class), key);
+            if (childDist == Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;
+            } else {
+                return 1 + childDist;
+            }
+        }
+    }
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
         HashMap<String, Blob> modifiedFiles = new HashMap<>();
         if (splitStage != null) {
