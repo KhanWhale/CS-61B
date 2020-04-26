@@ -52,7 +52,7 @@ public class StagingArea implements Serializable, Dumpable {
             reasonToRemove = true;
         }
         if (headStage != null
-                && headStage.trackedFiles.contains(rm.getName())) {
+                && headStage.getTrackedFiles().containsKey(rm.getName())) {
             trackedFiles.remove(rm.getName());
             removedFiles.add(rm.getName());
             Utils.restrictedDelete(rm);
@@ -81,11 +81,11 @@ public class StagingArea implements Serializable, Dumpable {
             blobTreeMap.remove(originalHash);
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
-            trackedFiles.add(toStage.getName());
+            trackedFiles.put(toStage.getName(), toStage);
         } else {
             blobTreeMap.put(toStage.getHash(), toStage);
             blobNames.put(toStage.getName(), toStage);
-            trackedFiles.add(toStage.getName());
+            trackedFiles.put(toStage.getName(), toStage);
         }
         if (removedFiles.contains(toStage.getName())) {
             removedFiles.remove(toStage.getName());
@@ -99,7 +99,7 @@ public class StagingArea implements Serializable, Dumpable {
                 "commits", parentCommitID), Commit.class);
         headStage = parentCommit.getStage();
         if (headStage != null) {
-            trackedFiles.addAll(headStage.getTrackedFiles());
+            trackedFiles.putAll(headStage.getTrackedFiles());
         }
         if (headStage != null && headStage.removedFiles.size() > 0) {
             for (String name : headStage.removedFiles) {
@@ -118,7 +118,7 @@ public class StagingArea implements Serializable, Dumpable {
         blobTreeMap.putAll(parent.blobTreeMap);
         blobNames.putAll(parent.blobNames);
         removedFiles.addAll(parent.removedFiles);
-        trackedFiles.addAll(parent.trackedFiles);
+        trackedFiles.putAll(parent.trackedFiles);
     }
 
     /** Return the modified, unstaged files.
@@ -202,7 +202,7 @@ public class StagingArea implements Serializable, Dumpable {
     }
 
     /** Returns the tracked files. */
-    Set<String> getTrackedFiles() {
+    TreeMap<String, Blob> getTrackedFiles() {
         return trackedFiles;
     }
     /** File object containing staging area reference. */
@@ -220,7 +220,7 @@ public class StagingArea implements Serializable, Dumpable {
     private TreeMap<String, Blob> blobNames = new TreeMap<String, Blob>();
 
     /** The files currently tracked. */
-    private Set<String> trackedFiles = new HashSet<>();
+    private TreeMap<String, Blob> trackedFiles = new TreeMap<String, Blob>();
 
     /** The files which will be removed from the next commit. */
     private ArrayList<String> removedFiles = new ArrayList<String>();

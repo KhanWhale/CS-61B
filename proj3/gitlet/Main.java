@@ -398,7 +398,7 @@ public class Main {
                     if (toWrite.exists()) {
                         if (repoHead.getStage() == null
                                 || !repoHead.getStage().getTrackedFiles().
-                                        contains(name)) {
+                                        containsKey(name)) {
                             throw new GitletException("There is an untracked"
                                      + " file in the way; delete it, or add and"
                                     + " commit it first.");
@@ -468,9 +468,12 @@ public class Main {
             StagingArea branchStage = Utils.readObject(
                     Utils.join(commits, givenBranchHead),
                     Commit.class).getStage();
+            StagingArea headStage = Utils.readObject(
+                    Utils.join(commits, currentBranchHead),
+                    Commit.class).getStage();
             StagingArea splitStage = splitPointCommit.getStage();
             HashMap<String, Blob> modifiedInBranch = getModifiedFiles(splitStage, branchStage);
-            HashMap<String, Blob> modifiedInHead = getModifiedFiles(splitStage, currStage);
+            HashMap<String, Blob> modifiedInHead = getModifiedFiles(splitStage, headStage);
             HashMap<String, File> filesInDir = new HashMap<>();
             for (File f : CWD.listFiles()) {
                 filesInDir.put(f.getName(), f);
@@ -478,7 +481,7 @@ public class Main {
 
             for (String fName : modifiedInBranch.keySet()) {
                 if (!modifiedInHead.containsKey(fName)) {
-                    if (!currStage.getTrackedFiles().contains(fName) && filesInDir.containsKey(fName)) {
+                    if (!currStage.getTrackedFiles().containsKey(fName) && filesInDir.containsKey(fName)) {
                         throw new GitletException("There is an untracked file in the way; delete it, or add and commit it first.");
                     }
                 }
@@ -624,7 +627,7 @@ public class Main {
                 if (toWrite.exists()) {
                     if (repoHead.getStage() == null
                             || !repoHead.getStage().getTrackedFiles().
-                            contains(name)) {
+                            containsKey(name)) {
                         throw new GitletException("There is an untracked file"
                                 + " in the way; delete it, "
                                 + "or add and commit it first.");
@@ -717,7 +720,7 @@ public class Main {
     private static HashMap<String, Blob> getModifiedFiles(StagingArea splitStage, StagingArea branchStage) {
         HashMap<String, Blob> modifiedFiles = new HashMap<>();
         for (String bName : branchStage.getBlobNames().keySet()) {
-            if (splitStage.getTrackedFiles().contains(bName)) {
+            if (splitStage.getTrackedFiles().containsKey(bName)) {
                 if(!splitStage.getBlobNames().get(bName).equals(branchStage.getBlobNames().get(bName))) {
                     modifiedFiles.put(bName, branchStage.getBlobNames().get(bName));
                 }
